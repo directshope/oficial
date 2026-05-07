@@ -4,109 +4,20 @@
   <meta charset="UTF-8">
   <title>Admin Premium - DIRECT SHOP</title>
   <style>
-    /* Design Premium Dark & Gold */
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #0a0a0a;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 40px 20px;
-    }
-    .container {
-      background: #141414;
-      width: 100%;
-      max-width: 700px;
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-      border: 1px solid #222;
-    }
-    h2 {
-      color: #f1c40f;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .section-title {
-      font-size: 11px;
-      color: #f1c40f;
-      border-bottom: 1px solid #333;
-      padding-bottom: 5px;
-      margin: 25px 0 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .input-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      color: #888;
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-    input, select {
-      width: 100%;
-      padding: 12px;
-      background: #000;
-      border: 1px solid #333;
-      color: #fff;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-size: 14px;
-      transition: 0.3s;
-    }
-    input:focus, select:focus {
-      border-color: #f1c40f;
-      outline: none;
-    }
-    .row {
-      display: flex;
-      gap: 15px;
-    }
-    .row .input-group {
-      flex: 1;
-    }
-    button {
-      width: 100%;
-      padding: 18px;
-      background: linear-gradient(135deg, #f1c40f, #d4ac0d);
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      text-transform: uppercase;
-      transition: 0.4s;
-      margin-top: 20px;
-    }
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3);
-    }
-    #status {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    .logout-btn {
-      background: transparent;
-      color: #555;
-      border: none;
-      font-size: 11px;
-      cursor: pointer;
-      margin-top: 30px;
-      text-decoration: underline;
-    }
+    body { margin: 0; font-family: 'Segoe UI', Arial; background: #0a0a0a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    .container { background: #141414; width: 100%; max-width: 650px; padding: 40px; border-radius: 15px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); border: 1px solid #222; }
+    h2 { color: #f1c40f; text-transform: uppercase; text-align: center; margin-bottom: 30px; letter-spacing: 2px; }
+    .section-title { font-size: 11px; color: #f1c40f; border-bottom: 1px solid #333; padding-bottom: 5px; margin: 25px 0 15px; text-transform: uppercase; }
+    .input-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 6px; color: #888; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+    input, select { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    input:focus { border-color: #f1c40f; outline: none; }
+    .row { display: flex; gap: 15px; }
+    .row .input-group { flex: 1; }
+    button { width: 100%; padding: 18px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.4s; margin-top: 20px; }
+    button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3); }
+    #status { margin-top: 20px; text-align: center; font-size: 14px; }
+    .logout-btn { background: transparent; color: #555; border: none; font-size: 11px; cursor: pointer; margin-top: 30px; text-decoration: underline; width: auto; }
     #admin-panel { display: none; }
   </style>
 </head>
@@ -114,188 +25,104 @@
 
   <div class="container" id="login-screen">
     <h2>Acesso Administrativo</h2>
-    <div class="input-group">
-      <label>Usuário GitHub:</label>
-      <input type="text" id="gh-user" placeholder="Seu usuário">
-    </div>
-    <div class="input-group">
-      <label>Nome do Repositório:</label>
-      <input type="text" id="gh-repo" placeholder="Ex: oficial">
-    </div>
-    <div class="input-group">
-      <label>GitHub Key (Senha):</label>
-      <input type="password" id="gh-token" placeholder="Cole sua Key aqui">
-    </div>
+    <div class="input-group"><label>Usuário GitHub:</label><input type="text" id="gh-user"></div>
+    <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo"></div>
+    <div class="input-group"><label>Sua Key (Senha):</label><input type="password" id="gh-token"></div>
     <button onclick="fazerLogin()">Entrar no Painel</button>
   </div>
 
   <div class="container" id="admin-panel">
-    <h2>Injetar Produto Premium</h2>
+    <h2>Injetar Produto</h2>
     
-    <div class="section-title">Informações Básicas</div>
-    <div class="input-group">
-      <label>Título do Produto:</label>
-      <input type="text" id="p-titulo" placeholder="Ex: Creatina 300g Pura">
-    </div>
-
+    <div class="section-title">Básico</div>
+    <div class="input-group"><label>Título:</label><input type="text" id="p-titulo"></div>
     <div class="row">
+      <div class="input-group"><label>Preço (R$):</label><input type="text" id="p-preco"></div>
       <div class="input-group">
-        <label>Preço (R$):</label>
-        <input type="text" id="p-preco" placeholder="199,90">
-      </div>
-      <div class="input-group">
-        <label>Selo / Tag:</label>
+        <label>Tag de Destaque:</label>
         <select id="p-tag">
-          <option value="">Sem Selo</option>
+          <option value="">Nenhum</option>
           <option value="Mais Vendido">🔥 Mais Vendido</option>
-          <option value="Oferta do Dia">⚡ Oferta do Dia</option>
-          <option value="Promoção">💎 Promoção</option>
+          <option value="Oferta">⚡ Oferta</option>
           <option value="Frete Grátis">🚚 Frete Grátis</option>
         </select>
       </div>
     </div>
 
-    <div class="section-title">Credibilidade (Igual Site Grande)</div>
+    <div class="section-title">Credibilidade</div>
     <div class="row">
-      <div class="input-group">
-        <label>Nota (0 a 5):</label>
-        <input type="number" id="p-nota" step="0.1" min="0" max="5" value="4.8">
-      </div>
-      <div class="input-group">
-        <label>Nº Avaliações:</label>
-        <input type="number" id="p-avaliacoes" placeholder="Ex: 1250">
-      </div>
-      <div class="input-group">
-        <label>Estoque Disponível:</label>
-        <input type="number" id="p-estoque" placeholder="Ex: 45">
-      </div>
+      <div class="input-group"><label>Nota (0-5):</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
+      <div class="input-group"><label>Avaliações:</label><input type="number" id="p-avaliacoes"></div>
+      <div class="input-group"><label>Estoque:</label><input type="number" id="p-estoque"></div>
     </div>
 
-    <div class="section-title">Fotos do Produto (Até 4)</div>
+    <div class="section-title">Fotos (Até 4)</div>
     <div class="row">
-      <div class="input-group"><input type="text" id="img1" placeholder="Link Foto 1"></div>
-      <div class="input-group"><input type="text" id="img2" placeholder="Link Foto 2"></div>
+      <input type="text" id="img1" placeholder="Link Foto 1 (Principal)" style="margin-bottom:8px">
+      <input type="text" id="img2" placeholder="Link Foto 2" style="margin-bottom:8px">
     </div>
     <div class="row">
-      <div class="input-group"><input type="text" id="img3" placeholder="Link Foto 3"></div>
-      <div class="input-group"><input type="text" id="img4" placeholder="Link Foto 4"></div>
+      <input type="text" id="img3" placeholder="Link Foto 3" style="margin-bottom:8px">
+      <input type="text" id="img4" placeholder="Link Foto 4">
     </div>
 
-    <div class="section-title">Destino do Cliente</div>
-    <div class="input-group">
-      <label>Link de Afiliado (Botão de Compra):</label>
-      <input type="text" id="p-link" placeholder="Link oficial de afiliado">
+    <div class="section-title">Links</div>
+    <div class="row">
+        <div class="input-group"><label>Loja:</label><input type="text" id="p-loja" value="ml"></div>
+        <div class="input-group"><label>Link Afiliado:</label><input type="text" id="p-link"></div>
     </div>
 
-    <button id="btn-save" onclick="salvarProduto()">Publicar no Site Agora</button>
-    
+    <button id="btn-save" onclick="salvarProduto()">Publicar no Site</button>
     <div id="status"></div>
     <center><button class="logout-btn" onclick="logout()">Sair / Trocar Conta</button></center>
   </div>
 
   <script>
-    window.onload = function() {
-      if (localStorage.getItem('gh_token')) mostrarPainel();
-    };
-
+    window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
+    function mostrarPainel() { document.getElementById('login-screen').style.display='none'; document.getElementById('admin-panel').style.display='block'; }
+    function logout() { localStorage.clear(); location.reload(); }
     function fazerLogin() {
-      const u = document.getElementById('gh-user').value.trim();
-      const r = document.getElementById('gh-repo').value.trim();
-      const t = document.getElementById('gh-token').value.trim();
-      if (!u || !r || !t) return alert("Preencha todos os dados!");
-      localStorage.setItem('gh_user', u);
-      localStorage.setItem('gh_repo', r);
-      localStorage.setItem('gh_token', t);
+      localStorage.setItem('gh_user', document.getElementById('gh-user').value.trim());
+      localStorage.setItem('gh_repo', document.getElementById('gh-repo').value.trim());
+      localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
       mostrarPainel();
-    }
-
-    function mostrarPainel() {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('admin-panel').style.display = 'block';
-    }
-
-    function logout() {
-      localStorage.clear();
-      location.reload();
     }
 
     async function salvarProduto() {
       const btn = document.getElementById('btn-save');
-      const status = document.getElementById('status');
-      
-      const titulo = document.getElementById('p-titulo').value.trim();
-      const preco = document.getElementById('p-preco').value.trim();
-      const tag = document.getElementById('p-tag').value;
-      const nota = document.getElementById('p-nota').value;
-      const avaliacoes = document.getElementById('p-avaliacoes').value;
-      const estoque = document.getElementById('p-estoque').value;
-      const link = document.getElementById('p-link').value.trim();
-      
-      const imgsRaw = [
-        document.getElementById('img1').value.trim(),
-        document.getElementById('img2').value.trim(),
-        document.getElementById('img3').value.trim(),
-        document.getElementById('img4').value.trim()
-      ];
-      const imagens = imgsRaw.filter(url => url !== "");
+      const st = document.getElementById('status');
+      const imgs = [document.getElementById('img1').value, document.getElementById('img2').value, document.getElementById('img3').value, document.getElementById('img4').value].filter(i => i !== "");
 
-      if (!titulo || !preco || imagens.length === 0 || !link) {
-        alert("Preencha Título, Preço, Foto Principal e Link!");
-        return;
-      }
+      btn.disabled = true; btn.innerText = "ENVIANDO...";
 
-      btn.innerText = "INJETANDO NO SITE...";
-      btn.disabled = true;
-
-      const user = localStorage.getItem('gh_user');
-      const repo = localStorage.getItem('gh_repo');
-      const token = localStorage.getItem('gh_token');
+      const user = localStorage.getItem('gh_user'), repo = localStorage.getItem('gh_repo'), token = localStorage.getItem('gh_token');
+      const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
 
       try {
-        const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
         const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-        if (!res.ok) throw new Error("Erro de login ou Repositório.");
-        
-        const fileData = await res.json();
-        const content = JSON.parse(atob(fileData.content));
+        const file = await res.json();
+        const content = JSON.parse(atob(file.content));
 
-        // OBJETO COMPLETO COM TODA A CREDIBILIDADE
-        const novoProduto = {
-          titulo: titulo,
-          preco: preco,
-          tag: tag,
-          nota: nota,
-          avaliacoes: avaliacoes,
-          estoque: estoque,
-          link: link,
-          imagens: imagens,
-          data: new Date().toLocaleDateString('pt-BR')
-        };
-
-        content.unshift(novoProduto);
-
-        const putRes = await fetch(url, {
-          method: 'PUT',
-          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            message: `Produto Injetado: ${titulo}`,
-            content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
-            sha: fileData.sha
-          })
+        content.unshift({
+          titulo: document.getElementById('p-titulo').value,
+          preco: document.getElementById('p-preco').value,
+          tag: document.getElementById('p-tag').value,
+          nota: document.getElementById('p-nota').value,
+          avaliacoes: document.getElementById('p-avaliacoes').value,
+          estoque: document.getElementById('p-estoque').value,
+          link: document.getElementById('p-link').value,
+          loja: document.getElementById('p-loja').value,
+          imagens: imgs
         });
 
-        if (putRes.ok) {
-          status.style.color = "#2ecc71";
-          status.innerText = "✅ PUBLICADO COM SUCESSO!";
-          setTimeout(() => { location.reload(); }, 2000);
-        } else { throw new Error("Erro ao salvar."); }
+        const save = await fetch(url, {
+          method: 'PUT',
+          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: "Novo Produto", content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha })
+        });
 
-      } catch (e) {
-        status.style.color = "#e74c3c";
-        status.innerText = "❌ " + e.message;
-        btn.innerText = "TENTAR NOVAMENTE";
-        btn.disabled = false;
-      }
+        if(save.ok) { st.innerHTML = "✅ SUCESSO!"; setTimeout(() => location.reload(), 2000); }
+      } catch (e) { alert("Erro ao salvar!"); btn.disabled = false; btn.innerText = "Tentar Novamente"; }
     }
   </script>
 </body>
