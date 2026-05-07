@@ -229,26 +229,22 @@
       container.innerHTML = '';
 
       try {
-        // Usando a ponte CodeTabs: direta, sem frescura e sem erro 403/404
-        const urlBusca = `https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}&limit=12`;
-        const proxy = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(urlBusca)}`;
-
-        const response = await fetch(proxy);
+        // COLE A URL QUE VOCÊ COPIOU DO GOOGLE ABAIXO ENTRE AS ASPAS
+        const suaPonteGoogle = "https://script.google.com/macros/s/AKfycbwXSzEB2hb_EoupSFjRQd_EhcR8bE43lUuPAnUlDONT_y3kFqK3AY1qvZlPOgJKlYtKcQ/exec"; 
+        const urlML = `https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}&limit=15`;
+        
+        const response = await fetch(`${suaPonteGoogle}?url=${encodeURIComponent(urlML)}`);
         const data = await response.json();
         
         loading.style.display = 'none';
 
         if (data.results && data.results.length > 0) {
           data.results.forEach(item => {
-            const imagemHD = item.thumbnail.replace('-I.jpg', '-O.jpg');
+            const imgHD = item.thumbnail.replace('-I.jpg', '-O.jpg');
             const div = document.createElement('div');
             div.className = 'item-resultado';
-            div.innerHTML = `
-              <img src="${imagemHD}">
-              <h4>${item.title}</h4>
-              <p>R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
-            `;
-            div.onclick = () => selecionarProduto(item.title, item.price, imagemHD);
+            div.innerHTML = `<img src="${imgHD}"><h4>${item.title}</h4><p>R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>`;
+            div.onclick = () => selecionarProduto(item.title, item.price, imgHD);
             container.appendChild(div);
           });
         } else {
@@ -256,7 +252,7 @@
         }
       } catch (error) {
         loading.style.display = 'none';
-        alert("Erro na conexão. Tente pesquisar novamente.");
+        alert("Erro na ponte. Verifique se publicou o Script do Google corretamente.");
       }
     }
 
