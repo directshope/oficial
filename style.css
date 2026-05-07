@@ -29,7 +29,7 @@ body {
 .banner {
   width: 100%;
   overflow: hidden; /* Corta o que sobrar das fotos ao lado */
-  height: 400px;    /* Altura fixa para não ocupar a tela toda */
+  height: 600px;    /* Altura fixa para não ocupar a tela toda */
 }
 
 .slides {
@@ -40,7 +40,7 @@ body {
 
 .slides img {
   min-width: 100%; /* Cada foto ocupa 100% da largura do banner */
-  height: 400px;   /* Altura travada */
+  height: 600px;   /* Altura travada */
   object-fit: cover; /* Faz a foto preencher o espaço sem esticar */
 }
 
