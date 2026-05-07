@@ -231,26 +231,14 @@
       container.innerHTML = '';
 
       try {
-        // Lógica para links diretos
-        if (termo.includes('mercadolivre.com')) {
-          const match = termo.match(/MLB-?(\d+)/i);
-          if (match) {
-            const itemId = "MLB" + match[1];
-            const res = await fetch(`https://api.mercadolibre.com/items/${itemId}`);
-            if (res.ok) {
-              const data = await res.json();
-              const img = data.pictures && data.pictures.length > 0 ? data.pictures[0].url : data.thumbnail.replace('-I.jpg', '-O.jpg');
-              selecionarProduto(data.title, data.price, img);
-              return;
-            }
-          }
-        }
+        // Criamos a "Ponte" (Proxy) para o Mercado Livre não bloquear o seu site
+        const apiML = `https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}&limit=15`;
+        const proxyURL = `https://corsproxy.io/?${encodeURIComponent(apiML)}`;
 
-        // Lógica para busca por nome (Melhorada)
-        const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}&limit=20`);
+        const response = await fetch(proxyURL);
         
         if (!response.ok) {
-          throw new Error("A API do Mercado Livre bloqueou a requisição. Tente recarregar a página.");
+          throw new Error("O servidor de busca está ocupado. Tente clicar em Pesquisar novamente.");
         }
 
         const data = await response.json();
@@ -258,7 +246,7 @@
 
         if (data.results && data.results.length > 0) {
           data.results.forEach(item => {
-            // Puxa a imagem original (tamanho grande)
+            // Puxa a imagem em alta resolução automaticamente
             const imagemAlta = item.thumbnail.replace('-I.jpg', '-O.jpg');
             
             const div = document.createElement('div');
@@ -273,38 +261,32 @@
             container.appendChild(div);
           });
         } else {
-          container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #f1c40f;">
-            Nenhum produto encontrado para: "${termo}"<br>
-            <small style="color: #666;">Tente um termo mais genérico.</small>
-          </p>`;
+          container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #f1c40f;">Nenhum produto encontrado. Tente um nome mais curto.</p>`;
         }
 
       } catch (error) {
         loading.style.display = 'none';
-        console.error("Erro na busca:", error);
-        alert("Falha na busca: " + error.message);
+        console.error("Erro técnico:", error);
+        alert("Falha na conexão: O Mercado Livre bloqueou o acesso direto. Tente novamente agora.");
       }
     }
 
     function selecionarProduto(titulo, preco, imagem) {
-      // Salva os dados brutos
       produtoSelecionado = {
         nome: titulo,
         preco: preco,
         imagem: imagem
       };
 
-      // Atualiza o seu Preview Premium
+      // Preenche o seu Preview Premium
       document.getElementById('prev-img').src = imagem;
       document.getElementById('prev-titulo').innerText = titulo;
       document.getElementById('prev-preco').innerText = "R$ " + preco.toLocaleString('pt-BR', {minimumFractionDigits: 2});
 
-      // Mostra a área e foca no link
       document.getElementById('preview-area').style.display = 'block';
       fecharPopup();
       
-      // Rola a tela até o preview para o usuário ver
-      document.getElementById('preview-area').scrollIntoView({ behavior: 'smooth' });
+      // Foca direto no campo de link de afiliado para você só colar e salvar
       document.getElementById('link-afiliado').focus();
     }
 
