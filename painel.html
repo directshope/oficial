@@ -2,22 +2,26 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Premium - DIRECT SHOP</title>
+  <title>Painel Premium - DIRECT SHOP</title>
   <style>
-    body { margin: 0; font-family: 'Segoe UI', Arial; background: #0a0a0a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    /* Design Premium Dark & Gold */
+    body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a0a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
     .container { background: #141414; width: 100%; max-width: 650px; padding: 40px; border-radius: 15px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); border: 1px solid #222; }
-    h2 { color: #f1c40f; text-transform: uppercase; text-align: center; margin-bottom: 30px; letter-spacing: 2px; }
-    .section-title { font-size: 11px; color: #f1c40f; border-bottom: 1px solid #333; padding-bottom: 5px; margin: 25px 0 15px; text-transform: uppercase; }
+    h2 { color: #f1c40f; text-transform: uppercase; text-align: center; margin-bottom: 25px; letter-spacing: 2px; }
+    .section-title { font-size: 11px; color: #f1c40f; border-bottom: 1px solid #333; padding-bottom: 5px; margin: 25px 0 15px; text-transform: uppercase; letter-spacing: 1px; }
     .input-group { margin-bottom: 15px; }
     label { display: block; margin-bottom: 6px; color: #888; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-    input, select { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    input, select { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: 0.3s; }
     input:focus { border-color: #f1c40f; outline: none; }
     .row { display: flex; gap: 15px; }
     .row .input-group { flex: 1; }
-    button { width: 100%; padding: 18px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.4s; margin-top: 20px; }
+    button { width: 100%; padding: 18px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.4s; margin-top: 10px; }
     button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3); }
-    #status { margin-top: 20px; text-align: center; font-size: 14px; }
+    #lista-busca { background: #000; border-radius: 0 0 8px 8px; max-height: 150px; overflow-y: auto; border: 1px solid #222; border-top: none; }
+    .item-busca { padding: 12px; border-bottom: 1px solid #222; cursor: pointer; font-size: 13px; color: #f1c40f; transition: 0.2s; }
+    .item-busca:hover { background: #111; }
     .logout-btn { background: transparent; color: #555; border: none; font-size: 11px; cursor: pointer; margin-top: 30px; text-decoration: underline; width: auto; }
+    #status { margin-top: 20px; text-align: center; font-size: 14px; font-weight: bold; }
     #admin-panel { display: none; }
   </style>
 </head>
@@ -25,34 +29,34 @@
 
   <div class="container" id="login-screen">
     <h2>Acesso Administrativo</h2>
-    <div class="input-group"><label>Usuário GitHub:</label><input type="text" id="gh-user"></div>
-    <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo"></div>
-    <div class="input-group"><label>Sua Key (Senha):</label><input type="password" id="gh-token"></div>
+    <div class="input-group"><label>Usuário GitHub:</label><input type="text" id="gh-user" placeholder="Seu usuário"></div>
+    <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo" placeholder="Ex: oficial"></div>
+    <div class="input-group"><label>GitHub Key (Senha):</label><input type="password" id="gh-token" placeholder="Sua Key do GitHub"></div>
     <button onclick="fazerLogin()">Entrar no Painel</button>
   </div>
 
   <div class="container" id="admin-panel">
+    <h2>Direct Shop Admin</h2>
+
     <div class="section-title">Gerenciar Produtos</div>
-<div class="input-group">
-  <input type="text" id="busca-editar" placeholder="🔍 Digite para buscar e EDITAR um produto..." oninput="buscarParaEditar()">
-  <div id="lista-busca" style="background:#000; border-radius:8px; max-height:150px; overflow-y:auto; border:1px solid #333;"></div>
-</div>
-    <h2>Injetar Produto</h2>
-    
-    <div class="section-title">Básico</div>
-    <div class="input-group"><label>Título:</label><input type="text" id="p-titulo"></div>
     <div class="input-group">
-  <label>Subtítulo (Ex: 200ml, 500g):</label>
-  <input type="text" id="p-subtitulo" placeholder="Ex: 200ml">
-</div>
+      <input type="text" id="busca-editar" placeholder="🔍 Digite para buscar e EDITAR um produto..." oninput="buscarParaEditar()">
+      <div id="lista-busca"></div>
+    </div>
+    
+    <div class="section-title">Informações do Produto</div>
+    <div class="input-group"><label>Título Principal:</label><input type="text" id="p-titulo" placeholder="Nome do produto"></div>
+    <div class="input-group"><label>Subtítulo (Ex: 200ml, 500g, Pack c/ 3):</label><input type="text" id="p-subtitulo" placeholder="Ex: 200ml"></div>
+
     <div class="row">
-      <div class="input-group"><label>Preço (R$):</label><input type="text" id="p-preco"></div>
+      <div class="input-group"><label>Preço (R$):</label><input type="text" id="p-preco" placeholder="199,90"></div>
       <div class="input-group">
-        <label>Tag de Destaque:</label>
+        <label>Selo de Destaque:</label>
         <select id="p-tag">
           <option value="">Nenhum</option>
           <option value="Mais Vendido">🔥 Mais Vendido</option>
-          <option value="Oferta">⚡ Oferta</option>
+          <option value="Oferta do Dia">⚡ Oferta do Dia</option>
+          <option value="Promoção">💎 Promoção</option>
           <option value="Frete Grátis">🚚 Frete Grátis</option>
         </select>
       </div>
@@ -61,127 +65,146 @@
     <div class="section-title">Credibilidade</div>
     <div class="row">
       <div class="input-group"><label>Nota (0-5):</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
-      <div class="input-group"><label>Avaliações:</label><input type="number" id="p-avaliacoes"></div>
-      <div class="input-group"><label>Estoque:</label><input type="number" id="p-estoque"></div>
+      <div class="input-group"><label>Avaliações:</label><input type="number" id="p-avaliacoes" placeholder="Ex: 150"></div>
+      <div class="input-group"><label>Estoque:</label><input type="number" id="p-estoque" placeholder="Ex: 12"></div>
     </div>
 
-    <div class="section-title">Fotos (Até 4)</div>
+    <div class="section-title">Fotos (Até 4 Links)</div>
     <div class="row">
-      <input type="text" id="img1" placeholder="Link Foto 1 (Principal)" style="margin-bottom:8px">
-      <input type="text" id="img2" placeholder="Link Foto 2" style="margin-bottom:8px">
+      <div class="input-group"><input type="text" id="img1" placeholder="Foto 1 (Capa)"></div>
+      <div class="input-group"><input type="text" id="img2" placeholder="Foto 2"></div>
     </div>
     <div class="row">
-      <input type="text" id="img3" placeholder="Link Foto 3" style="margin-bottom:8px">
-      <input type="text" id="img4" placeholder="Link Foto 4">
+      <div class="input-group"><input type="text" id="img3" placeholder="Foto 3"></div>
+      <div class="input-group"><input type="text" id="img4" placeholder="Foto 4"></div>
     </div>
 
-    <div class="section-title">Links</div>
+    <div class="section-title">Destino</div>
     <div class="row">
-        <div class="input-group"><label>Loja:</label><input type="text" id="p-loja" value="ml"></div>
-        <div class="input-group"><label>Link Afiliado:</label><input type="text" id="p-link"></div>
+      <div class="input-group"><label>Loja:</label><input type="text" id="p-loja" value="ml"></div>
+      <div class="input-group"><label>Link Afiliado:</label><input type="text" id="p-link" placeholder="https://..."></div>
     </div>
 
     <button id="btn-save" onclick="salvarProduto()">Publicar no Site</button>
     <div id="status"></div>
+    
     <center><button class="logout-btn" onclick="logout()">Sair / Trocar Conta</button></center>
   </div>
 
-  let produtosCarregados = [];
-let editandoIndex = null;
+  <script>
+    let produtosCarregados = [];
+    let editandoIndex = null;
 
-window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
+    window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
 
-function mostrarPainel() { 
-  document.getElementById('login-screen').style.display='none'; 
-  document.getElementById('admin-panel').style.display='block'; 
-  carregarListaEdicao(); 
-}
-
-function logout() { localStorage.clear(); location.reload(); }
-
-function fazerLogin() {
-  localStorage.setItem('gh_user', document.getElementById('gh-user').value.trim());
-  localStorage.setItem('gh_repo', document.getElementById('gh-repo').value.trim());
-  localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
-  mostrarPainel();
-}
-
-async function carregarListaEdicao() {
-  const user = localStorage.getItem('gh_user'), repo = localStorage.getItem('gh_repo'), token = localStorage.getItem('gh_token');
-  const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
-  try {
-    const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-    const file = await res.json();
-    produtosCarregados = JSON.parse(atob(file.content));
-  } catch (e) { console.log("Erro ao carregar lista"); }
-}
-
-function buscarParaEditar() {
-  const termo = document.getElementById('busca-editar').value.toLowerCase();
-  const lista = document.getElementById('lista-busca');
-  lista.innerHTML = "";
-  if (termo.length < 2) return;
-  produtosCarregados.forEach((p, index) => {
-    if (p.titulo.toLowerCase().includes(termo)) {
-      const item = document.createElement('div');
-      item.style = "padding:12px; border-bottom:1px solid #222; cursor:pointer; font-size:13px; color:#f1c40f;";
-      item.innerText = "✏️ " + p.titulo;
-      item.onclick = () => {
-        editandoIndex = index;
-        document.getElementById('p-titulo').value = p.titulo;
-        document.getElementById('p-subtitulo').value = p.subtitulo || "";
-        document.getElementById('p-preco').value = p.preco;
-        document.getElementById('p-tag').value = p.tag || "";
-        document.getElementById('p-nota').value = p.nota;
-        document.getElementById('p-avaliacoes').value = p.avaliacoes;
-        document.getElementById('p-estoque').value = p.estoque;
-        document.getElementById('p-link').value = p.link;
-        document.getElementById('p-loja').value = p.loja;
-        p.imagens.forEach((img, i) => { if(i < 4) document.getElementById(`img${i+1}`).value = img; });
-        document.getElementById('btn-save').innerText = "SALVAR ALTERAÇÕES";
-        lista.innerHTML = "";
-      };
-      lista.appendChild(item);
+    function mostrarPainel() { 
+      document.getElementById('login-screen').style.display='none'; 
+      document.getElementById('admin-panel').style.display='block'; 
+      carregarListaEdicao(); 
     }
-  });
-}
 
-async function salvarProduto() {
-  const btn = document.getElementById('btn-save');
-  const imgs = [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(i => i !== "");
-  const user = localStorage.getItem('gh_user'), repo = localStorage.getItem('gh_repo'), token = localStorage.getItem('gh_token');
-  const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
+    function logout() { localStorage.clear(); location.reload(); }
 
-  try {
-    const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-    const file = await res.json();
-    let content = JSON.parse(atob(file.content));
+    function fazerLogin() {
+      const u = document.getElementById('gh-user').value.trim();
+      const r = document.getElementById('gh-repo').value.trim();
+      const t = document.getElementById('gh-token').value.trim();
+      if(!u || !r || !t) return alert("Preencha tudo!");
+      localStorage.setItem('gh_user', u);
+      localStorage.setItem('gh_repo', r);
+      localStorage.setItem('gh_token', t);
+      mostrarPainel();
+    }
 
-    const dadosProduto = {
-      titulo: document.getElementById('p-titulo').value,
-      subtitulo: document.getElementById('p-subtitulo').value,
-      preco: document.getElementById('p-preco').value,
-      tag: document.getElementById('p-tag').value,
-      nota: document.getElementById('p-nota').value,
-      avaliacoes: document.getElementById('p-avaliacoes').value,
-      estoque: document.getElementById('p-estoque').value,
-      link: document.getElementById('p-link').value,
-      loja: document.getElementById('p-loja').value,
-      imagens: imgs,
-      data: editandoIndex !== null ? content[editandoIndex].data : new Date().toLocaleDateString('pt-BR')
-    };
+    async function carregarListaEdicao() {
+      const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
+      const url = `https://api.github.com/repos/${u}/${r}/contents/produtos.json`;
+      try {
+        const res = await fetch(url, { headers: { 'Authorization': `token ${t}` } });
+        const file = await res.json();
+        produtosCarregados = JSON.parse(atob(file.content));
+      } catch (e) { console.log("Aguardando JSON..."); }
+    }
 
-    if (editandoIndex !== null) content[editandoIndex] = dadosProduto;
-    else content.unshift(dadosProduto);
+    function buscarParaEditar() {
+      const termo = document.getElementById('busca-editar').value.toLowerCase();
+      const lista = document.getElementById('lista-busca');
+      lista.innerHTML = "";
+      if (termo.length < 2) return;
 
-    const save = await fetch(url, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: "Update", content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha })
-    });
+      produtosCarregados.forEach((p, index) => {
+        if (p.titulo.toLowerCase().includes(termo)) {
+          const item = document.createElement('div');
+          item.className = "item-busca";
+          item.innerText = "✏️ " + p.titulo;
+          item.onclick = () => {
+            editandoIndex = index;
+            document.getElementById('p-titulo').value = p.titulo;
+            document.getElementById('p-subtitulo').value = p.subtitulo || "";
+            document.getElementById('p-preco').value = p.preco;
+            document.getElementById('p-tag').value = p.tag || "";
+            document.getElementById('p-nota').value = p.nota;
+            document.getElementById('p-avaliacoes').value = p.avaliacoes;
+            document.getElementById('p-estoque').value = p.estoque;
+            document.getElementById('p-link').value = p.link;
+            document.getElementById('p-loja').value = p.loja;
+            for(let i=1; i<=4; i++) { document.getElementById(`img${i}`).value = p.imagens[i-1] || ""; }
+            document.getElementById('btn-save').innerText = "ATUALIZAR PRODUTO";
+            lista.innerHTML = "";
+          };
+          lista.appendChild(item);
+        }
+      });
+    }
 
-    if(save.ok) location.reload();
-  } catch (e) { alert("Erro ao salvar!"); btn.disabled = false; }
-}
+    async function salvarProduto() {
+      const btn = document.getElementById('btn-save');
+      const st = document.getElementById('status');
+      const imgs = [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(i => i !== "");
+      
+      const user = localStorage.getItem('gh_user'), repo = localStorage.getItem('gh_repo'), token = localStorage.getItem('gh_token');
+      const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
+
+      btn.disabled = true; btn.innerText = "PROCESSANDO...";
+
+      try {
+        const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+        const file = await res.json();
+        let content = JSON.parse(atob(file.content));
+
+        const novoProduto = {
+          titulo: document.getElementById('p-titulo').value,
+          subtitulo: document.getElementById('p-subtitulo').value,
+          preco: document.getElementById('p-preco').value,
+          tag: document.getElementById('p-tag').value,
+          nota: document.getElementById('p-nota').value,
+          avaliacoes: document.getElementById('p-avaliacoes').value,
+          estoque: document.getElementById('p-estoque').value,
+          link: document.getElementById('p-link').value,
+          loja: document.getElementById('p-loja').value,
+          imagens: imgs,
+          data: editandoIndex !== null ? content[editandoIndex].data : new Date().toLocaleDateString('pt-BR')
+        };
+
+        if (editandoIndex !== null) content[editandoIndex] = novoProduto;
+        else content.unshift(novoProduto);
+
+        const save = await fetch(url, {
+          method: 'PUT',
+          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            message: "Update", 
+            content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), 
+            sha: file.sha 
+          })
+        });
+
+        if(save.ok) { 
+          st.style.color = "#2ecc71"; st.innerText = "✅ SUCESSO!"; 
+          setTimeout(() => location.reload(), 1500); 
+        }
+      } catch (e) { alert("Erro ao salvar!"); btn.disabled = false; btn.innerText = "Tentar Novamente"; }
+    }
+  </script>
 </body>
 </html>
