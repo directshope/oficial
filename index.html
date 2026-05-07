@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>DIRECT SHOP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">DIRECT SHOP</div>
+
+  <input type="text" id="search" placeholder="Buscar produtos...">
+
+  <select id="categoria">
+    <option value="all">Categorias</option>
+    <option value="eletronico">Eletrônicos</option>
+    <option value="casa">Casa</option>
+    <option value="gamer">Gamer</option>
+  </select>
+</header>
+
+<!-- BANNER SLIDER -->
+<section class="banner">
+  <div class="slides" id="slides">
+    <img src="images/banner1.png">
+    <img src="images/banner2.png">
+    <img src="images/banner3.png">
+  </div>
+</section>
+
+<!-- ABAS LOJAS -->
+<section class="tabs">
+  <button class="tab active" data-loja="all">Todos</button>
+  <button class="tab" data-loja="ml">Mercado Livre</button>
+  <button class="tab" data-loja="shopee">Shopee</button>
+  <button class="tab" data-loja="amazon">Amazon</button>
+</section>
+
+<!-- PRODUTOS -->
+<section class="produtos" id="produtos"></section>
+
+<script src="script.js"></script>
+</body>
+</html>
