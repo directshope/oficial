@@ -4,62 +4,63 @@
   <meta charset="UTF-8">
   <title>Admin Premium - DIRECT SHOP</title>
   <style>
-    /* Design Premium do Painel */
+    /* Design Premium Dark & Gold */
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       background: #0a0a0a;
       color: #fff;
       display: flex;
       justify-content: center;
-      padding: 40px 20px;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
-    .admin-container {
+    .container {
       background: #141414;
       width: 100%;
-      max-width: 650px;
+      max-width: 600px;
       padding: 40px;
       border-radius: 15px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
       border: 1px solid #222;
     }
-    .admin-container h1 {
-      text-align: center;
+    h2 {
       color: #f1c40f;
       text-transform: uppercase;
       letter-spacing: 2px;
-      margin-bottom: 40px;
-      font-size: 24px;
+      text-align: center;
+      margin-bottom: 30px;
     }
     .input-group {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
-    .input-group label {
+    label {
       display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
+      margin-bottom: 8px;
       color: #888;
-      font-size: 14px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
     }
-    .input-group input {
+    input {
       width: 100%;
-      padding: 15px;
+      padding: 14px;
       background: #000;
       border: 1px solid #333;
       color: #fff;
       border-radius: 8px;
       box-sizing: border-box;
-      font-size: 16px;
+      font-size: 15px;
       transition: 0.3s;
     }
-    .input-group input:focus {
+    input:focus {
       border-color: #f1c40f;
       outline: none;
-      box-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
     }
     .row {
       display: flex;
-      gap: 20px;
+      gap: 15px;
     }
     .row .input-group {
       flex: 1;
@@ -71,136 +72,184 @@
       color: #000;
       border: none;
       border-radius: 8px;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.4s;
       text-transform: uppercase;
+      transition: 0.4s;
       margin-top: 10px;
     }
     button:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
       box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3);
     }
-    button:disabled {
-      background: #444;
-      color: #888;
-      cursor: not-allowed;
-    }
-    .status-msg {
-      text-align: center;
+    #status {
       margin-top: 20px;
+      text-align: center;
       font-size: 14px;
+      font-weight: bold;
     }
+    .logout-btn {
+      background: transparent;
+      color: #555;
+      border: none;
+      font-size: 11px;
+      cursor: pointer;
+      margin-top: 30px;
+      text-decoration: underline;
+    }
+    /* Alternância de telas */
+    #admin-panel { display: none; }
   </style>
 </head>
 <body>
 
-  <div class="admin-container">
-    <h1>DIRECT SHOP - Injetor Premium</h1>
+  <div class="container" id="login-screen">
+    <h2>Acesso Restrito</h2>
+    <div class="input-group">
+      <label>Usuário GitHub:</label>
+      <input type="text" id="gh-user" placeholder="Seu usuário">
+    </div>
+    <div class="input-group">
+      <label>Nome do Repositório:</label>
+      <input type="text" id="gh-repo" placeholder="Ex: oficial">
+    </div>
+    <div class="input-group">
+      <label>GitHub Key (Senha):</label>
+      <input type="password" id="gh-token" placeholder="Cole sua Key aqui">
+    </div>
+    <button onclick="fazerLogin()">Entrar no Painel</button>
+  </div>
+
+  <div class="container" id="admin-panel">
+    <h2>Novo Produto Premium</h2>
     
     <div class="input-group">
-      <label>TÍTULO DO PRODUTO (Copie do Mercado Livre):</label>
-      <input type="text" id="p-titulo" placeholder="Ex: Creatina Integralmédica 300g Monohidratada">
+      <label>Título do Produto:</label>
+      <input type="text" id="p-titulo" placeholder="Título que aparecerá no card">
     </div>
 
     <div class="row">
       <div class="input-group">
-        <label>PREÇO ATUAL (Apenas números):</label>
-        <input type="text" id="p-preco" placeholder="Ex: 129,90">
+        <label>Preço (R$):</label>
+        <input type="text" id="p-preco" placeholder="Ex: 199,90">
       </div>
       <div class="input-group">
-        <label>CATEGORIA / LOJA:</label>
-        <input type="text" id="p-loja" value="Mercado Livre" placeholder="Ex: Mercado Livre">
+        <label>Loja Parceira:</label>
+        <input type="text" id="p-loja" value="Mercado Livre">
       </div>
     </div>
 
     <div class="input-group">
-      <label>LINK DA IMAGEM (Botão direito na foto > Copiar endereço da imagem):</label>
-      <input type="text" id="p-img" placeholder="https://http2.mlstatic.com/...">
+      <label>Fotos do Produto (Cole os links abaixo):</label>
+      <input type="text" id="img1" placeholder="Link da Imagem 1 (Principal)" style="margin-bottom: 8px;">
+      <input type="text" id="img2" placeholder="Link da Imagem 2 (Opcional)" style="margin-bottom: 8px;">
+      <input type="text" id="img3" placeholder="Link da Imagem 3 (Opcional)" style="margin-bottom: 8px;">
+      <input type="text" id="img4" placeholder="Link da Imagem 4 (Opcional)">
     </div>
 
     <div class="input-group">
-      <label>SEU LINK DE AFILIADO (Botão Comprar):</label>
-      <input type="text" id="p-link" placeholder="https://mercadolivre.com/seu-link-afiliado...">
+      <label>Seu Link de Afiliado:</label>
+      <input type="text" id="p-link" placeholder="https://mercadolivre.com/afiliado...">
     </div>
 
-    <button id="btn-main" onclick="salvarProduto()">Salvar e Publicar no Site</button>
-    <div id="status" class="status-msg"></div>
+    <button id="btn-save" onclick="salvarProduto()">Publicar Produto</button>
+    
+    <div id="status"></div>
+    <center><button class="logout-btn" onclick="logout()">Sair / Trocar Conta</button></center>
   </div>
 
   <script>
-    const REPO = 'directshope/oficial';
-    const FILE_PATH = 'produtos.json';
+    // Inicia verificando se já tem login salvo
+    window.onload = function() {
+      if (localStorage.getItem('gh_token')) mostrarPainel();
+    };
 
-    // FUNÇÃO DE SEGURANÇA: Pega a Key do navegador, não do código
-    function obterToken() {
-      let token = localStorage.getItem('gh_token');
-      if (!token) {
-        token = prompt("🔒 ACESSO RESTRITO: Insira sua GitHub Key para gerenciar o site:");
-        if (token) {
-          localStorage.setItem('gh_token', token);
-        }
-      }
-      return token;
+    function fazerLogin() {
+      const u = document.getElementById('gh-user').value.trim();
+      const r = document.getElementById('gh-repo').value.trim();
+      const t = document.getElementById('gh-token').value.trim();
+
+      if (!u || !r || !t) return alert("Preencha todos os dados de acesso!");
+
+      localStorage.setItem('gh_user', u);
+      localStorage.setItem('gh_repo', r);
+      localStorage.setItem('gh_token', t);
+      mostrarPainel();
+    }
+
+    function mostrarPainel() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+    }
+
+    function logout() {
+      localStorage.clear();
+      location.reload();
     }
 
     async function salvarProduto() {
-      const titulo = document.getElementById('p-titulo').value.trim();
-      const preco = document.getElementById('p-preco').value.trim();
-      const imagem = document.getElementById('p-img').value.trim();
-      const link = document.getElementById('p-link').value.trim();
-      const loja = document.getElementById('p-loja').value.trim();
-
-      const GITHUB_TOKEN = obterToken(); // Busca a chave de forma segura
-
-      if (!GITHUB_TOKEN) {
-        alert("Erro: Você precisa da Key para salvar produtos.");
-        return;
-      }
-
-      if (!titulo || !preco || !imagem || !link) {
-        alert("Preencha todos os campos para manter o padrão premium.");
-        return;
-      }
-
-      const btn = document.getElementById('btn-main');
+      const btn = document.getElementById('btn-save');
       const status = document.getElementById('status');
       
-      btn.innerText = "ENVIANDO DADOS...";
+      // Coleta dados
+      const titulo = document.getElementById('p-titulo').value.trim();
+      const preco = document.getElementById('p-preco').value.trim();
+      const loja = document.getElementById('p-loja').value.trim();
+      const link = document.getElementById('p-link').value.trim();
+      
+      // Coleta imagens e remove as que estiverem vazias
+      const imgsRaw = [
+        document.getElementById('img1').value.trim(),
+        document.getElementById('img2').value.trim(),
+        document.getElementById('img3').value.trim(),
+        document.getElementById('img4').value.trim()
+      ];
+      const imagens = imgsRaw.filter(url => url !== "");
+
+      if (!titulo || !preco || imagens.length === 0 || !link) {
+        alert("Erro: Título, Preço, Link e pelo menos 1 Imagem são obrigatórios!");
+        return;
+      }
+
+      btn.innerText = "PROCESSANDO...";
       btn.disabled = true;
 
-      try {
-        const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-          headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-        });
-        
-        if (getRes.status === 401) {
-          localStorage.removeItem('gh_token'); // Apaga a chave se estiver errada
-          throw new Error("Key inválida ou expirada. Recarregue a página e tente de novo.");
-        }
+      const user = localStorage.getItem('gh_user');
+      const repo = localStorage.getItem('gh_repo');
+      const token = localStorage.getItem('gh_token');
+      const filePath = 'produtos.json';
 
-        const fileData = await getRes.json();
+      try {
+        const url = `https://api.github.com/repos/${user}/${repo}/contents/${filePath}`;
+        
+        // 1. Pega o JSON atual
+        const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+        if (!res.ok) throw new Error("Dados de login inválidos ou repositório não encontrado.");
+        
+        const fileData = await res.json();
         const content = JSON.parse(atob(fileData.content));
 
+        // 2. Cria o novo produto com a lista de imagens
         const novoProduto = {
           titulo: titulo,
-          preco: preco.includes(',') ? preco : parseFloat(preco).toLocaleString('pt-BR', {minimumFractionDigits: 2}),
-          imagem: imagem,
+          preco: preco,
+          loja: loja,
           link: link,
-          loja: loja
+          imagens: imagens // Aqui vão de 1 a 4 links
         };
 
-        content.unshift(novoProduto);
+        content.unshift(novoProduto); // Novo no topo
 
-        const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+        // 3. Salva no GitHub
+        const putRes = await fetch(url, {
           method: 'PUT',
           headers: { 
-            'Authorization': `token ${GITHUB_TOKEN}`,
+            'Authorization': `token ${token}`,
             'Content-Type': 'application/json' 
           },
           body: JSON.stringify({
-            message: `Injetado: ${titulo}`,
+            message: `Produto Injetado: ${titulo}`,
             content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
             sha: fileData.sha
           })
@@ -208,24 +257,18 @@
 
         if (putRes.ok) {
           status.style.color = "#2ecc71";
-          status.innerText = "PRODUTO PUBLICADO COM SUCESSO!";
+          status.innerText = "✅ SUCESSO! O PRODUTO JÁ ESTÁ NO SITE.";
           setTimeout(() => { location.reload(); }, 2000);
         } else {
-          throw new Error("Erro ao salvar. Verifique se sua Key tem permissão 'repo'.");
+          throw new Error("Erro ao salvar. Verifique sua Key.");
         }
 
-      } catch (error) {
+      } catch (e) {
         status.style.color = "#e74c3c";
-        status.innerText = "ERRO: " + error.message;
-        btn.innerText = "Tentar Novamente";
+        status.innerText = "❌ " + e.message;
+        btn.innerText = "TENTAR NOVAMENTE";
         btn.disabled = false;
       }
-    }
-
-    // Função para caso você queira trocar a Key depois (opcional)
-    function trocarKey() {
-      localStorage.removeItem('gh_token');
-      location.reload();
     }
   </script>
 </body>
