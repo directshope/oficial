@@ -39,9 +39,9 @@ body {
 }
 
 .slides img {
-  min-width: 100%; /* Cada foto ocupa 100% da largura do banner */
-  height: 600px;   /* Altura travada */
-  object-fit: cover; /* Faz a foto preencher o espaço sem esticar */
+  width: 100%;      /* Isso aqui garante que a lateral apareça inteira */
+  height: auto;     /* A altura segue a largura, impedindo o corte */
+  display: block;
 }
 
 /* ABAS LOJAS */
