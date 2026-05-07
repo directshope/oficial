@@ -2,332 +2,206 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Admin - DIRECT SHOP</title>
+  <title>Admin Premium - DIRECT SHOP</title>
   <style>
     /* Design Premium do Painel */
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0a0a;
       color: #fff;
       display: flex;
       justify-content: center;
-      padding: 50px 20px;
+      padding: 40px 20px;
     }
     .admin-container {
-      background: #1a1a1a;
+      background: #141414;
       width: 100%;
-      max-width: 600px;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      border: 1px solid #333;
+      max-width: 650px;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      border: 1px solid #222;
     }
     .admin-container h1 {
       text-align: center;
       color: #f1c40f;
-      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+      font-size: 24px;
     }
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
     .input-group label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       font-weight: bold;
-      color: #ccc;
+      color: #888;
+      font-size: 14px;
     }
     .input-group input {
       width: 100%;
       padding: 15px;
       background: #000;
-      border: 1px solid #444;
+      border: 1px solid #333;
       color: #fff;
-      border-radius: 5px;
+      border-radius: 8px;
       box-sizing: border-box;
       font-size: 16px;
+      transition: 0.3s;
+    }
+    .input-group input:focus {
+      border-color: #f1c40f;
+      outline: none;
+      box-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
+    }
+    .row {
+      display: flex;
+      gap: 20px;
+    }
+    .row .input-group {
+      flex: 1;
     }
     button {
       width: 100%;
-      padding: 15px;
-      background: #f1c40f;
+      padding: 18px;
+      background: linear-gradient(135deg, #f1c40f, #d4ac0d);
       color: #000;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 18px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.4s;
+      text-transform: uppercase;
+      margin-top: 10px;
     }
     button:hover {
-      background: #d4ac0d;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3);
     }
-
-    /* Estilos do Popup (Modal) */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
+    button:disabled {
+      background: #444;
+      color: #888;
+      cursor: not-allowed;
     }
-    .modal-content {
-      background: #1a1a1a;
-      width: 90%;
-      max-width: 800px;
-      max-height: 80vh;
-      overflow-y: auto;
-      padding: 20px;
-      border-radius: 10px;
-      border: 1px solid #333;
-      position: relative;
-    }
-    .close-btn {
-      position: absolute;
-      top: 15px; right: 20px;
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .grid-resultados {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 15px;
+    .status-msg {
+      text-align: center;
       margin-top: 20px;
-      padding: 10px;
-    }
-    .item-resultado {
-      background: #000;
-      border: 2px solid transparent;
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .item-resultado:hover {
-      border-color: #f1c40f;
-      transform: translateY(-3px);
-    }
-    .item-resultado img {
-      width: 100%;
-      height: 120px;
-      object-fit: contain;
-      background: #fff;
-      border-radius: 5px;
-    }
-    .item-resultado h4 {
-      font-size: 13px;
-      margin: 10px 0 5px;
-      color: #ddd;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .item-resultado p {
-      color: #2ecc71;
-      font-weight: bold;
-      margin: 0;
-    }
-
-    /* Área de Preview do Card */
-    #preview-area {
-      display: none;
-      margin-top: 30px;
-      padding-top: 30px;
-      border-top: 1px dashed #555;
-    }
-    .card-preview {
-      background: #222;
-      padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .card-preview img {
-      max-width: 100%;
-      height: 200px;
-      object-fit: contain;
-      border-radius: 5px;
-      background: #fff;
-    }
-    .card-preview h3 {
-      font-size: 16px;
-      margin: 15px 0;
-    }
-    .card-preview p {
-      color: #2ecc71;
-      font-size: 22px;
-      font-weight: bold;
-      margin: 0;
-    }
-    .btn-salvar {
-      background: #2ecc71;
-      color: #fff;
-    }
-    .btn-salvar:hover {
-      background: #27ae60;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
   <div class="admin-container">
-    <h1>DIRECT SHOP - Painel</h1>
+    <h1>DIRECT SHOP - Injetor Premium</h1>
     
     <div class="input-group">
-      <label>1. Buscar produto no Mercado Livre:</label>
-      <input type="text" id="termo-busca" placeholder="Ex: Fone Bluetooth, iPhone 13, etc...">
+      <label>TÍTULO DO PRODUTO (Copie do Mercado Livre):</label>
+      <input type="text" id="p-titulo" placeholder="Ex: Creatina Integralmédica 300g Monohidratada">
     </div>
-    <button onclick="abrirPopupBusca()">Pesquisar Produto</button>
 
-    <div id="preview-area">
-      <div class="card-preview">
-        <img id="prev-img" src="" alt="Imagem">
-        <h3 id="prev-titulo">Título</h3>
-        <p id="prev-preco">R$ 0,00</p>
-      </div>
-
+    <div class="row">
       <div class="input-group">
-        <label>2. Cole o seu Link de Afiliado (Botão Comprar):</label>
-        <input type="text" id="link-afiliado" placeholder="https://seu-link-de-afiliado.com...">
+        <label>PREÇO ATUAL (Apenas números):</label>
+        <input type="text" id="p-preco" placeholder="Ex: 129,90">
       </div>
-
-      <button class="btn-salvar" onclick="salvarProduto()">Salvar Direto no Site</button>
+      <div class="input-group">
+        <label>CATEGORIA / LOJA:</label>
+        <input type="text" id="p-loja" value="Mercado Livre" placeholder="Ex: Mercado Livre">
+      </div>
     </div>
-  </div>
 
-  <div class="modal" id="modal-busca">
-    <div class="modal-content">
-      <span class="close-btn" onclick="fecharPopup()">&times;</span>
-      <h2 style="margin-top:0;">Selecione o Produto</h2>
-      <div id="loading-msg" style="display:none; text-align:center; color:#f1c40f;">Buscando no Mercado Livre...</div>
-      <div class="grid-resultados" id="resultados-ml">
-        </div>
+    <div class="input-group">
+      <label>LINK DA IMAGEM (Botão direito na foto > Copiar endereço da imagem):</label>
+      <input type="text" id="p-img" placeholder="https://http2.mlstatic.com/...">
     </div>
+
+    <div class="input-group">
+      <label>SEU LINK DE AFILIADO (Botão Comprar):</label>
+      <input type="text" id="p-link" placeholder="https://mercadolivre.com/seu-link-afiliado...">
+    </div>
+
+    <button id="btn-main" onclick="salvarProduto()">Salvar e Publicar no Site</button>
+    <div id="status" class="status-msg"></div>
   </div>
 
   <script>
-    let produtoSelecionado = {};
-    const REPO = 'directshope/oficial'; // Certifique-se que este é o nome do seu repositório
+    // CONFIGURAÇÃO CRUCIAL - Insira sua KEY entre as aspas abaixo
+    const GITHUB_TOKEN = 'COLE_SUA_KEY_AQUI'; 
+    const REPO = 'directshope/oficial';
     const FILE_PATH = 'produtos.json';
 
-    // 1. Busca Robusta usando AllOrigins (Dribla o erro 403)
-    async function abrirPopupBusca() {
-      const termo = document.getElementById('termo-busca').value.trim();
-      if (!termo) return alert("Digite o nome do produto!");
-
-      const modal = document.getElementById('modal-busca');
-      const loading = document.getElementById('loading-msg');
-      const container = document.getElementById('resultados-ml');
-
-      modal.style.display = 'flex';
-      loading.style.display = 'block';
-      container.innerHTML = '';
-
-      try {
-        // COLE A URL QUE VOCÊ COPIOU DO GOOGLE ABAIXO ENTRE AS ASPAS
-        const suaPonteGoogle = "https://script.google.com/macros/s/AKfycbwXSzEB2hb_EoupSFjRQd_EhcR8bE43lUuPAnUlDONT_y3kFqK3AY1qvZlPOgJKlYtKcQ/exec"; 
-        const urlML = `https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}&limit=15`;
-        
-        const response = await fetch(`${suaPonteGoogle}?url=${encodeURIComponent(urlML)}`);
-        const data = await response.json();
-        
-        loading.style.display = 'none';
-
-        if (data.results && data.results.length > 0) {
-          data.results.forEach(item => {
-            const imgHD = item.thumbnail.replace('-I.jpg', '-O.jpg');
-            const div = document.createElement('div');
-            div.className = 'item-resultado';
-            div.innerHTML = `<img src="${imgHD}"><h4>${item.title}</h4><p>R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>`;
-            div.onclick = () => selecionarProduto(item.title, item.price, imgHD);
-            container.appendChild(div);
-          });
-        } else {
-          container.innerHTML = '<p style="text-align:center;width:100%;">Nenhum produto encontrado.</p>';
-        }
-      } catch (error) {
-        loading.style.display = 'none';
-        alert("Erro na ponte. Verifique se publicou o Script do Google corretamente.");
-      }
-    }
-
-    // 2. Seleção e Preenchimento do Preview Premium
-    function selecionarProduto(titulo, preco, imagem) {
-      produtoSelecionado = { nome: titulo, preco: preco, imagem: imagem };
-      
-      document.getElementById('prev-img').src = imagem;
-      document.getElementById('prev-titulo').innerText = titulo;
-      document.getElementById('prev-preco').innerText = "R$ " + preco.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-      
-      document.getElementById('preview-area').style.display = 'block';
-      fecharPopup();
-      document.getElementById('link-afiliado').focus();
-    }
-
-    function fecharPopup() { document.getElementById('modal-busca').style.display = 'none'; }
-
-    // 3. Salvamento Real no GitHub
     async function salvarProduto() {
-      const afiliado = document.getElementById('link-afiliado').value.trim();
-      const token = localStorage.getItem('gh_token');
+      const titulo = document.getElementById('p-titulo').value.trim();
+      const preco = document.getElementById('p-preco').value.trim();
+      const imagem = document.getElementById('p-img').value.trim();
+      const link = document.getElementById('p-link').value.trim();
+      const loja = document.getElementById('p-loja').value.trim();
 
-      if (!afiliado) return alert("Por favor, cole seu link de afiliado!");
-      
-      // Se não tiver a Key salva, pede agora
-      if (!token) {
-        const novaKey = prompt("Insira sua Key (Token) do GitHub para salvar:");
-        if (novaKey) localStorage.setItem('gh_token', novaKey);
-        else return;
+      if (!titulo || !preco || !imagem || !link) {
+        alert("Atenção: Preencha todos os campos para o card ficar perfeito no site.");
+        return;
       }
 
-      const btn = document.querySelector('.btn-salvar');
-      btn.innerText = "ENVIANDO PARA O SITE...";
+      const btn = document.getElementById('btn-main');
+      const status = document.getElementById('status');
+      
+      btn.innerText = "CONECTANDO AO GITHUB...";
       btn.disabled = true;
 
       try {
-        // Pega o arquivo atual do GitHub
-        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-          headers: { 'Authorization': `token ${localStorage.getItem('gh_token')}` }
+        // 1. Busca o arquivo atual no repositório
+        const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+          headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
         });
-        const file = await res.json();
-        const content = JSON.parse(atob(file.content));
+        
+        if (!getRes.ok) throw new Error("Não consegui acessar o arquivo produtos.json. Verifique o Token e o Repositório.");
+        
+        const fileData = await getRes.json();
+        const content = JSON.parse(atob(fileData.content));
 
-        // Injeta o novo produto no topo
-        content.unshift({
-          titulo: produtoSelecionado.nome,
-          preco: produtoSelecionado.preco.toLocaleString('pt-BR', {minimumFractionDigits: 2}),
-          imagem: produtoSelecionado.imagem,
-          link: afiliado
-        });
+        // 2. Prepara o novo card premium
+        const novoProduto = {
+          titulo: titulo,
+          preco: preco.includes(',') ? preco : parseFloat(preco).toLocaleString('pt-BR', {minimumFractionDigits: 2}),
+          imagem: imagem,
+          link: link,
+          loja: loja
+        };
 
-        // Salva a nova lista no GitHub
-        const save = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+        // 3. Adiciona no topo para organizar automaticamente (Mais novo primeiro)
+        content.unshift(novoProduto);
+
+        // 4. Salva de volta no GitHub
+        const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
           method: 'PUT',
           headers: { 
-            'Authorization': `token ${localStorage.getItem('gh_token')}`, 
+            'Authorization': `token ${GITHUB_TOKEN}`,
             'Content-Type': 'application/json' 
           },
           body: JSON.stringify({
-            message: `Produto adicionado: ${produtoSelecionado.nome}`,
+            message: `Injetado: ${titulo}`,
             content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
-            sha: file.sha
+            sha: fileData.sha
           })
         });
 
-        if (save.ok) {
-          alert("SUCESSO! O produto já está na sua vitrine.");
-          location.reload();
+        if (putRes.ok) {
+          status.style.color = "#2ecc71";
+          status.innerText = "PRODUTO PUBLICADO COM SUCESSO!";
+          setTimeout(() => { location.reload(); }, 2000);
         } else {
-          throw new Error();
+          throw new Error("Erro ao salvar dados. Verifique as permissões do Token.");
         }
-      } catch (e) {
-        alert("Erro ao salvar no GitHub. Verifique se sua Key é válida.");
-        btn.innerText = "Salvar Direto no Site";
+
+      } catch (error) {
+        status.style.color = "#e74c3c";
+        status.innerText = "ERRO: " + error.message;
+        btn.innerText = "Tentar Novamente";
         btn.disabled = false;
       }
     }
