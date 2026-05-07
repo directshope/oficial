@@ -14,12 +14,12 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 40px 20px;
     }
     .container {
       background: #141414;
       width: 100%;
-      max-width: 600px;
+      max-width: 700px;
       padding: 40px;
       border-radius: 15px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.8);
@@ -32,29 +32,38 @@
       text-align: center;
       margin-bottom: 30px;
     }
+    .section-title {
+      font-size: 11px;
+      color: #f1c40f;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
+      margin: 25px 0 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: #888;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
       text-transform: uppercase;
     }
-    input {
+    input, select {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       background: #000;
       border: 1px solid #333;
       color: #fff;
-      border-radius: 8px;
+      border-radius: 6px;
       box-sizing: border-box;
-      font-size: 15px;
+      font-size: 14px;
       transition: 0.3s;
     }
-    input:focus {
+    input:focus, select:focus {
       border-color: #f1c40f;
       outline: none;
     }
@@ -77,7 +86,7 @@
       cursor: pointer;
       text-transform: uppercase;
       transition: 0.4s;
-      margin-top: 10px;
+      margin-top: 20px;
     }
     button:hover {
       transform: translateY(-3px);
@@ -98,14 +107,13 @@
       margin-top: 30px;
       text-decoration: underline;
     }
-    /* Alternância de telas */
     #admin-panel { display: none; }
   </style>
 </head>
 <body>
 
   <div class="container" id="login-screen">
-    <h2>Acesso Restrito</h2>
+    <h2>Acesso Administrativo</h2>
     <div class="input-group">
       <label>Usuário GitHub:</label>
       <input type="text" id="gh-user" placeholder="Seu usuário">
@@ -122,45 +130,70 @@
   </div>
 
   <div class="container" id="admin-panel">
-    <h2>Novo Produto Premium</h2>
+    <h2>Injetar Produto Premium</h2>
     
+    <div class="section-title">Informações Básicas</div>
     <div class="input-group">
       <label>Título do Produto:</label>
-      <input type="text" id="p-titulo" placeholder="Título que aparecerá no card">
+      <input type="text" id="p-titulo" placeholder="Ex: Creatina 300g Pura">
     </div>
 
     <div class="row">
       <div class="input-group">
         <label>Preço (R$):</label>
-        <input type="text" id="p-preco" placeholder="Ex: 199,90">
+        <input type="text" id="p-preco" placeholder="199,90">
       </div>
       <div class="input-group">
-        <label>Loja Parceira:</label>
-        <input type="text" id="p-loja" value="Mercado Livre">
+        <label>Selo / Tag:</label>
+        <select id="p-tag">
+          <option value="">Sem Selo</option>
+          <option value="Mais Vendido">🔥 Mais Vendido</option>
+          <option value="Oferta do Dia">⚡ Oferta do Dia</option>
+          <option value="Promoção">💎 Promoção</option>
+          <option value="Frete Grátis">🚚 Frete Grátis</option>
+        </select>
       </div>
     </div>
 
-    <div class="input-group">
-      <label>Fotos do Produto (Cole os links abaixo):</label>
-      <input type="text" id="img1" placeholder="Link da Imagem 1 (Principal)" style="margin-bottom: 8px;">
-      <input type="text" id="img2" placeholder="Link da Imagem 2 (Opcional)" style="margin-bottom: 8px;">
-      <input type="text" id="img3" placeholder="Link da Imagem 3 (Opcional)" style="margin-bottom: 8px;">
-      <input type="text" id="img4" placeholder="Link da Imagem 4 (Opcional)">
+    <div class="section-title">Credibilidade (Igual Site Grande)</div>
+    <div class="row">
+      <div class="input-group">
+        <label>Nota (0 a 5):</label>
+        <input type="number" id="p-nota" step="0.1" min="0" max="5" value="4.8">
+      </div>
+      <div class="input-group">
+        <label>Nº Avaliações:</label>
+        <input type="number" id="p-avaliacoes" placeholder="Ex: 1250">
+      </div>
+      <div class="input-group">
+        <label>Estoque Disponível:</label>
+        <input type="number" id="p-estoque" placeholder="Ex: 45">
+      </div>
     </div>
 
-    <div class="input-group">
-      <label>Seu Link de Afiliado:</label>
-      <input type="text" id="p-link" placeholder="https://mercadolivre.com/afiliado...">
+    <div class="section-title">Fotos do Produto (Até 4)</div>
+    <div class="row">
+      <div class="input-group"><input type="text" id="img1" placeholder="Link Foto 1"></div>
+      <div class="input-group"><input type="text" id="img2" placeholder="Link Foto 2"></div>
+    </div>
+    <div class="row">
+      <div class="input-group"><input type="text" id="img3" placeholder="Link Foto 3"></div>
+      <div class="input-group"><input type="text" id="img4" placeholder="Link Foto 4"></div>
     </div>
 
-    <button id="btn-save" onclick="salvarProduto()">Publicar Produto</button>
+    <div class="section-title">Destino do Cliente</div>
+    <div class="input-group">
+      <label>Link de Afiliado (Botão de Compra):</label>
+      <input type="text" id="p-link" placeholder="Link oficial de afiliado">
+    </div>
+
+    <button id="btn-save" onclick="salvarProduto()">Publicar no Site Agora</button>
     
     <div id="status"></div>
     <center><button class="logout-btn" onclick="logout()">Sair / Trocar Conta</button></center>
   </div>
 
   <script>
-    // Inicia verificando se já tem login salvo
     window.onload = function() {
       if (localStorage.getItem('gh_token')) mostrarPainel();
     };
@@ -169,9 +202,7 @@
       const u = document.getElementById('gh-user').value.trim();
       const r = document.getElementById('gh-repo').value.trim();
       const t = document.getElementById('gh-token').value.trim();
-
-      if (!u || !r || !t) return alert("Preencha todos os dados de acesso!");
-
+      if (!u || !r || !t) return alert("Preencha todos os dados!");
       localStorage.setItem('gh_user', u);
       localStorage.setItem('gh_repo', r);
       localStorage.setItem('gh_token', t);
@@ -192,13 +223,14 @@
       const btn = document.getElementById('btn-save');
       const status = document.getElementById('status');
       
-      // Coleta dados
       const titulo = document.getElementById('p-titulo').value.trim();
       const preco = document.getElementById('p-preco').value.trim();
-      const loja = document.getElementById('p-loja').value.trim();
+      const tag = document.getElementById('p-tag').value;
+      const nota = document.getElementById('p-nota').value;
+      const avaliacoes = document.getElementById('p-avaliacoes').value;
+      const estoque = document.getElementById('p-estoque').value;
       const link = document.getElementById('p-link').value.trim();
       
-      // Coleta imagens e remove as que estiverem vazias
       const imgsRaw = [
         document.getElementById('img1').value.trim(),
         document.getElementById('img2').value.trim(),
@@ -208,46 +240,43 @@
       const imagens = imgsRaw.filter(url => url !== "");
 
       if (!titulo || !preco || imagens.length === 0 || !link) {
-        alert("Erro: Título, Preço, Link e pelo menos 1 Imagem são obrigatórios!");
+        alert("Preencha Título, Preço, Foto Principal e Link!");
         return;
       }
 
-      btn.innerText = "PROCESSANDO...";
+      btn.innerText = "INJETANDO NO SITE...";
       btn.disabled = true;
 
       const user = localStorage.getItem('gh_user');
       const repo = localStorage.getItem('gh_repo');
       const token = localStorage.getItem('gh_token');
-      const filePath = 'produtos.json';
 
       try {
-        const url = `https://api.github.com/repos/${user}/${repo}/contents/${filePath}`;
-        
-        // 1. Pega o JSON atual
+        const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
         const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-        if (!res.ok) throw new Error("Dados de login inválidos ou repositório não encontrado.");
+        if (!res.ok) throw new Error("Erro de login ou Repositório.");
         
         const fileData = await res.json();
         const content = JSON.parse(atob(fileData.content));
 
-        // 2. Cria o novo produto com a lista de imagens
+        // OBJETO COMPLETO COM TODA A CREDIBILIDADE
         const novoProduto = {
           titulo: titulo,
           preco: preco,
-          loja: loja,
+          tag: tag,
+          nota: nota,
+          avaliacoes: avaliacoes,
+          estoque: estoque,
           link: link,
-          imagens: imagens // Aqui vão de 1 a 4 links
+          imagens: imagens,
+          data: new Date().toLocaleDateString('pt-BR')
         };
 
-        content.unshift(novoProduto); // Novo no topo
+        content.unshift(novoProduto);
 
-        // 3. Salva no GitHub
         const putRes = await fetch(url, {
           method: 'PUT',
-          headers: { 
-            'Authorization': `token ${token}`,
-            'Content-Type': 'application/json' 
-          },
+          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
             message: `Produto Injetado: ${titulo}`,
             content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
@@ -257,11 +286,9 @@
 
         if (putRes.ok) {
           status.style.color = "#2ecc71";
-          status.innerText = "✅ SUCESSO! O PRODUTO JÁ ESTÁ NO SITE.";
+          status.innerText = "✅ PUBLICADO COM SUCESSO!";
           setTimeout(() => { location.reload(); }, 2000);
-        } else {
-          throw new Error("Erro ao salvar. Verifique sua Key.");
-        }
+        } else { throw new Error("Erro ao salvar."); }
 
       } catch (e) {
         status.style.color = "#e74c3c";
