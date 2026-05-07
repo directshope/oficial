@@ -130,10 +130,20 @@
   </div>
 
   <script>
-    // CONFIGURAÇÃO CRUCIAL - Insira sua KEY entre as aspas abaixo
-    const GITHUB_TOKEN = 'COLE_SUA_KEY_AQUI'; 
     const REPO = 'directshope/oficial';
     const FILE_PATH = 'produtos.json';
+
+    // FUNÇÃO DE SEGURANÇA: Pega a Key do navegador, não do código
+    function obterToken() {
+      let token = localStorage.getItem('gh_token');
+      if (!token) {
+        token = prompt("🔒 ACESSO RESTRITO: Insira sua GitHub Key para gerenciar o site:");
+        if (token) {
+          localStorage.setItem('gh_token', token);
+        }
+      }
+      return token;
+    }
 
     async function salvarProduto() {
       const titulo = document.getElementById('p-titulo').value.trim();
@@ -142,29 +152,37 @@
       const link = document.getElementById('p-link').value.trim();
       const loja = document.getElementById('p-loja').value.trim();
 
+      const GITHUB_TOKEN = obterToken(); // Busca a chave de forma segura
+
+      if (!GITHUB_TOKEN) {
+        alert("Erro: Você precisa da Key para salvar produtos.");
+        return;
+      }
+
       if (!titulo || !preco || !imagem || !link) {
-        alert("Atenção: Preencha todos os campos para o card ficar perfeito no site.");
+        alert("Preencha todos os campos para manter o padrão premium.");
         return;
       }
 
       const btn = document.getElementById('btn-main');
       const status = document.getElementById('status');
       
-      btn.innerText = "CONECTANDO AO GITHUB...";
+      btn.innerText = "ENVIANDO DADOS...";
       btn.disabled = true;
 
       try {
-        // 1. Busca o arquivo atual no repositório
         const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
           headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
         });
         
-        if (!getRes.ok) throw new Error("Não consegui acessar o arquivo produtos.json. Verifique o Token e o Repositório.");
-        
+        if (getRes.status === 401) {
+          localStorage.removeItem('gh_token'); // Apaga a chave se estiver errada
+          throw new Error("Key inválida ou expirada. Recarregue a página e tente de novo.");
+        }
+
         const fileData = await getRes.json();
         const content = JSON.parse(atob(fileData.content));
 
-        // 2. Prepara o novo card premium
         const novoProduto = {
           titulo: titulo,
           preco: preco.includes(',') ? preco : parseFloat(preco).toLocaleString('pt-BR', {minimumFractionDigits: 2}),
@@ -173,10 +191,8 @@
           loja: loja
         };
 
-        // 3. Adiciona no topo para organizar automaticamente (Mais novo primeiro)
         content.unshift(novoProduto);
 
-        // 4. Salva de volta no GitHub
         const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
           method: 'PUT',
           headers: { 
@@ -195,7 +211,7 @@
           status.innerText = "PRODUTO PUBLICADO COM SUCESSO!";
           setTimeout(() => { location.reload(); }, 2000);
         } else {
-          throw new Error("Erro ao salvar dados. Verifique as permissões do Token.");
+          throw new Error("Erro ao salvar. Verifique se sua Key tem permissão 'repo'.");
         }
 
       } catch (error) {
@@ -204,6 +220,12 @@
         btn.innerText = "Tentar Novamente";
         btn.disabled = false;
       }
+    }
+
+    // Função para caso você queira trocar a Key depois (opcional)
+    function trocarKey() {
+      localStorage.removeItem('gh_token');
+      location.reload();
     }
   </script>
 </body>
