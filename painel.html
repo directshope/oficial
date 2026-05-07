@@ -213,9 +213,10 @@
   <script>
     let produtoSelecionado = {};
 
-    // 1. Função Inteligente: Decide se busca por link direto ou abre o popup de pesquisa
     async function abrirPopupBusca() {
-      const termo = document.getElementById('termo-busca').value.trim();
+      const termoInput = document.getElementById('termo-busca');
+      const termo = termoInput.value.trim();
+      
       if (!termo) {
         alert("Digite o nome de um produto!");
         return;
@@ -230,98 +231,80 @@
       container.innerHTML = '';
 
       try {
-        // Busca direta na API de pesquisa com limite de 12 itens
-        const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}&limit=12`);
-        const data = await response.json();
+        // Lógica para links diretos
+        if (termo.includes('mercadolivre.com')) {
+          const match = termo.match(/MLB-?(\d+)/i);
+          if (match) {
+            const itemId = "MLB" + match[1];
+            const res = await fetch(`https://api.mercadolibre.com/items/${itemId}`);
+            if (res.ok) {
+              const data = await res.json();
+              const img = data.pictures && data.pictures.length > 0 ? data.pictures[0].url : data.thumbnail.replace('-I.jpg', '-O.jpg');
+              selecionarProduto(data.title, data.price, img);
+              return;
+            }
+          }
+        }
+
+        // Lógica para busca por nome (Melhorada)
+        const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}&limit=20`);
         
+        if (!response.ok) {
+          throw new Error("A API do Mercado Livre bloqueou a requisição. Tente recarregar a página.");
+        }
+
+        const data = await response.json();
         loading.style.display = 'none';
 
         if (data.results && data.results.length > 0) {
           data.results.forEach(item => {
-            // Garante imagem de alta resolução para o padrão premium
-            const imagemHD = item.thumbnail.replace('-I.jpg', '-O.jpg');
+            // Puxa a imagem original (tamanho grande)
+            const imagemAlta = item.thumbnail.replace('-I.jpg', '-O.jpg');
             
             const div = document.createElement('div');
             div.className = 'item-resultado';
             div.innerHTML = `
-              <img src="${imagemHD}" alt="Produto">
+              <img src="${imagemAlta}" alt="Foto">
               <h4>${item.title}</h4>
               <p>R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
             `;
             
-            // Ao clicar, aciona a seleção
-            div.onclick = () => selecionarProduto(item.title, item.price, imagemHD);
+            div.onclick = () => selecionarProduto(item.title, item.price, imagemAlta);
             container.appendChild(div);
           });
         } else {
-          container.innerHTML = '<p style="text-align:center; width:100%; color:#f1c40f;">Nenhum produto exato encontrado. Tente outro termo.</p>';
+          container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #f1c40f;">
+            Nenhum produto encontrado para: "${termo}"<br>
+            <small style="color: #666;">Tente um termo mais genérico.</small>
+          </p>`;
         }
 
       } catch (error) {
         loading.style.display = 'none';
-        alert("Erro ao conectar com o serviço de busca.");
+        console.error("Erro na busca:", error);
+        alert("Falha na busca: " + error.message);
       }
     }
 
     function selecionarProduto(titulo, preco, imagem) {
-      // Armazena os dados brutos no objeto
+      // Salva os dados brutos
       produtoSelecionado = {
         nome: titulo,
         preco: preco,
         imagem: imagem
       };
 
-      // Alimenta o seu Preview Premium
+      // Atualiza o seu Preview Premium
       document.getElementById('prev-img').src = imagem;
       document.getElementById('prev-titulo').innerText = titulo;
       document.getElementById('prev-preco').innerText = "R$ " + preco.toLocaleString('pt-BR', {minimumFractionDigits: 2});
 
-      // Abre a área de finalização e fecha o popup
+      // Mostra a área e foca no link
       document.getElementById('preview-area').style.display = 'block';
       fecharPopup();
       
-      // Joga o cursor direto no campo do link de afiliado
-      document.getElementById('link-afiliado').focus();
-    }
-
-    // 2. Monta a grade de opções dentro do popup
-    function renderizarResultados(itens) {
-      const container = document.getElementById('resultados-ml');
-      container.innerHTML = ''; // Limpa antes de renderizar
-      
-      itens.forEach(item => {
-        const imagemAlta = item.thumbnail.replace('-I.jpg', '-O.jpg');
-        
-        const div = document.createElement('div');
-        div.className = 'item-resultado';
-        div.innerHTML = `
-          <img src="${imagemAlta}" alt="Foto">
-          <h4>${item.title}</h4>
-          <p>R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
-        `;
-        
-        div.onclick = () => selecionarProduto(item.title, item.price, imagemAlta);
-        container.appendChild(div);
-      });
-    }
-
-    // 3. Ao escolher o produto, preenche o preview e fecha o popup
-    function selecionarProduto(titulo, preco, imagem) {
-      produtoSelecionado = {
-        nome: titulo,
-        preco: typeof preco === 'number' ? preco.toFixed(2) : preco,
-        imagem: imagem,
-        loja: "ml"
-      };
-
-      document.getElementById('prev-img').src = produtoSelecionado.imagem;
-      document.getElementById('prev-titulo').innerText = produtoSelecionado.nome;
-      document.getElementById('prev-preco').innerText = "R$ " + parseFloat(produtoSelecionado.preco).toLocaleString('pt-BR', {minimumFractionDigits: 2});
-
-      document.getElementById('preview-area').style.display = 'block';
-      fecharPopup();
-      
-      // Foca no campo do link de afiliado para facilitar
+      // Rola a tela até o preview para o usuário ver
+      document.getElementById('preview-area').scrollIntoView({ behavior: 'smooth' });
       document.getElementById('link-afiliado').focus();
     }
 
@@ -329,16 +312,16 @@
       document.getElementById('modal-busca').style.display = 'none';
     }
 
-    // 4. Prepara para o Github (Apenas Alerta por enquanto, como solicitado)
     function salvarProduto() {
       const afiliado = document.getElementById('link-afiliado').value.trim();
       if (!afiliado) {
-        alert("Cole o seu link de afiliado antes de salvar!");
+        alert("Obrigatório: Insira seu link de afiliado para continuar.");
         return;
       }
-      produtoSelecionado.link = afiliado;
-      console.log("Dados prontos:", produtoSelecionado);
-      alert("Busca e seleção funcionando 100%! O próximo passo será salvar no GitHub.");
+      
+      // Aqui entra o código de conexão com o GitHub que faremos a seguir
+      console.log("Objeto pronto para o site:", { ...produtoSelecionado, link: afiliado });
+      alert("Painel validado! O produto foi selecionado com sucesso. Agora vamos configurar o salvamento automático.");
     }
   </script>
 </body>
