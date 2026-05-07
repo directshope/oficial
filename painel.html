@@ -212,15 +212,13 @@
 
   <script>
     let produtoSelecionado = {};
+    const REPO = 'directshope/oficial'; // Certifique-se que este é o nome do seu repositório
+    const FILE_PATH = 'produtos.json';
 
+    // 1. Busca Robusta usando AllOrigins (Dribla o erro 403)
     async function abrirPopupBusca() {
-      const termoInput = document.getElementById('termo-busca');
-      const termo = termoInput.value.trim();
-      
-      if (!termo) {
-        alert("Digite o nome de um produto!");
-        return;
-      }
+      const termo = document.getElementById('termo-busca').value.trim();
+      if (!termo) { alert("Digite o nome de um produto!"); return; }
 
       const modal = document.getElementById('modal-busca');
       const loading = document.getElementById('loading-msg');
@@ -231,79 +229,114 @@
       container.innerHTML = '';
 
       try {
-        // Criamos a "Ponte" (Proxy) para o Mercado Livre não bloquear o seu site
         const apiML = `https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}&limit=15`;
-        const proxyURL = `https://corsproxy.io/?${encodeURIComponent(apiML)}`;
-
-        const response = await fetch(proxyURL);
+        // AllOrigins é a ponte que o Mercado Livre não consegue bloquear facilmente
+        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(apiML)}`);
         
-        if (!response.ok) {
-          throw new Error("O servidor de busca está ocupado. Tente clicar em Pesquisar novamente.");
-        }
+        if (!response.ok) throw new Error("Servidor de busca ocupado.");
 
-        const data = await response.json();
+        const dataJson = await response.json();
+        const data = JSON.parse(dataJson.contents); // Extrai o conteúdo da ponte
+        
         loading.style.display = 'none';
 
         if (data.results && data.results.length > 0) {
           data.results.forEach(item => {
-            // Puxa a imagem em alta resolução automaticamente
-            const imagemAlta = item.thumbnail.replace('-I.jpg', '-O.jpg');
-            
+            const imgHD = item.thumbnail.replace('-I.jpg', '-O.jpg'); // Força imagem de alta qualidade
             const div = document.createElement('div');
             div.className = 'item-resultado';
             div.innerHTML = `
-              <img src="${imagemAlta}" alt="Foto">
+              <img src="${imgHD}" alt="Foto">
               <h4>${item.title}</h4>
               <p>R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
             `;
-            
-            div.onclick = () => selecionarProduto(item.title, item.price, imagemAlta);
+            div.onclick = () => selecionarProduto(item.title, item.price, imgHD);
             container.appendChild(div);
           });
         } else {
-          container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #f1c40f;">Nenhum produto encontrado. Tente um nome mais curto.</p>`;
+          container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#f1c40f;">Nenhum produto encontrado.</p>';
         }
-
       } catch (error) {
         loading.style.display = 'none';
-        console.error("Erro técnico:", error);
-        alert("Falha na conexão: O Mercado Livre bloqueou o acesso direto. Tente novamente agora.");
+        console.error(error);
+        alert("O Mercado Livre bloqueou a conexão. Tente clicar em pesquisar novamente ou use aba anônima.");
       }
     }
 
+    // 2. Seleção e Preenchimento do Preview Premium
     function selecionarProduto(titulo, preco, imagem) {
-      produtoSelecionado = {
-        nome: titulo,
-        preco: preco,
-        imagem: imagem
-      };
-
-      // Preenche o seu Preview Premium
+      produtoSelecionado = { nome: titulo, preco: preco, imagem: imagem };
+      
       document.getElementById('prev-img').src = imagem;
       document.getElementById('prev-titulo').innerText = titulo;
       document.getElementById('prev-preco').innerText = "R$ " + preco.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-
+      
       document.getElementById('preview-area').style.display = 'block';
       fecharPopup();
-      
-      // Foca direto no campo de link de afiliado para você só colar e salvar
       document.getElementById('link-afiliado').focus();
     }
 
-    function fecharPopup() {
-      document.getElementById('modal-busca').style.display = 'none';
-    }
+    function fecharPopup() { document.getElementById('modal-busca').style.display = 'none'; }
 
-    function salvarProduto() {
+    // 3. Salvamento Real no GitHub
+    async function salvarProduto() {
       const afiliado = document.getElementById('link-afiliado').value.trim();
-      if (!afiliado) {
-        alert("Obrigatório: Insira seu link de afiliado para continuar.");
-        return;
-      }
+      const token = localStorage.getItem('gh_token');
+
+      if (!afiliado) return alert("Por favor, cole seu link de afiliado!");
       
-      // Aqui entra o código de conexão com o GitHub que faremos a seguir
-      console.log("Objeto pronto para o site:", { ...produtoSelecionado, link: afiliado });
-      alert("Painel validado! O produto foi selecionado com sucesso. Agora vamos configurar o salvamento automático.");
+      // Se não tiver a Key salva, pede agora
+      if (!token) {
+        const novaKey = prompt("Insira sua Key (Token) do GitHub para salvar:");
+        if (novaKey) localStorage.setItem('gh_token', novaKey);
+        else return;
+      }
+
+      const btn = document.querySelector('.btn-salvar');
+      btn.innerText = "ENVIANDO PARA O SITE...";
+      btn.disabled = true;
+
+      try {
+        // Pega o arquivo atual do GitHub
+        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+          headers: { 'Authorization': `token ${localStorage.getItem('gh_token')}` }
+        });
+        const file = await res.json();
+        const content = JSON.parse(atob(file.content));
+
+        // Injeta o novo produto no topo
+        content.unshift({
+          titulo: produtoSelecionado.nome,
+          preco: produtoSelecionado.preco.toLocaleString('pt-BR', {minimumFractionDigits: 2}),
+          imagem: produtoSelecionado.imagem,
+          link: afiliado
+        });
+
+        // Salva a nova lista no GitHub
+        const save = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+          method: 'PUT',
+          headers: { 
+            'Authorization': `token ${localStorage.getItem('gh_token')}`, 
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify({
+            message: `Produto adicionado: ${produtoSelecionado.nome}`,
+            content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+            sha: file.sha
+          })
+        });
+
+        if (save.ok) {
+          alert("SUCESSO! O produto já está na sua vitrine.");
+          location.reload();
+        } else {
+          throw new Error();
+        }
+      } catch (e) {
+        alert("Erro ao salvar no GitHub. Verifique se sua Key é válida.");
+        btn.innerText = "Salvar Direto no Site";
+        btn.disabled = false;
+      }
     }
   </script>
 </body>
