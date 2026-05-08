@@ -182,7 +182,7 @@
       try {
         const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/produtos.json`, { headers: { 'Authorization': `token ${t}` } });
         const file = await res.json();
-        produtosCarregados = JSON.parse(atob(file.content));
+produtosCarregados = JSON.parse(decodeURIComponent(escape(atob(file.content))));
       } catch (e) { console.log("Erro ao carregar lista"); }
     }
 
@@ -237,8 +237,8 @@
       btn.disabled = true; btn.innerText = "SALVANDO...";
       try {
         const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-        const file = await res.json();
-        let content = JSON.parse(atob(file.content));
+const file = await res.json();
+let content = JSON.parse(decodeURIComponent(escape(atob(file.content))));
         const novoProduto = {
           titulo: document.getElementById('p-titulo').value,
           subtitulo: document.getElementById('p-subtitulo').value,
