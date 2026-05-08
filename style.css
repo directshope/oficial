@@ -107,11 +107,12 @@ body {
 
 .card-category {
   font-size: 11px;
-  color: #f1c40f; /* Dourado para destacar no card preto */
-  font-weight: bold;
+  color: #70d6ff; /* Azul Claro Premium */
+  font-weight: 700;
   text-transform: uppercase;
-  margin: 5px 0; /* Ocupa o espaço vazio que você citou */
+  margin: 8px 0;
   display: block;
+  letter-spacing: normal; /* Reset técnico para evitar letras afastadas */
 }
 
 .price { font-size: 20px; font-weight: bold; color: #fff; margin-bottom: 5px; }
