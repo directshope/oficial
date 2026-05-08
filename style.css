@@ -143,6 +143,25 @@ body {
 
 .card button:hover { background: #2980b9; }
 
+/* ÍCONE DA LOJA NO CARD */
+.store-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10;
+  object-fit: contain;
+}
+
+/* Ajuste no badge para não bater no ícone */
+.badge {
+  left: 10px;
+}
 /* --- ESTILOS DO POPUP DE GALERIA (MODAL) --- */
 .modal-foto {
   display: none; /* Escondido por padrão */
