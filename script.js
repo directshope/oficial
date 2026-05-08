@@ -28,6 +28,9 @@ function renderizar(lista) {
       <div class="card">
         ${p.tag ? `<div class="badge">${p.tag}</div>` : ''}
         <img src="${imgCard}" onclick="abrirGaleria(${index})" style="cursor:zoom-in">
+        
+        <h3 style="font-size:14px; margin:10px 0 5px; color:#fff;">${p.titulo}</h3>
+        
         ${p.subtitulo ? `<p style="font-size:12px; color:#aaa; margin-top:-5px; font-weight:bold;">${p.subtitulo}</p>` : ''}
         <div class="stars-row">${estrelas} <span class="rev-text">(${p.avaliacoes || 0})</span></div>
         <p class="price">R$ ${p.preco}</p>
