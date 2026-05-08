@@ -65,7 +65,30 @@
     #lista-busca { position: absolute; width: 100%; z-index: 100; background: #000; border: 1px solid var(--gold); max-height: 300px; overflow-y: auto; }
     .item-busca { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: var(--gold); font-weight: bold; }
     .logout-btn { background: none; color: #444; border: 1px solid #333; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
-    #status { margin-top: 25px; text-align: center; font-size: 16px; font-weight: bold; }
+   #status { 
+      position: fixed; 
+      top: 40px; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      z-index: 9999;
+      padding: 25px 60px; 
+      border-radius: 15px; 
+      background: #000;
+      border: 2px solid var(--gold); 
+      color: var(--gold);
+      font-size: 20px; 
+      font-weight: 900; 
+      text-transform: uppercase;
+      box-shadow: 0 0 50px rgba(241, 196, 15, 0.4);
+      display: none; /* Fica escondido até o sucesso */
+      letter-spacing: 2px;
+      animation: surge 0.5s ease-out;
+    }
+
+    @keyframes surge {
+      from { top: -100px; opacity: 0; }
+      to { top: 40px; opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -235,7 +258,17 @@
           method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: "Update", content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha })
         });
-        if(save.ok) { st.style.color = "#2ecc71"; st.innerText = "✅ SUCESSO!"; setTimeout(() => limparFormulario(), 1500); carregarListaEdicao(); }
+        if(save.ok) { 
+          st.innerText = "🚀 PRODUTO PUBLICADO COM SUCESSO!"; 
+          st.style.display = "block"; // Faz o banner aparecer
+          
+          setTimeout(() => { 
+            st.style.display = "none"; // Esconde depois de 3 segundos
+            limparFormulario(); 
+          }, 3000); 
+          
+          carregarListaEdicao(); 
+        }
       } catch (e) { alert("Erro!"); btn.disabled = false; btn.innerText = "TENTAR NOVAMENTE"; }
     }
   </script>
