@@ -68,6 +68,7 @@ function abrirGaleria(idx) {
   // Define a foto principal e o título
   fotoGrande.src = p.imagens[0];
   tituloModal.innerText = p.titulo;
+  document.getElementById('modal-descricao').innerText = p.descricao || "Confira os detalhes exclusivos deste produto.";
   
   // Configura o botão de compra do modal
   btnCompra.onclick = () => window.open(p.link);
