@@ -174,7 +174,7 @@
       const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
       
       btn.disabled = true; 
-      btn.innerText = "PROCESSANDO...";
+      btn.innerText = "SALVANDO...";
 
       try {
         const res = await fetch(url, { headers: { 'Authorization': `token ${token}`, 'Cache-Control': 'no-cache' } });
@@ -213,19 +213,18 @@
         if(save.ok) { 
           st.innerText = "🚀 SUCESSO! SITE ATUALIZADO"; 
           st.style.display = "block";
-          setTimeout(() => { 
-            st.style.display = "none"; 
-            limparFormulario(); 
-            carregarListaEdicao();
-          }, 2000); 
+          btn.disabled = false;
+          btn.innerText = "PUBLICAR NO SITE";
+          setTimeout(() => { st.style.display = "none"; limparFormulario(); carregarListaEdicao(); }, 2000); 
         } else {
-          throw new Error("Erro GitHub");
+          alert("Erro no GitHub!");
+          btn.disabled = false;
+          btn.innerText = "TENTAR NOVAMENTE";
         }
       } catch (e) { 
-          alert("ERRO: O botão foi liberado para tentar novamente."); 
-      } finally {
-          btn.disabled = false;
-          btn.innerText = editandoIndex !== null ? "ATUALIZAR DADOS" : "PUBLICAR NO SITE";
+          alert("Erro de conexão!"); 
+          btn.disabled = false; 
+          btn.innerText = "TENTAR NOVAMENTE"; 
       }
     }
   </script>
