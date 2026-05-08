@@ -6,15 +6,20 @@
   <style>
     :root { --gold: #f1c40f; --bg: #050505; --card: #0d0d0d; --border: #333; }
     body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; display: flex; justify-content: center; min-height: 100vh; }
-    #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; width: 100%; }
-    .login-box { background: var(--card); padding: 30px; border: 1px solid var(--gold); border-radius: 15px; width: 350px; }
-    .dashboard { display: none; width: 98%; max-width: 1800px; background: var(--card); margin: 20px; padding: 40px; border-radius: 15px; border: 1px solid var(--border); }
+    .dashboard { width: 98%; max-width: 1800px; background: var(--card); margin: 20px; padding: 40px; border-radius: 15px; border: 1px solid var(--border); }
     .header-dash { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--gold); padding-bottom: 20px; margin-bottom: 40px; }
     .header-dash h2 { margin: 0; font-size: 30px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; }
-    input, select, textarea { width: 100%; padding: 18px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 15px; box-sizing: border-box; margin-bottom: 15px; }
+    #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; width: 100%; }
+    .login-box { background: var(--card); padding: 30px; border: 1px solid var(--gold); border-radius: 15px; width: 350px; }
+    .input-group { margin-bottom: 25px; }
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    label { display: block; margin-bottom: 10px; color: #888; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+    input, select, textarea { width: 100%; padding: 18px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
     .btn-pub { width: 100%; padding: 25px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
-    #status { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 25px 60px; border-radius: 15px; background: #000; border: 2px solid var(--gold); color: var(--gold); font-size: 20px; font-weight: 900; display: none; }
+    .btn-new { flex: 1; padding: 25px; background: #222; color: #fff; border: 1px solid #333; border-radius: 12px; font-weight: bold; cursor: pointer; }
+    #lista-busca { position: absolute; width: 100%; z-index: 100; background: #000; border: 1px solid var(--gold); max-height: 300px; overflow-y: auto; }
     .item-busca { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: var(--gold); font-weight: bold; }
+    #status { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 25px 60px; border-radius: 15px; background: #000; border: 2px solid var(--gold); color: var(--gold); font-size: 20px; font-weight: 900; display: none; }
   </style>
 </head>
 <body>
@@ -22,44 +27,74 @@
   <div id="login-screen">
     <div class="login-box">
       <h2 style="text-align:center; color:var(--gold);">LOGIN MASTER</h2>
-      <label>Usuário GitHub:</label>
-      <input type="text" id="login-user" placeholder="Seu usuário">
-      <label>Repositório:</label>
-      <input type="text" id="login-repo" placeholder="nome-do-repo">
-      <label>Token (ghp_...):</label>
-      <input type="password" id="login-token" placeholder="Cole seu Token aqui">
-      <button class="btn-pub" onclick="login()">CONECTAR GITHUB</button>
+      <input type="text" id="login-user" placeholder="GitHub User" style="margin-bottom:10px;">
+      <input type="text" id="login-repo" placeholder="GitHub Repo" style="margin-bottom:10px;">
+      <input type="password" id="login-token" placeholder="GitHub Token" style="margin-bottom:20px;">
+      <button class="btn-pub" onclick="login()">ENTRAR</button>
     </div>
   </div>
 
-  <div class="dashboard" id="admin-panel">
+  <div class="dashboard" id="admin-panel" style="display:none;">
     <div class="header-dash">
       <h2>DIRECT SHOP MASTER ADMIN</h2>
-      <button onclick="logout()" style="background:none; border:1px solid #333; color:#444; padding:10px; cursor:pointer;">SAIR / DESLOGAR</button>
+      <button onclick="logout()" style="background:none; border:1px solid #333; color:#444; padding:10px; cursor:pointer;">SAIR</button>
     </div>
     
     <div style="position:relative; margin-bottom:40px;">
-      <input type="text" id="busca-editar" placeholder="🔍 BUSCAR PRODUTO EXISTENTE..." oninput="buscarParaEditar()" style="border:2px solid var(--gold);">
-      <div id="lista-busca" style="position:absolute; width:100%; background:#000; z-index:100;"></div>
+      <input type="text" id="busca-editar" placeholder="🔍 PESQUISAR PRODUTO PARA EDITAR..." oninput="buscarParaEditar()" style="border:2px solid var(--gold);">
+      <div id="lista-busca"></div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px;">
       <div class="col">
-        <label>Título</label><input type="text" id="p-titulo">
-        <label>Subtítulo</label><input type="text" id="p-subtitulo">
-        <label>Preço</label><input type="text" id="p-preco">
-        <label>Categoria</label><select id="p-categoria"><option value="perfumes">Perfumes</option><option value="tecnologia">Tecnologia</option></select>
-        <label>Descrição</label><textarea id="p-descricao" rows="4"></textarea>
+        <label>Nome do Produto</label><input type="text" id="p-titulo">
+        <div class="input-row">
+          <div><label>Subtítulo</label><input type="text" id="p-subtitulo"></div>
+          <div><label>Preço Final</label><input type="text" id="p-preco"></div>
+        </div>
+        <div class="input-row">
+          <div><label>Categoria</label>
+            <select id="p-categoria">
+              <option value="perfumes">Perfumes</option>
+              <option value="tecnologia">Tecnologia</option>
+              <option value="beleza">Beleza</option>
+              <option value="ferramentas">Ferramentas</option>
+              <option value="casa">Casa</option>
+              <option value="esportes">Esportes</option>
+              <option value="saude">Saúde</option>
+              <option value="veiculos">Veículos</option>
+              <option value="moda">Moda</option>
+            </select>
+          </div>
+          <div><label>Selo/Tag</label><input type="text" id="p-tag" placeholder="ex: Mais Vendido"></div>
+        </div>
+        <label>Descrição Detalhada</label><textarea id="p-descricao" rows="6"></textarea>
       </div>
+
       <div class="col">
+        <div class="input-row">
+          <div><label>ID Loja</label><input type="text" id="p-loja" value="ml"></div>
+          <div><label>Estoque</label><input type="number" id="p-estoque"></div>
+        </div>
+        <div class="input-row">
+          <div><label>Nota (0-5)</label><input type="text" id="p-nota" value="4.8"></div>
+          <div><label>Avaliações</label><input type="number" id="p-avaliacoes"></div>
+        </div>
         <label>Link Afiliado</label><input type="text" id="p-link">
-        <label>ID Loja</label><input type="text" id="p-loja" value="ml">
-        <label>Nota</label><input type="text" id="p-nota" value="4.8">
-        <label>Estoque</label><input type="number" id="p-estoque">
-        <label>Imagens (URLs)</label>
-        <input type="text" id="img1" placeholder="URL Foto 1">
-        <input type="text" id="img2" placeholder="URL Foto 2">
-        <button class="btn-pub" id="btn-save" onclick="salvarProduto()">PUBLICAR NO SITE</button>
+        <label>Fotos (URLs)</label>
+        <div class="input-row">
+          <input type="text" id="img1" placeholder="Foto 1">
+          <input type="text" id="img2" placeholder="Foto 2">
+        </div>
+        <div class="input-row" style="margin-top:10px;">
+          <input type="text" id="img3" placeholder="Foto 3">
+          <input type="text" id="img4" placeholder="Foto 4">
+        </div>
+        
+        <div style="display:flex; gap:20px; margin-top:40px;">
+          <button onclick="limparFormulario()" class="btn-new">LIMPAR</button>
+          <button class="btn-pub" id="btn-save" onclick="salvarProduto()">PUBLICAR NO SITE</button>
+        </div>
         <div id="status"></div>
       </div>
     </div>
@@ -70,81 +105,32 @@
     let editandoIndex = null;
 
     window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
-
-    function login() {
-      const u = document.getElementById('login-user').value;
-      const r = document.getElementById('login-repo').value;
-      const t = document.getElementById('login-token').value;
-      if(u && r && t) {
-        localStorage.setItem('gh_user', u);
-        localStorage.setItem('gh_repo', r);
-        localStorage.setItem('gh_token', t);
-        location.reload();
-      } else { alert("Preencha tudo!"); }
+    function login() { 
+      localStorage.setItem('gh_user', document.getElementById('login-user').value); 
+      localStorage.setItem('gh_repo', document.getElementById('login-repo').value); 
+      localStorage.setItem('gh_token', document.getElementById('login-token').value); 
+      location.reload(); 
     }
-
     function logout() { localStorage.clear(); location.reload(); }
     function mostrarPainel() { document.getElementById('login-screen').style.display='none'; document.getElementById('admin-panel').style.display='block'; carregarListaEdicao(); }
 
     async function carregarListaEdicao() {
       const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
       try {
-        const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/produtos.json`, { 
-          headers: { 'Authorization': `Bearer ${t}`, 'Cache-Control': 'no-cache' } 
-        });
+        const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/produtos.json`, { headers: { 'Authorization': `token ${t}`, 'Cache-Control': 'no-cache' } });
         const file = await res.json();
         produtosCarregados = JSON.parse(decodeURIComponent(escape(atob(file.content))));
-      } catch (e) { console.log("Erro ao carregar"); }
+      } catch (e) { console.log("Erro carga"); }
     }
 
-    async function salvarProduto() {
-      const btn = document.getElementById('btn-save'), st = document.getElementById('status');
-      const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
-      const url = `https://api.github.com/repos/${u}/${r}/contents/produtos.json`;
-      
-      btn.disabled = true; btn.innerText = "CONECTANDO AO GITHUB...";
-
-      try {
-        // BUSCA O ARQUIVO E O SHA MAIS RECENTE
-        const res = await fetch(url, { headers: { 'Authorization': `Bearer ${t}`, 'Cache-Control': 'no-cache' } });
-        if(!res.ok) throw new Error("Falha no Token ou Repositório");
-        
-        const file = await res.json();
-        let content = JSON.parse(decodeURIComponent(escape(atob(file.content))));
-
-        const novo = {
-          titulo: document.getElementById('p-titulo').value,
-          subtitulo: document.getElementById('p-subtitulo').value,
-          preco: document.getElementById('p-preco').value,
-          nota: document.getElementById('p-nota').value,
-          loja: document.getElementById('p-loja').value,
-          categoria: document.getElementById('p-categoria').value,
-          descricao: document.getElementById('p-descricao').value,
-          link: document.getElementById('p-link').value,
-          estoque: document.getElementById('p-estoque').value,
-          imagens: [document.getElementById('img1').value, document.getElementById('img2').value].filter(i => i !== ""),
-          data: editandoIndex !== null ? content[editandoIndex].data : new Date().toLocaleDateString('pt-BR')
-        };
-
-        if (editandoIndex !== null) content[editandoIndex] = novo; else content.unshift(novo);
-
-        // ENVIA USANDO O TOKEN NO HEADER "BEARER" (PADRÃO ATUAL DO GITHUB)
-        const save = await fetch(url, {
-          method: 'PUT',
-          headers: { 'Authorization': `Bearer ${t}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            message: "Update via Master Admin", 
-            content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), 
-            sha: file.sha 
-          })
-        });
-
-        if(save.ok) {
-          st.innerText = "🚀 SITE ATUALIZADO!"; st.style.display = "block";
-          setTimeout(() => location.reload(), 2000);
-        } else { alert("Erro ao salvar! Verifique as permissões do seu Token."); }
-      } catch (e) { alert("ERRO DE TOKEN: " + e.message); }
-      btn.disabled = false; btn.innerText = "PUBLICAR NO SITE";
+    function limparFormulario() {
+      editandoIndex = null;
+      ['p-titulo', 'p-subtitulo', 'p-preco', 'p-link', 'p-avaliacoes', 'p-estoque', 'p-descricao', 'p-loja', 'p-nota', 'p-tag', 'img1', 'img2', 'img3', 'img4'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.value = (id==='p-loja'?'ml':(id==='p-nota'?'4.8':''));
+      });
+      document.getElementById('btn-save').innerText = "PUBLICAR NO SITE";
+      document.getElementById('btn-save').disabled = false;
     }
 
     function buscarParaEditar() {
@@ -157,14 +143,74 @@
           item.onclick = () => {
             editandoIndex = index;
             document.getElementById('p-titulo').value = p.titulo;
+            document.getElementById('p-subtitulo').value = p.subtitulo || "";
             document.getElementById('p-preco').value = p.preco;
+            document.getElementById('p-loja').value = p.loja || "ml";
+            document.getElementById('p-nota').value = p.nota || "4.8";
+            document.getElementById('p-descricao').value = p.descricao || "";
             document.getElementById('p-link').value = p.link;
-            document.getElementById('btn-save').innerText = "ATUALIZAR";
+            document.getElementById('p-estoque').value = p.estoque;
+            document.getElementById('p-avaliacoes').value = p.avaliacoes;
+            document.getElementById('p-tag').value = p.tag || "";
+            for(let i=1; i<=4; i++) { document.getElementById(`img${i}`).value = (p.imagens && p.imagens[i-1]) ? p.imagens[i-1] : ""; }
+            document.getElementById('btn-save').innerText = "ATUALIZAR DADOS";
             lista.innerHTML = "";
           };
           lista.appendChild(item);
         }
       });
+    }
+
+    async function salvarProduto() {
+      const btn = document.getElementById('btn-save'), st = document.getElementById('status');
+      const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
+      const url = `https://api.github.com/repos/${u}/${r}/contents/produtos.json`;
+      
+      btn.disabled = true; btn.innerText = "SALVANDO...";
+
+      try {
+        const res = await fetch(url, { headers: { 'Authorization': `token ${t}`, 'Cache-Control': 'no-cache' } });
+        const file = await res.json();
+        let content = JSON.parse(decodeURIComponent(escape(atob(file.content))));
+
+        const novo = {
+          titulo: document.getElementById('p-titulo').value,
+          subtitulo: document.getElementById('p-subtitulo').value,
+          preco: document.getElementById('p-preco').value,
+          tag: document.getElementById('p-tag').value,
+          nota: document.getElementById('p-nota').value,
+          loja: document.getElementById('p-loja').value,
+          categoria: document.getElementById('p-categoria').value,
+          descricao: document.getElementById('p-descricao').value,
+          link: document.getElementById('p-link').value,
+          estoque: document.getElementById('p-estoque').value,
+          avaliacoes: document.getElementById('p-avaliacoes').value,
+          imagens: [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(img => img !== ""),
+          data: editandoIndex !== null ? content[editandoIndex].data : new Date().toLocaleDateString('pt-BR')
+        };
+
+        if (editandoIndex !== null) content[editandoIndex] = novo; else content.unshift(novo);
+
+        const save = await fetch(url, {
+          method: 'PUT',
+          headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: "Update", content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha })
+        });
+
+        if(save.ok) {
+          st.innerText = "🚀 SUCESSO!"; st.style.display = "block";
+          // AS DUAS LINHAS QUE DESTRAVAM O BOTÃO:
+          btn.disabled = false;
+          btn.innerText = "PUBLICAR NO SITE";
+          setTimeout(() => { st.style.display = "none"; limparFormulario(); carregarListaEdicao(); }, 2000);
+        } else {
+            alert("Erro ao salvar!");
+            btn.disabled = false; btn.innerText = "TENTAR NOVAMENTE";
+        }
+      } catch (e) { 
+          alert("Erro de conexão!"); 
+          btn.disabled = false; btn.innerText = "TENTAR NOVAMENTE";
+      }
     }
   </script>
 </body>
