@@ -123,3 +123,21 @@ if (slidesContainer) {
 
 // Inicia o sistema
 carregarProdutos();
+
+// LÓGICA DAS ABAS (FILTRO FUNCIONAL)
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    const categoriaLoja = tab.getAttribute("data-loja");
+
+    if (categoriaLoja === "all") {
+      produtosFiltrados = [...produtos];
+    } else {
+      // Filtra os produtos baseados no que você escreveu no campo 'Loja' do Painel
+      produtosFiltrados = produtos.filter(p => p.loja === categoriaLoja);
+    }
+    renderizar(produtosFiltrados);
+  });
+});
