@@ -144,3 +144,10 @@ document.querySelectorAll(".tab").forEach(tab => {
     renderizar(produtosFiltrados);
   });
 });
+
+// ATIVA APENAS O SELETOR DE CATEGORIAS DO TOPO
+document.getElementById("categoria").addEventListener("change", e => {
+  const cat = e.target.value;
+  produtosFiltrados = cat === "todos" ? produtos : produtos.filter(p => p.categoria === cat);
+  renderizar(produtosFiltrados);
+});
