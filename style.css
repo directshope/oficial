@@ -6,7 +6,7 @@ body {
   color: #fff;
 }
 
-/* HEADER - TRAVADO NO TOPO */
+/* HEADER */
 .header {
   position: sticky;
   top: 0;
@@ -20,61 +20,30 @@ body {
 }
 
 .logo { font-weight: bold; font-size: 20px; color: #f1c40f; }
+#search, #categoria { padding: 10px; border-radius: 5px; border: none; background: #222; color: #fff; }
+#search { flex: 1; }
 
-#search { flex: 1; padding: 10px; border-radius: 5px; border: none; background: #222; color: #fff; }
+/* BANNER */
+.banner { width: 100%; overflow: hidden; height: 600px; }
+.slides { display: flex; transition: 0.5s; height: 100%; }
+.slides img { width: 100%; height: auto; display: block; }
 
-#categoria { padding: 10px; border-radius: 5px; border: none; background: #222; color: #fff; }
-
-/* BANNER - O QUE TINHA QUEBRADO (RESTAURADO E FIXADO) */
-.banner {
-  width: 100%;
-  overflow: hidden; /* Corta o que sobrar das fotos ao lado */
-  height: 600px;    /* Altura fixa para não ocupar a tela toda */
-}
-
-.slides {
-  display: flex; /* Faz as imagens ficarem uma ao lado da outra */
-  transition: 0.5s;
-  height: 100%;
-}
-
-.slides img {
-  width: 100%;      /* Isso aqui garante que a lateral apareça inteira */
-  height: auto;     /* A altura segue a largura, impedindo o corte */
-  display: block;
-}
-
-/* ABAS LOJAS */
-.tabs {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px;
-}
-
-.tab {
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  background: #222;
-  color: #fff;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
+/* ABAS */
+.tabs { display: flex; justify-content: center; gap: 10px; margin: 20px; }
+.tab { padding: 10px 20px; border: none; cursor: pointer; background: #222; color: #fff; border-radius: 5px; transition: 0.3s; }
 .tab.active { background: #f1c40f; color: #000; font-weight: bold; }
-/* PRODUTOS - GRID PREMIUM AJUSTADO */
+
+/* PRODUTOS - GRID */
 .produtos {
   display: grid;
-  /* Aumentei de 250px para 300px para o card ficar maior */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-  gap: 25px; /* Espaço maior entre os cards */
+  gap: 25px;
   padding: 20px;
-  justify-content: center; /* Centraliza o bloco de cards na tela */
+  justify-content: center;
   align-items: start;
 }
 
-/* CARD PREMIUM ADAPTADO */
+/* CARD PREMIUM - ALTURA TRAVADA */
 .card {
   background: #1a1a1a;
   border-radius: 12px;
@@ -84,9 +53,20 @@ body {
   transition: 0.3s;
   display: flex;
   flex-direction: column;
+  min-height: 520px; /* Mantém todos iguais */
 }
 
 .card:hover { transform: translateY(-5px); border-color: #f1c40f; }
+
+/* ALINHAMENTO DO RODAPÉ */
+.card-footer {
+  margin-top: auto; 
+}
+
+/* MORTE DEFINITIVA AO ÍCONE QUEBRADO */
+.store-icon {
+  display: none !important;
+}
 
 .badge {
   position: absolute;
@@ -103,12 +83,12 @@ body {
 
 .card img {
   width: 100%;
-  height: 250px; /* Aumentei de 180px para 250px para a foto aparecer melhor */
+  height: 250px;
   object-fit: contain;
   background: #fff;
   border-radius: 8px;
   margin-bottom: 12px;
-  cursor: zoom-in; /* Cursor de lupa para indicar que abre a galeria */
+  cursor: zoom-in;
 }
 
 .card h3 { font-size: 14px; margin: 0 0 8px; color: #eee; height: 38px; overflow: hidden; }
@@ -125,7 +105,6 @@ body {
 .rev-text { color: #777; font-size: 10px; }
 
 .price { font-size: 20px; font-weight: bold; color: #fff; margin-bottom: 5px; }
-
 .stock-tag { font-size: 10px; color: #e67e22; font-weight: bold; margin-bottom: 12px; }
 
 .card button {
@@ -140,36 +119,13 @@ body {
   text-transform: uppercase;
   transition: 0.3s;
 }
-
 .card button:hover { background: #2980b9; }
 
-/* ÍCONE DA LOJA NO CARD */
-.store-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 25px;
-  height: 25px;
-  background: #fff;
-  border-radius: 50%;
-  padding: 4px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  z-index: 10;
-  object-fit: contain;
-}
-
-/* Ajuste no badge para não bater no ícone */
-.badge {
-  left: 10px;
-}
-/* --- ESTILOS DO POPUP DE GALERIA (MODAL) --- */
+/* --- MODAL DA GALERIA --- */
 .modal-foto {
-  display: none; /* Escondido por padrão */
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.95);
   z-index: 2000;
   justify-content: center;
@@ -178,70 +134,15 @@ body {
 }
 
 .modal-content-premium {
-  background: #1a1a1a;
-  padding: 20px;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 600px;
-  text-align: center;
-  position: relative;
+  background: #1a1a1a; padding: 20px; border-radius: 15px;
+  width: 90%; max-width: 600px; text-align: center; position: relative;
   border: 1px solid #333;
 }
 
-.foto-principal-modal {
-  width: 100%;
-  height: 400px;
-  object-fit: contain;
-  border-radius: 10px;
-  background: #fff;
-}
-
-.fechar-modal {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 35px;
-  color: #fff;
-  cursor: pointer;
-}
-
-/* MINIATURAS EMBAIXO DA FOTO GRANDE */
-.miniaturas-row {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-  overflow-x: auto;
-  padding: 10px 0;
-}
-
-.miniatura {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 5px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: 0.2s;
-  background: #fff;
-}
-
-.miniatura:hover, .miniatura.active {
-  border-color: #f1c40f;
-  transform: scale(1.1);
-}
-
-.modal-content-premium h3 {
-  margin: 15px 0;
-  font-size: 18px;
-}
-
-.modal-content-premium button {
-  padding: 12px 30px;
-  background: #f1c40f;
-  color: #000;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-}
+.foto-principal-modal { width: 100%; height: 400px; object-fit: contain; border-radius: 10px; background: #fff; }
+.fechar-modal { position: absolute; top: 10px; right: 20px; font-size: 35px; color: #fff; cursor: pointer; }
+.miniaturas-row { display: flex; justify-content: center; gap: 10px; margin-top: 15px; overflow-x: auto; padding: 10px 0; }
+.miniatura { width: 70px; height: 70px; object-fit: cover; border-radius: 5px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; background: #fff; }
+.miniatura:hover, .miniatura.active { border-color: #f1c40f; transform: scale(1.1); }
+.modal-content-premium h3 { margin: 15px 0; font-size: 18px; }
+.modal-content-premium button { padding: 12px 30px; background: #f1c40f; color: #000; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
