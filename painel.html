@@ -2,11 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>DIRECT SHOP | ULTRA-WIDE DASHBOARD</title>
+  <title>DIRECT SHOP | MASTER ADMIN</title>
   <style>
     :root { 
       --gold: #f1c40f; 
-      --gold-dark: #b8860b;
       --bg: #050505; 
       --card: #0d0d0d; 
       --border: #222; 
@@ -15,7 +14,7 @@
     
     body { 
       margin: 0; 
-      font-family: 'Inter', 'Segoe UI', sans-serif; 
+      font-family: 'Inter', sans-serif; 
       background: var(--bg); 
       color: #fff; 
       display: flex; 
@@ -23,14 +22,14 @@
       min-height: 100vh;
     }
 
-    /* Painel agora ocupa 95% da tela */
+    /* Painel Ocupando a Tela Inteira */
     .dashboard { 
-      width: 95%; 
-      max-width: 1700px; 
+      width: 98%; 
+      max-width: 1800px; 
       background: var(--card); 
-      margin: 20px 0;
+      margin: 10px 0;
       padding: 40px; 
-      border-radius: 20px; 
+      border-radius: 15px; 
       border: 1px solid var(--border); 
       box-shadow: 0 50px 100px rgba(0,0,0,1);
     }
@@ -41,124 +40,65 @@
       align-items: center; 
       border-bottom: 3px solid var(--gold); 
       padding-bottom: 20px; 
-      margin-bottom: 40px; 
+      margin-bottom: 30px; 
     }
     
-    .header-dash h2 { 
-      margin: 0; 
-      font-size: 32px; 
-      letter-spacing: 5px; 
-      font-weight: 900;
-      color: var(--gold); 
-    }
+    .header-dash h2 { margin: 0; font-size: 30px; letter-spacing: 5px; font-weight: 900; color: var(--gold); }
 
-    /* Busca Gigante */
-    .search-box { position: relative; margin-bottom: 40px; }
+    .search-box { position: relative; margin-bottom: 35px; }
     #busca-editar { 
       width: 100%; 
-      padding: 20px 25px; 
+      padding: 20px; 
       background: var(--input); 
       border: 2px solid var(--gold); 
       color: #fff; 
-      border-radius: 12px; 
+      border-radius: 10px; 
       font-size: 18px; 
-      font-weight: bold;
     }
 
-    /* Grid Principal Espaçado */
-    .main-grid { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 50px; 
-    }
+    /* Grid Principal */
+    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
 
     .column-title { 
-      font-size: 14px; 
-      color: var(--gold); 
-      text-transform: uppercase; 
-      margin-bottom: 25px; 
-      letter-spacing: 2px; 
-      font-weight: 800;
-      display: flex; 
-      align-items: center; 
-      gap: 15px; 
+      font-size: 13px; color: var(--gold); text-transform: uppercase; 
+      margin-bottom: 25px; letter-spacing: 2px; font-weight: 800;
+      display: flex; align-items: center; gap: 15px; 
     }
     .column-title::after { content: ""; flex: 1; height: 1px; background: #333; }
 
-    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 20px; }
-    .input-group { margin-bottom: 25px; }
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 10px; }
+    .input-group { margin-bottom: 20px; position: relative; }
     
-    label { 
-      display: block; 
-      margin-bottom: 10px; 
-      color: #aaa; 
-      font-size: 12px; 
-      font-weight: bold; 
-      text-transform: uppercase; 
-    }
+    label { display: block; margin-bottom: 8px; color: #777; font-size: 11px; font-weight: bold; text-transform: uppercase; }
     
     input, select { 
-      width: 100%; 
-      padding: 18px; 
-      background: var(--input); 
-      border: 1px solid #333; 
-      color: #fff; 
-      border-radius: 10px; 
-      font-size: 16px; 
-      transition: 0.3s; 
+      width: 100%; padding: 16px; background: var(--input); 
+      border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 15px; 
     }
-    input:focus { border-color: var(--gold); background: #0a0a0a; outline: none; }
+    input:focus { border-color: var(--gold); outline: none; }
 
-    /* Seção de Fotos em Grid */
-    .photos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    /* FOTOS - CORREÇÃO DA SOBREPOSIÇÃO */
+    .photos-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      row-gap: 35px; /* Espaço vertical aumentado para não subir um no outro */
+      column-gap: 20px;
+      margin-bottom: 20px;
+    }
 
-    /* Botões Imponentes */
-    .actions { display: flex; gap: 20px; margin-top: 30px; }
+    /* Ações */
+    .actions { display: flex; gap: 20px; margin-top: 40px; }
+    .btn-pub { flex: 3; padding: 25px; background: var(--gold); color: #000; border: none; border-radius: 10px; font-size: 20px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+    .btn-new { flex: 1; padding: 25px; background: #1a1a1a; color: #fff; border: 1px solid #333; border-radius: 10px; font-weight: bold; cursor: pointer; }
     
-    .btn-pub { 
-      flex: 3; 
-      padding: 25px; 
-      background: var(--gold); 
-      color: #000; 
-      border: none; 
-      border-radius: 12px; 
-      font-size: 20px;
-      font-weight: 900; 
-      cursor: pointer; 
-      text-transform: uppercase; 
-      transition: 0.4s; 
-    }
-    .btn-new { 
-      flex: 1; 
-      padding: 25px; 
-      background: #1a1a1a; 
-      color: #fff; 
-      border: 1px solid #333; 
-      border-radius: 12px; 
-      font-weight: bold; 
-      cursor: pointer; 
-      text-transform: uppercase; 
-    }
-    
-    .btn-pub:hover { transform: scale(1.02); background: #fff; }
-    .btn-new:hover { background: #333; }
-
-    #lista-busca { 
-      position: absolute; width: 100%; z-index: 100; 
-      background: #000; border: 1px solid var(--gold); 
-      max-height: 300px; overflow-y: auto; 
-    }
-    .item-busca { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: var(--gold); font-weight: bold; }
-
-    .logout-btn { background: none; color: #555; border: 1px solid #333; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-    .logout-btn:hover { color: var(--gold); border-color: var(--gold); }
-
-    #status { margin-top: 20px; text-align: center; font-size: 18px; font-weight: 900; }
+    #lista-busca { position: absolute; width: 100%; z-index: 100; background: #000; border: 1px solid var(--gold); max-height: 300px; overflow-y: auto; }
+    .item-busca { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: var(--gold); }
+    .logout-btn { background: none; color: #444; border: 1px solid #333; padding: 8px 15px; cursor: pointer; }
   </style>
 </head>
 <body>
 
-  <div class="dashboard" id="admin-panel" style="display:block;">
+  <div class="dashboard" id="admin-panel">
     <div class="header-dash">
       <h2>DIRECT SHOP <span style="color:#fff; font-weight: 100;">MASTER ADMIN</span></h2>
       <button class="logout-btn" onclick="logout()">LOGOUT</button>
@@ -172,17 +112,14 @@
     <div class="main-grid">
       <div class="col">
         <div class="column-title">Vendas & Categorização</div>
-        
-        <div class="input-group"><label>Nome do Produto (Título):</label><input type="text" id="p-titulo"></div>
-        
+        <div class="input-group"><label>Nome do Produto:</label><input type="text" id="p-titulo"></div>
         <div class="input-row">
-          <div class="input-group"><label>Subtítulo (Ex: 200ml):</label><input type="text" id="p-subtitulo"></div>
+          <div class="input-group"><label>Subtítulo:</label><input type="text" id="p-subtitulo"></div>
           <div class="input-group"><label>Preço Final (R$):</label><input type="text" id="p-preco"></div>
         </div>
-
         <div class="input-row">
           <div class="input-group">
-            <label>Categoria do Site:</label>
+            <label>Categoria:</label>
             <select id="p-categoria">
               <option value="perfumes">Perfumes</option>
               <option value="tecnologia">Tecnologia</option>
@@ -196,7 +133,7 @@
             </select>
           </div>
           <div class="input-group">
-            <label>Selo de Destaque:</label>
+            <label>Selo:</label>
             <select id="p-tag">
               <option value="">Sem Selo</option>
               <option value="Mais Vendido">🔥 Mais Vendido</option>
@@ -205,33 +142,32 @@
             </select>
           </div>
         </div>
-
-        <div class="column-title">Configurações de Link & Estoque</div>
+        <div class="column-title">Logística & Links</div>
         <div class="input-row">
-          <div class="input-group"><label>ID Loja (ML/Shopee):</label><input type="text" id="p-loja" value="ml"></div>
-          <div class="input-group"><label>Unidades em Estoque:</label><input type="number" id="p-estoque"></div>
+          <div class="input-group"><label>ID Loja:</label><input type="text" id="p-loja" value="ml"></div>
+          <div class="input-group"><label>Estoque:</label><input type="number" id="p-estoque"></div>
         </div>
-        <div class="input-group"><label>URL de Destino (Link Afiliado):</label><input type="text" id="p-link"></div>
+        <div class="input-group"><label>Link Afiliado:</label><input type="text" id="p-link"></div>
       </div>
 
       <div class="col">
         <div class="column-title">Galeria de Imagens (HD)</div>
         <div class="photos-grid">
-          <div class="input-group"><label>Imagem Principal (Capa):</label><input type="text" id="img1"></div>
-          <div class="input-group"><label>Imagem 2:</label><input type="text" id="img2"></div>
-          <div class="input-group"><label>Imagem 3:</label><input type="text" id="img3"></div>
-          <div class="input-group"><label>Imagem 4:</label><input type="text" id="img4"></div>
+          <div class="input-group"><label>Foto 1 (Capa):</label><input type="text" id="img1"></div>
+          <div class="input-group"><label>Foto 2:</label><input type="text" id="img2"></div>
+          <div class="input-group"><label>Foto 3:</label><input type="text" id="img3"></div>
+          <div class="input-group"><label>Foto 4:</label><input type="text" id="img4"></div>
         </div>
 
-        <div class="column-title">Métricas de Avaliação</div>
+        <div class="column-title">Social Proof</div>
         <div class="input-row">
-          <div class="input-group"><label>Nota Geral (0 a 5):</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
-          <div class="input-group"><label>Total de Avaliações:</label><input type="number" id="p-avaliacoes"></div>
+          <div class="input-group"><label>Nota (0-5):</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
+          <div class="input-group"><label>Avaliações:</label><input type="number" id="p-avaliacoes"></div>
         </div>
 
         <div class="actions">
           <button class="btn-new" onclick="limparFormulario()">LIMPAR TUDO</button>
-          <button class="btn-pub" id="btn-save" onclick="salvarProduto()">PUBLICAR NO SITE AGORA</button>
+          <button class="btn-pub" id="btn-save" onclick="salvarProduto()">ATUALIZAR DADOS</button>
         </div>
         <div id="status"></div>
       </div>
@@ -242,26 +178,9 @@
     let produtosCarregados = [];
     let editandoIndex = null;
 
-    // Lógica GitHub e Carregamento (Mantida igual para não quebrar)
-    window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); else document.getElementById('login-screen').style.display='block'; };
-    
-    function mostrarPainel() { 
-        const admin = document.getElementById('admin-panel');
-        if(admin) admin.style.display='block'; 
-        carregarListaEdicao(); 
-    }
-
-    function limparFormulario() {
-      editandoIndex = null;
-      const ids = ['p-titulo', 'p-subtitulo', 'p-preco', 'p-link', 'p-avaliacoes', 'p-estoque', 'img1', 'img2', 'img3', 'img4'];
-      ids.forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; });
-      document.getElementById('p-nota').value = "4.8";
-      document.getElementById('p-loja').value = "ml";
-      document.getElementById('p-tag').value = "";
-      document.getElementById('p-categoria').value = "perfumes";
-      document.getElementById('btn-save').innerText = "PUBLICAR NO SITE AGORA";
-      document.getElementById('status').innerText = "";
-    }
+    window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
+    function mostrarPainel() { document.getElementById('admin-panel').style.display='block'; carregarListaEdicao(); }
+    function logout() { localStorage.clear(); location.reload(); }
 
     async function carregarListaEdicao() {
       const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
@@ -269,7 +188,18 @@
         const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/produtos.json`, { headers: { 'Authorization': `token ${t}` } });
         const file = await res.json();
         produtosCarregados = JSON.parse(atob(file.content));
-      } catch (e) { console.log("Aguardando JSON..."); }
+      } catch (e) { console.log("Erro ao carregar lista"); }
+    }
+
+    function limparFormulario() {
+      editandoIndex = null;
+      const ids = ['p-titulo', 'p-subtitulo', 'p-preco', 'p-link', 'p-avaliacoes', 'p-estoque', 'img1', 'img2', 'img3', 'img4'];
+      ids.forEach(id => document.getElementById(id).value = "");
+      document.getElementById('p-nota').value = "4.8";
+      document.getElementById('p-loja').value = "ml";
+      document.getElementById('p-tag').value = "";
+      document.getElementById('p-categoria').value = "perfumes";
+      document.getElementById('btn-save').innerText = "ATUALIZAR DADOS";
     }
 
     function buscarParaEditar() {
@@ -278,7 +208,9 @@
       lista.innerHTML = ""; if (termo.length < 2) return;
       produtosCarregados.forEach((p, index) => {
         if (p.titulo.toLowerCase().includes(termo)) {
-          const item = document.createElement('div'); item.className = "item-busca"; item.innerText = "✏️ EDITAR: " + p.titulo;
+          const item = document.createElement('div');
+          item.className = "item-busca";
+          item.innerText = "✏️ " + p.titulo;
           item.onclick = () => {
             editandoIndex = index;
             document.getElementById('p-titulo').value = p.titulo;
@@ -306,7 +238,7 @@
       const imgs = [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(i => i !== "");
       const user = localStorage.getItem('gh_user'), repo = localStorage.getItem('gh_repo'), token = localStorage.getItem('gh_token');
       const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
-      btn.disabled = true; btn.innerText = "SINCRONIZANDO...";
+      btn.disabled = true; btn.innerText = "SALVANDO...";
       try {
         const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
         const file = await res.json();
@@ -328,13 +260,11 @@
         if (editandoIndex !== null) content[editandoIndex] = novoProduto; else content.unshift(novoProduto);
         const save = await fetch(url, {
           method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: "Sincronização Painel Master", content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha })
+          body: JSON.stringify({ message: "Sincronização Master", content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha })
         });
-        if(save.ok) { st.style.color = "#2ecc71"; st.innerText = "🚀 DADOS ATUALIZADOS COM SUCESSO!"; setTimeout(() => limparFormulario(), 1500); carregarListaEdicao(); }
-      } catch (e) { alert("Erro ao conectar!"); btn.disabled = false; btn.innerText = "TENTAR NOVAMENTE"; }
+        if(save.ok) { st.style.color = "#2ecc71"; st.innerText = "✅ SUCESSO!"; setTimeout(() => limparFormulario(), 1500); carregarListaEdicao(); }
+      } catch (e) { alert("Erro!"); btn.disabled = false; btn.innerText = "Tentar Novamente"; }
     }
-
-    function logout() { localStorage.clear(); location.reload(); }
   </script>
 </body>
 </html>
