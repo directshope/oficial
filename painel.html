@@ -1,312 +1,332 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>MASTER ADMIN | DIRECT SHOP</title>
+  <title>Painel Premium - DIRECT SHOP</title>
+  <title>Direct Shop | Painel Administrativo</title>
   <style>
-    :root { --gold: #f1c40f; --bg: #050505; --card: #0d0d0d; --border: #333; }
-    body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; display: flex; justify-content: center; min-height: 100vh; }
+    /* Design Premium Dark & Gold */
+    body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a0a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    .container { background: #141414; width: 100%; max-width: 650px; padding: 40px; border-radius: 15px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); border: 1px solid #222; }
+    h2 { color: #f1c40f; text-transform: uppercase; text-align: center; margin-bottom: 25px; letter-spacing: 2px; }
+    .section-title { font-size: 11px; color: #f1c40f; border-bottom: 1px solid #333; padding-bottom: 5px; margin: 25px 0 15px; text-transform: uppercase; letter-spacing: 1px; }
+    .input-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 6px; color: #888; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+    input, select { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: 0.3s; }
+    input:focus { border-color: #f1c40f; outline: none; }
+    .row { display: flex; gap: 15px; }
+    .row .input-group { flex: 1; }
+    button { width: 100%; padding: 18px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.4s; margin-top: 10px; }
+    button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3); }
+    #lista-busca { background: #000; border-radius: 0 0 8px 8px; max-height: 150px; overflow-y: auto; border: 1px solid #222; border-top: none; }
+    .item-busca { padding: 12px; border-bottom: 1px solid #222; cursor: pointer; font-size: 13px; color: #f1c40f; transition: 0.2s; }
+    .item-busca:hover { background: #111; }
+    .logout-btn { background: transparent; color: #555; border: none; font-size: 11px; cursor: pointer; margin-top: 30px; text-decoration: underline; width: auto; }
+    #status { margin-top: 20px; text-align: center; font-size: 14px; font-weight: bold; }
+    /* DESIGN ULTRA PREMIUM DARK GOLD */
+    :root {
+      --gold: #f1c40f;
+      --dark-bg: #050505;
+      --card-bg: #111111;
+      --input-bg: #000000;
+      --border: #222;
+      --text: #ffffff;
+      --text-muted: #888;
+    }
+
+    body { 
+      margin: 0; 
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
+      background: var(--dark-bg); 
+      color: var(--text); 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      padding: 20px; 
+    }
+
+    .container { 
+      background: var(--card-bg); 
+      width: 100%; 
+      max-width: 750px; 
+      padding: 50px; 
+      border-radius: 20px; 
+      box-shadow: 0 30px 100px rgba(0,0,0,0.9); 
+      border: 1px solid var(--border); 
+    }
+
+    h2 { 
+      color: var(--gold); 
+      text-transform: uppercase; 
+      text-align: center; 
+      margin-bottom: 35px; 
+      letter-spacing: 4px; 
+      font-weight: 900;
+    }
+
+    .section-title { 
+      font-size: 12px; 
+      color: var(--gold); 
+      border-bottom: 1px solid var(--border); 
+      padding-bottom: 8px; 
+      margin: 35px 0 20px; 
+      text-transform: uppercase; 
+      letter-spacing: 2px; 
+      font-weight: bold;
+    }
+
+    .input-group { margin-bottom: 20px; }
     
-    /* TELA DE LOGIN */
-    #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; max-width: 400px; padding: 40px; }
-    .login-box { background: var(--card); padding: 30px; border-radius: 15px; border: 1px solid var(--gold); width: 100%; box-shadow: 0 0 30px rgba(241, 196, 15, 0.1); }
-    .login-box h1 { color: var(--gold); text-align: center; font-size: 20px; letter-spacing: 3px; margin-bottom: 30px; }
-    
-    /* PAINEL DASHBOARD */
-    #admin-panel { display: none; width: 98%; max-width: 1800px; background: var(--card); margin: 20px; padding: 40px; border-radius: 15px; border: 1px solid var(--border); }
-    .header-dash { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--gold); padding-bottom: 20px; margin-bottom: 40px; }
-    .header-dash h2 { margin: 0; font-size: 30px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; }
-    
-    .search-box { position: relative; margin-bottom: 40px; }
-    #busca-editar { width: 100%; padding: 20px; background: #000; border: 2px solid var(--gold); color: #fff; border-radius: 10px; font-size: 18px; }
-    
-    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-    .column-title { font-size: 13px; color: var(--gold); text-transform: uppercase; margin-bottom: 30px; letter-spacing: 2px; font-weight: 800; display: flex; align-items: center; gap: 15px; }
-    .column-title::after { content: ""; flex: 1; height: 1px; background: #333; }
-    
-    .input-group { margin-bottom: 25px; }
-    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    label { display: block; margin-bottom: 10px; color: #888; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-    input, select, textarea { width: 100%; padding: 18px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 15px; box-sizing: border-box; }
-    input:focus, textarea:focus { border-color: var(--gold); outline: none; }
-    
-    .photos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 20px; }
-    .actions { display: flex; gap: 20px; margin-top: 40px; }
-    .btn-pub { flex: 3; padding: 25px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-size: 20px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
-    .btn-new { flex: 1; padding: 25px; background: #222; color: #fff; border: 1px solid #333; border-radius: 12px; font-weight: bold; cursor: pointer; }
-    
-    #lista-busca { position: absolute; width: 100%; z-index: 100; background: #000; border: 1px solid var(--gold); max-height: 300px; overflow-y: auto; }
-    .item-busca { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: var(--gold); font-weight: bold; }
-    
-    .logout-btn { background: none; color: #444; border: 1px solid #333; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
-    #status { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 25px 60px; border-radius: 15px; background: #000; border: 2px solid var(--gold); color: var(--gold); font-size: 20px; font-weight: 900; text-transform: uppercase; box-shadow: 0 0 50px rgba(241, 196, 15, 0.4); display: none; letter-spacing: 2px; animation: surge 0.5s ease-out; }
-    
-    @keyframes surge { from { top: -100px; opacity: 0; } to { top: 40px; opacity: 1; } }
+    label { 
+      display: block; 
+      margin-bottom: 8px; 
+      color: var(--text-muted); 
+      font-size: 11px; 
+      font-weight: bold; 
+      text-transform: uppercase; 
+    }
+
+    input, select { 
+      width: 100%; 
+      padding: 15px; 
+      background: var(--input-bg); 
+      border: 1px solid var(--border); 
+      color: var(--text); 
+      border-radius: 10px; 
+      box-sizing: border-box; 
+      font-size: 14px; 
+      transition: all 0.3s ease; 
+    }
+
+    input:focus, select:focus { 
+      border-color: var(--gold); 
+      outline: none; 
+      box-shadow: 0 0 15px rgba(241, 196, 15, 0.1);
+    }
+
+    .row { display: flex; gap: 20px; flex-wrap: wrap; }
+    .row .input-group { flex: 1; min-width: 200px; }
+
+    button { 
+      width: 100%; 
+      padding: 20px; 
+      background: linear-gradient(135deg, #f1c40f, #d4ac0d); 
+      color: #000; 
+      border: none; 
+      border-radius: 10px; 
+      font-size: 16px; 
+      font-weight: 800; 
+      cursor: pointer; 
+      text-transform: uppercase; 
+      transition: 0.4s; 
+      margin-top: 15px;
+      letter-spacing: 1px;
+    }
+
+    button:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 15px 30px rgba(241, 196, 15, 0.4); 
+    }
+
+    #lista-busca { background: #000; border-radius: 0 0 10px 10px; max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-top: none; }
+    .item-busca { padding: 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 13px; color: var(--gold); transition: 0.2s; }
+    .item-busca:hover { background: #080808; padding-left: 20px; }
+
+    .logout-btn { background: transparent; color: #444; border: 1px solid #222; font-size: 11px; cursor: pointer; margin-top: 40px; text-decoration: none; width: auto; padding: 10px 20px; }
+    .logout-btn:hover { color: #f1c40f; border-color: #f1c40f; }
+
+    #status { margin-top: 25px; text-align: center; font-size: 14px; font-weight: bold; padding: 15px; border-radius: 10px; }
+    #admin-panel { display: none; }
   </style>
 </head>
 <body>
 
-  <div id="login-screen">
-    <div class="login-box">
-      <h1>ACESSO RESTRITO</h1>
-      <div class="input-group">
-        <label>GitHub User:</label>
-        <input type="text" id="login-user" placeholder="Seu usuário">
-      </div>
-      <div class="input-group">
-        <label>GitHub Repo:</label>
-        <input type="text" id="login-repo" placeholder="repositorio-exemplo">
-      </div>
-      <div class="input-group">
-        <label>Personal Token:</label>
-        <input type="password" id="login-token" placeholder="ghp_xxxx">
-      </div>
-      <button class="btn-pub" onclick="login()">ENTRAR NO PAINEL</button>
-    </div>
-  </div>
+  <div class="container" id="login-screen">
+    <h2>Acesso Administrativo</h2>
+    <h2>Acesso Premium</h2>
+    <div class="input-group"><label>Usuário GitHub:</label><input type="text" id="gh-user" placeholder="Seu usuário"></div>
+    <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo" placeholder="Ex: oficial"></div>
+    <div class="input-group"><label>GitHub Key (Senha):</label><input type="password" id="gh-token" placeholder="Sua Key do GitHub"></div>
+@@ -38,57 +134,74 @@ <h2>Acesso Administrativo</h2>
+  <div class="container" id="admin-panel">
+    <h2>Direct Shop Admin</h2>
 
-  <div class="dashboard" id="admin-panel">
-    <div class="header-dash">
-      <h2>DIRECT SHOP MASTER ADMIN</h2>
-      <button class="logout-btn" onclick="logout()">SAIR</button>
-    </div>
-    
-    <div class="search-box">
-      <input type="text" id="busca-editar" placeholder="🔍 PESQUISAR PRODUTO PARA EDITAR..." oninput="buscarParaEditar()">
+    <div class="section-title">Gerenciar Produtos</div>
+    <div class="section-title">📦 Gerenciar Produtos</div>
+    <div class="input-group">
+      <input type="text" id="busca-editar" placeholder="🔍 Digite para buscar e EDITAR um produto..." oninput="buscarParaEditar()">
+      <input type="text" id="busca-editar" placeholder="🔍 Digite o nome para EDITAR um produto..." oninput="buscarParaEditar()">
       <div id="lista-busca"></div>
     </div>
 
-    <div class="main-grid">
-      <div class="col">
-        <div class="column-title">Vendas & Categorização</div>
-        <div class="input-group"><label>Nome do Produto:</label><input type="text" id="p-titulo"></div>
-        <div class="input-row">
-          <div class="input-group"><label>Subtítulo:</label><input type="text" id="p-subtitulo"></div>
-          <div class="input-group"><label>Preço Final (R$):</label><input type="text" id="p-preco"></div>
-        </div>
-        
-        <div class="input-row">
-          <div class="input-group">
-            <label>Categoria:</label>
-            <select id="p-categoria">
-              <option value="perfumes">Perfumes</option>
-              <option value="tecnologia">Tecnologia</option>
-              <option value="beleza">Beleza e Cuidados Pessoais</option>
-              <option value="ferramentas">Ferramentas</option>
-              <option value="casa">Casa e Móveis</option>
-              <option value="esportes">Esportes e Fitness</option>
-              <option value="saude">Saúde</option>
-              <option value="veiculos">Acessórios para Veículos</option>
-              <option value="moda">Moda</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Selo:</label>
+    <div class="section-title">Informações do Produto</div>
+    <div class="input-group"><label>Título Principal:</label><input type="text" id="p-titulo" placeholder="Nome do produto"></div>
+    <div class="input-group"><label>Subtítulo (Ex: 200ml, 500g, Pack c/ 3):</label><input type="text" id="p-subtitulo" placeholder="Ex: 200ml"></div>
+    <div class="section-title">📄 Informações Principais</div>
+    <div class="input-group"><label>Título do Produto:</label><input type="text" id="p-titulo" placeholder="Ex: Perfume Árabe Lattafa"></div>
+    
+    <div class="row">
+        <div class="input-group"><label>Subtítulo (Tamanho/Peso):</label><input type="text" id="p-subtitulo" placeholder="Ex: 100ml"></div>
+        <div class="input-group">
+            <label>Selo de Destaque:</label>
             <select id="p-tag">
-              <option value="">Sem Selo</option>
+              <option value="">Nenhum</option>
               <option value="Mais Vendido">🔥 Mais Vendido</option>
               <option value="Oferta do Dia">⚡ Oferta do Dia</option>
               <option value="Promoção">💎 Promoção</option>
+              <option value="Frete Grátis">🚚 Frete Grátis</option>
             </select>
-          </div>
         </div>
+    </div>
 
-        <div class="column-title">Logística & Links</div>
-        <div class="input-row">
-          <div class="input-group"><label>ID Loja:</label><input type="text" id="p-loja" value="ml"></div>
-          <div class="input-group"><label>Estoque Atual:</label><input type="number" id="p-estoque"></div>
-        </div>
-        <div class="input-group"><label>URL de Destino (Link Afiliado):</label><input type="text" id="p-link"></div>
-        
-        <div class="input-group">
-          <label>Descrição do Produto:</label>
-          <textarea id="p-descricao" rows="4" style="width: 100%; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; padding: 15px; font-family: sans-serif;"></textarea>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="column-title">Galeria de Imagens (HD)</div>
-        <div class="photos-grid">
-          <div class="input-group"><label>Foto 1:</label><input type="text" id="img1"></div>
-          <div class="input-group"><label>Foto 2:</label><input type="text" id="img2"></div>
-          <div class="input-group"><label>Foto 3:</label><input type="text" id="img3"></div>
-          <div class="input-group"><label>Foto 4:</label><input type="text" id="img4"></div>
-        </div>
-
-        <div class="column-title">Métricas de Avaliação</div>
-        <div class="input-row">
-          <div class="input-group"><label>Nota (0-5):</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
-          <div class="input-group"><label>Avaliações Totais:</label><input type="number" id="p-avaliacoes"></div>
-        </div>
-
-        <div class="actions">
-          <button class="btn-new" onclick="limparFormulario()">LIMPAR / NOVO</button>
-          <button class="btn-pub" id="btn-save" onclick="salvarProduto()">PUBLICAR NO SITE</button>
-        </div>
-        <div id="status"></div>
+    <div class="row">
+      <div class="input-group"><label>Preço (R$):</label><input type="text" id="p-preco" placeholder="199,90"></div>
+      <div class="input-group"><label>Preço Atual (R$):</label><input type="text" id="p-preco" placeholder="199,90"></div>
+      <div class="input-group">
+        <label>Selo de Destaque:</label>
+        <select id="p-tag">
+          <option value="">Nenhum</option>
+          <option value="Mais Vendido">🔥 Mais Vendido</option>
+          <option value="Oferta do Dia">⚡ Oferta do Dia</option>
+          <option value="Promoção">💎 Promoção</option>
+          <option value="Frete Grátis">🚚 Frete Grátis</option>
+        <label>Categoria (Onde o produto será listado):</label>
+        <select id="p-categoria">
+          <option value="perfumes">Perfumes</option>
+          <option value="tecnologia">Tecnologia</option>
+          <option value="beleza">Beleza e Cuidados Pessoais</option>
+          <option value="ferramentas">Ferramentas</option>
+          <option value="casa">Casa e Móveis</option>
+          <option value="esportes">Esportes e Fitness</option>
+          <option value="saude">Saúde</option>
+          <option value="veiculos">Acessórios para Veículos</option>
+          <option value="moda">Moda</option>
+        </select>
       </div>
     </div>
+
+    <div class="section-title">Credibilidade</div>
+    <div class="section-title">⭐ Credibilidade & Estoque</div>
+    <div class="row">
+      <div class="input-group"><label>Nota (0-5):</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
+      <div class="input-group"><label>Avaliações:</label><input type="number" id="p-avaliacoes" placeholder="Ex: 150"></div>
+      <div class="input-group"><label>Estoque:</label><input type="number" id="p-estoque" placeholder="Ex: 12"></div>
+      <div class="input-group"><label>Nº Avaliações:</label><input type="number" id="p-avaliacoes" placeholder="Ex: 150"></div>
+      <div class="input-group"><label>Qtd Estoque:</label><input type="number" id="p-estoque" placeholder="Ex: 12"></div>
+    </div>
+
+    <div class="section-title">Fotos (Até 4 Links)</div>
+    <div class="section-title">🖼️ Galeria de Fotos (Links)</div>
+    <div class="row">
+      <div class="input-group"><input type="text" id="img1" placeholder="Foto 1 (Capa)"></div>
+      <div class="input-group"><input type="text" id="img2" placeholder="Foto 2"></div>
+      <div class="input-group"><label>Foto 1 (Capa):</label><input type="text" id="img1" placeholder="Link da imagem"></div>
+      <div class="input-group"><label>Foto 2:</label><input type="text" id="img2" placeholder="Link da imagem"></div>
+    </div>
+    <div class="row">
+      <div class="input-group"><input type="text" id="img3" placeholder="Foto 3"></div>
+      <div class="input-group"><input type="text" id="img4" placeholder="Foto 4"></div>
+      <div class="input-group"><label>Foto 3:</label><input type="text" id="img3" placeholder="Link da imagem"></div>
+      <div class="input-group"><label>Foto 4:</label><input type="text" id="img4" placeholder="Link da imagem"></div>
+    </div>
+
+    <div class="section-title">Destino</div>
+    <div class="section-title">🔗 Destino & Links</div>
+    <div class="row">
+      <div class="input-group"><label>Loja:</label><input type="text" id="p-loja" value="ml"></div>
+      <div class="input-group"><label>Link Afiliado:</label><input type="text" id="p-link" placeholder="https://..."></div>
+      <div class="input-group"><label>Identificador da Loja (Para Robô):</label><input type="text" id="p-loja" value="ml"></div>
+      <div class="input-group"><label>Link do Produto:</label><input type="text" id="p-link" placeholder="https://..."></div>
+    </div>
+
+    <button id="btn-save" onclick="salvarProduto()">Publicar no Site</button>
+    <button id="btn-save" onclick="salvarProduto()">Publicar Alterações</button>
+    <div id="status"></div>
+
+    <center><button class="logout-btn" onclick="logout()">Sair / Trocar Conta</button></center>
+    <center><button class="logout-btn" onclick="logout()">Desconectar Conta</button></center>
   </div>
 
   <script>
-    let produtosCarregados = [];
-    let editandoIndex = null;
-
-    window.onload = () => {
-      if(localStorage.getItem('gh_token')) {
-        mostrarPainel();
-      }
-    };
-
-    function login() {
-      const user = document.getElementById('login-user').value;
-      const repo = document.getElementById('login-repo').value;
-      const token = document.getElementById('login-token').value;
-
-      if(user && repo && token) {
-        localStorage.setItem('gh_user', user);
-        localStorage.setItem('gh_repo', repo);
-        localStorage.setItem('gh_token', token);
-        mostrarPainel();
-      } else {
-        alert("Preencha todos os campos!");
-      }
-    }
-
-    function mostrarPainel() {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('admin-panel').style.display = 'block';
-      carregarListaEdicao();
-    }
-
-    function logout() {
-      localStorage.clear();
-      location.reload();
-    }
-
-    async function carregarListaEdicao() {
-      const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
-      try {
-        const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/produtos.json`, { 
-          headers: { 'Authorization': `token ${t}`, 'Cache-Control': 'no-cache' } 
-        });
+@@ -109,7 +222,7 @@ <h2>Direct Shop Admin</h2>
+      const u = document.getElementById('gh-user').value.trim();
+      const r = document.getElementById('gh-repo').value.trim();
+      const t = document.getElementById('gh-token').value.trim();
+      if(!u || !r || !t) return alert("Preencha tudo!");
+      if(!u || !r || !t) return alert("Preencha todos os campos de acesso!");
+      localStorage.setItem('gh_user', u);
+      localStorage.setItem('gh_repo', r);
+      localStorage.setItem('gh_token', t);
+@@ -123,7 +236,7 @@ <h2>Direct Shop Admin</h2>
+        const res = await fetch(url, { headers: { 'Authorization': `token ${t}` } });
         const file = await res.json();
-        produtosCarregados = JSON.parse(decodeURIComponent(escape(atob(file.content))));
-      } catch (e) { console.log("Erro ao carregar lista"); }
-    }
-
-    function limparFormulario() {
-      editandoIndex = null;
-      ['p-titulo', 'p-subtitulo', 'p-preco', 'p-link', 'p-avaliacoes', 'p-estoque', 'img1', 'img2', 'img3', 'img4', 'p-descricao'].forEach(id => { 
-        document.getElementById(id).value = ""; 
-      });
-      document.getElementById('p-nota').value = "4.8";
-      document.getElementById('p-loja').value = "ml";
-      document.getElementById('p-tag').value = "";
-      document.getElementById('p-categoria').value = "perfumes";
-      document.getElementById('btn-save').innerText = "PUBLICAR NO SITE";
-      document.getElementById('btn-save').disabled = false;
-      document.getElementById('status').style.display = "none";
+        produtosCarregados = JSON.parse(atob(file.content));
+      } catch (e) { console.log("Aguardando JSON..."); }
+      } catch (e) { console.log("Aguardando arquivo JSON..."); }
     }
 
     function buscarParaEditar() {
-      const termo = document.getElementById('busca-editar').value.toLowerCase();
-      const lista = document.getElementById('lista-busca');
-      lista.innerHTML = ""; if (termo.length < 2) return;
-      produtosCarregados.forEach((p, index) => {
+@@ -136,7 +249,7 @@ <h2>Direct Shop Admin</h2>
         if (p.titulo.toLowerCase().includes(termo)) {
           const item = document.createElement('div');
           item.className = "item-busca";
           item.innerText = "✏️ " + p.titulo;
+          item.innerText = "✏️ EDITAR: " + p.titulo;
           item.onclick = () => {
             editandoIndex = index;
             document.getElementById('p-titulo').value = p.titulo;
-            document.getElementById('p-subtitulo').value = p.subtitulo || "";
-            document.getElementById('p-preco').value = p.preco;
-            document.getElementById('p-tag').value = p.tag || "";
-            document.getElementById('p-nota').value = p.nota;
-            document.getElementById('p-avaliacoes').value = p.avaliacoes;
+@@ -148,9 +261,11 @@ <h2>Direct Shop Admin</h2>
             document.getElementById('p-estoque').value = p.estoque;
             document.getElementById('p-link').value = p.link;
             document.getElementById('p-loja').value = p.loja;
+            for(let i=1; i<=4; i++) { document.getElementById(`img${i}`).value = p.imagens[i-1] || ""; }
+            document.getElementById('btn-save').innerText = "ATUALIZAR PRODUTO";
             document.getElementById('p-categoria').value = p.categoria || "perfumes";
-            document.getElementById('p-descricao').value = p.descricao || "";
             for(let i=1; i<=4; i++) { document.getElementById(`img${i}`).value = (p.imagens && p.imagens[i-1]) ? p.imagens[i-1] : ""; }
-            document.getElementById('btn-save').innerText = "ATUALIZAR DADOS";
-            document.getElementById('busca-editar').value = "";
+            document.getElementById('btn-save').innerText = "ATUALIZAR PRODUTO AGORA";
             lista.innerHTML = "";
+            window.scrollTo({ top: 400, behavior: 'smooth' });
           };
           lista.appendChild(item);
         }
-      });
-    }
-
-    async function salvarProduto() {
-      const btn = document.getElementById('btn-save'), st = document.getElementById('status');
-      const imgs = [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(i => i !== "");
+@@ -165,7 +280,7 @@ <h2>Direct Shop Admin</h2>
       const user = localStorage.getItem('gh_user'), repo = localStorage.getItem('gh_repo'), token = localStorage.getItem('gh_token');
       const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
-      
-      btn.disabled = true; btn.innerText = "SALVANDO...";
+
+      btn.disabled = true; btn.innerText = "PROCESSANDO...";
+      btn.disabled = true; btn.innerText = "CONECTANDO AO GITHUB...";
 
       try {
-        const res = await fetch(url, { 
-          headers: { 'Authorization': `token ${token}`, 'Cache-Control': 'no-cache' } 
-        });
-        const file = await res.json();
-        let content = JSON.parse(decodeURIComponent(escape(atob(file.content))));
-
-        const novoProduto = {
-          titulo: document.getElementById('p-titulo').value,
-          subtitulo: document.getElementById('p-subtitulo').value,
-          preco: document.getElementById('p-preco').value,
-          tag: document.getElementById('p-tag').value,
-          nota: document.getElementById('p-nota').value,
-          avaliacoes: document.getElementById('p-avaliacoes').value,
+        const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+@@ -182,6 +297,7 @@ <h2>Direct Shop Admin</h2>
           estoque: document.getElementById('p-estoque').value,
           link: document.getElementById('p-link').value,
           loja: document.getElementById('p-loja').value,
           categoria: document.getElementById('p-categoria').value,
-          descricao: document.getElementById('p-descricao').value,
           imagens: imgs,
           data: editandoIndex !== null ? content[editandoIndex].data : new Date().toLocaleDateString('pt-BR')
         };
-
-        if (editandoIndex !== null) content[editandoIndex] = novoProduto; 
-        else content.unshift(novoProduto);
-
-        const save = await fetch(url, {
+@@ -193,17 +309,20 @@ <h2>Direct Shop Admin</h2>
           method: 'PUT',
           headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
-            message: "Update via Master Admin", 
+            message: "Update", 
+            message: "Painel: Atualização de Produto", 
             content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), 
             sha: file.sha 
           })
         });
 
         if(save.ok) { 
-          st.innerText = "🚀 PRODUTO PUBLICADO COM SUCESSO!"; 
-          st.style.display = "block";
-          
-          // DESTRAVA O BOTÃO AQUI
-          btn.disabled = false;
-          btn.innerText = "PUBLICAR NO SITE";
-
-          setTimeout(() => { 
-            st.style.display = "none"; 
-            limparFormulario(); 
-            carregarListaEdicao(); 
-          }, 3000); 
-        } else {
-          alert("Erro ao salvar!");
-          btn.disabled = false;
+          st.style.color = "#2ecc71"; st.innerText = "✅ SUCESSO!"; 
+          st.style.background = "#2ecc7122"; st.style.color = "#2ecc71"; st.innerText = "🚀 PUBLICADO COM SUCESSO!"; 
+          setTimeout(() => location.reload(), 1500); 
         }
+      } catch (e) { alert("Erro ao salvar!"); btn.disabled = false; btn.innerText = "Tentar Novamente"; }
       } catch (e) { 
-          alert("Erro de conexão!"); 
-          btn.disabled = false;
+        alert("Erro na conexão! Verifique sua Key do GitHub."); 
+        btn.disabled = false; btn.innerText = "Tentar Novamente"; 
       }
     }
   </script>
 </body>
-</html>
