@@ -2,8 +2,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #0f0f0f;
-  color: #fff;
+  background: #f4f4f4; /* Um cinza bem clarinho que dá um ar de limpeza e luxo */
+  color: #333; /* Texto geral agora fica escuro para leitura no fundo claro */
 }
 
 /* HEADER */
@@ -47,13 +47,14 @@ body {
 .card {
   background: #1a1a1a;
   border-radius: 12px;
-  border: 1px solid #333;
+  border: 1px solid #ddd; /* Borda leve para destacar no fundo claro */
   padding: 15px;
   position: relative;
   transition: 0.3s;
   display: flex;
   flex-direction: column;
-  min-height: 520px; /* Mantém todos iguais */
+  min-height: 520px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Sombra suave para o card flutuar */
 }
 
 .card:hover { transform: translateY(-5px); border-color: #f1c40f; }
@@ -111,7 +112,7 @@ body {
   width: 100%;
   padding: 12px;
   border: none;
-  background: #3498db;
+  background: #27ae60; /* Verde Premium (Estilo Amazon/WhatsApp) */
   color: #fff;
   font-weight: bold;
   border-radius: 6px;
@@ -119,7 +120,11 @@ body {
   text-transform: uppercase;
   transition: 0.3s;
 }
-.card button:hover { background: #2980b9; }
+
+.card button:hover { 
+  background: #219150; /* Verde um pouco mais escuro ao passar o mouse */
+  transform: scale(1.02); /* Leve pulsação ao clicar */
+}
 
 /* --- MODAL DA GALERIA --- */
 .modal-foto {
