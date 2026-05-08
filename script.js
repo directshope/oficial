@@ -1,18 +1,25 @@
 let produtos = [];
+let produtosFiltrados = []; // Para a galeria não se perder na busca
 
 async function carregarProdutos() {
   try {
+    // Adicionamos o timestamp para evitar que o navegador use o cache antigo
     const res = await fetch("produtos.json?t=" + new Date().getTime());
     produtos = await res.json();
-    renderizar(produtos);
-  } catch (e) { console.log("Erro ao carregar"); }
+    produtosFiltrados = [...produtos]; // Inicialmente, todos estão na lista
+    renderizar(produtosFiltrados);
+  } catch (e) { 
+    console.log("Erro ao carregar produtos. Verifique o arquivo produtos.json."); 
+  }
 }
 
 function renderizar(lista) {
   const container = document.getElementById("produtos");
+  if (!container) return;
   container.innerHTML = "";
 
   lista.forEach((p, index) => {
+    // Lógica das estrelas premium
     let estrelas = "";
     const nota = parseFloat(p.nota) || 0;
     for (let i = 1; i <= 5; i++) {
@@ -21,20 +28,27 @@ function renderizar(lista) {
       else estrelas += '<span class="star">★</span>';
     }
 
-    // Pega a primeira imagem para o card
+    // Pega a primeira imagem para o card principal
     const imgCard = p.imagens && p.imagens.length > 0 ? p.imagens[0] : 'images/placeholder.png';
 
+    // Criamos o card. O novo produto entra na sequência correta
     const card = `
       <div class="card">
         ${p.tag ? `<div class="badge">${p.tag}</div>` : ''}
-        <img src="${imgCard}" onclick="abrirGaleria(${index})" style="cursor:zoom-in">
+        <img src="${imgCard}" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         
-        <h3 style="font-size:14px; margin:10px 0 5px; color:#fff;">${p.titulo}</h3>
+        <h3>${p.titulo}</h3>
         
         ${p.subtitulo ? `<p style="font-size:12px; color:#aaa; margin-top:-5px; font-weight:bold;">${p.subtitulo}</p>` : ''}
-        <div class="stars-row">${estrelas} <span class="rev-text">(${p.avaliacoes || 0})</span></div>
+        
+        <div class="stars-row">
+          ${estrelas} <span class="rev-text">(${p.avaliacoes || 0})</span>
+        </div>
+        
         <p class="price">R$ ${p.preco}</p>
+        
         ${p.estoque ? `<p class="stock-tag">Restam apenas ${p.estoque} unidades!</p>` : ''}
+        
         <button onclick="window.open('${p.link}')">Comprar Agora</button>
       </div>
     `;
@@ -42,68 +56,76 @@ function renderizar(lista) {
   });
 }
 
-// FUNÇÃO DO POPUP PREMIUM
+// --- FUNÇÕES DA GALERIA PREMIUM ---
+
 function abrirGaleria(idx) {
-  const p = produtos[idx];
-  if (!p.imagens || p.imagens.length === 0) return;
+  // Usamos produtosFiltrados para o index bater com o que você vê na tela
+  const p = produtosFiltrados[idx];
+  if (!p || !p.imagens || p.imagens.length === 0) return;
 
-  // Cria o elemento do modal se não existir
-  let modal = document.getElementById('modal-galeria');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'modal-galeria';
-    modal.className = 'modal-foto';
-    document.body.appendChild(modal);
-  }
+  const modal = document.getElementById('modal-galeria');
+  const fotoGrande = document.getElementById('foto-grande-modal');
+  const miniaturasContainer = document.getElementById('miniaturas-container');
+  const tituloModal = document.getElementById('modal-titulo-produto');
+  const btnCompra = document.getElementById('modal-link-compra');
 
-  // Monta as miniaturas
-  let minisHTML = p.imagens.map((img, i) => `
-    <img src="${img}" class="miniatura ${i===0?'active':''}" onclick="trocarFotoModal('${img}', this)">
+  // Define a foto principal e o título
+  fotoGrande.src = p.imagens[0];
+  tituloModal.innerText = p.titulo;
+  
+  // Configura o botão de compra do modal
+  btnCompra.onclick = () => window.open(p.link);
+
+  // Gera as miniaturas das outras fotos
+  miniaturasContainer.innerHTML = p.imagens.map((img, i) => `
+    <img src="${img}" 
+         class="miniatura ${i === 0 ? 'active' : ''}" 
+         onclick="trocarFotoModal('${img}', this)">
   `).join('');
 
-  modal.innerHTML = `
-    <div class="modal-content-premium">
-      <span class="fechar-modal" onclick="fecharGaleria()">&times;</span>
-      <img src="${p.imagens[0]}" id="foto-grande-modal" class="foto-principal-modal">
-      <div class="miniaturas-row">${minisHTML}</div>
-      <h3 style="margin-top:15px; font-size:16px;">${p.titulo}</h3>
-      <button onclick="window.open('${p.link}')" style="margin-top:10px">Comprar Agora</button>
-    </div>
-  `;
-  
   modal.style.display = 'flex';
 }
 
 function trocarFotoModal(url, el) {
   document.getElementById('foto-grande-modal').src = url;
+  
+  // Remove a borda amarela de todas e coloca só na clicada
   document.querySelectorAll('.miniatura').forEach(m => m.classList.remove('active'));
   el.classList.add('active');
 }
 
 function fecharGaleria() {
-  document.getElementById('modal-galeria').style.display = 'none';
+  const modal = document.getElementById('modal-galeria');
+  if (modal) modal.style.display = 'none';
 }
 
-// Fecha o modal se clicar fora dele
+// Fecha o modal ao clicar fora da caixa branca
 window.onclick = function(event) {
   const modal = document.getElementById('modal-galeria');
   if (event.target == modal) fecharGaleria();
 }
 
-// --- MANTENDO SEUS BANNERS E FILTROS ABAIXO ---
+// --- BUSCA E FILTROS ---
+
 document.getElementById("search").addEventListener("input", e => {
   const termo = e.target.value.toLowerCase();
-  renderizar(produtos.filter(p => p.titulo.toLowerCase().includes(termo)));
+  produtosFiltrados = produtos.filter(p => p.titulo.toLowerCase().includes(termo));
+  renderizar(produtosFiltrados);
 });
 
-let slideIndex = 0;
-setInterval(() => {
-  const slides = document.getElementById("slides");
-  if(slides) {
-    slideIndex++;
-    if (slideIndex > 2) slideIndex = 0;
-    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
-  }
-}, 3000);
+// --- BANNER SLIDER ---
 
+let slideIndex = 0;
+const slidesContainer = document.getElementById("slides");
+
+if (slidesContainer) {
+  setInterval(() => {
+    slideIndex++;
+    // Se você tiver 3 banners, ele volta pro primeiro após o terceiro
+    if (slideIndex > 2) slideIndex = 0; 
+    slidesContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
+  }, 4000); // 4 segundos para uma leitura mais Premium
+}
+
+// Inicia o sistema
 carregarProdutos();
