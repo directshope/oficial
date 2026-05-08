@@ -2,142 +2,178 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard Direct Shop</title>
+  <title>Dashboard Premium | DIRECT SHOP</title>
   <style>
-    :root { --gold: #f1c40f; --bg: #050505; --card: #111; --border: #222; }
-    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; display: flex; justify-content: center; padding: 10px; }
+    :root { --gold: #f1c40f; --bg: #050505; --card: #111; --border: #222; --input: #000; }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; display: flex; justify-content: center; padding: 20px; }
     
-    /* Container mais largo para caber mais colunas */
-    .container { background: var(--card); width: 100%; max-width: 950px; padding: 25px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 10px 50px #000; }
+    .dashboard { background: var(--card); width: 100%; max-width: 1100px; padding: 30px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 20px 50px #000; }
     
-    h2 { color: var(--gold); text-align: center; margin: 0 0 20px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
+    .header-dash { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
+    .header-dash h2 { margin: 0; font-size: 20px; letter-spacing: 3px; color: var(--gold); }
+
+    /* Barra de busca fixa no topo do painel */
+    .search-box { position: relative; margin-bottom: 25px; }
+    #busca-editar { width: 100%; padding: 15px; background: var(--input); border: 1px solid var(--gold); color: #fff; border-radius: 8px; font-size: 14px; }
+    #lista-busca { position: absolute; width: 100%; z-index: 100; background: #000; border: 1px solid var(--border); max-height: 200px; overflow-y: auto; border-radius: 0 0 8px 8px; }
+    .item-busca { padding: 12px; border-bottom: 1px solid #222; cursor: pointer; color: var(--gold); font-size: 13px; }
+    .item-busca:hover { background: #111; }
+
+    /* Layout em Colunas para matar a rolagem */
+    .main-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+    .column-title { font-size: 11px; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+    .column-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+    .input-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; color: #888; font-size: 10px; font-weight: bold; text-transform: uppercase; }
     
-    .section-title { font-size: 10px; color: var(--gold); border-bottom: 1px solid var(--border); margin: 15px 0 10px; text-transform: uppercase; font-weight: bold; }
-    
-    /* Layout em Grade (Grid) para economizar espaço vertical */
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    
-    .input-group { margin-bottom: 10px; }
-    label { display: block; margin-bottom: 4px; color: #666; font-size: 10px; text-transform: uppercase; font-weight: bold; }
-    
-    input, select { width: 100%; padding: 10px; background: #000; border: 1px solid var(--border); color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 13px; }
+    input, select { width: 100%; padding: 12px; background: var(--input); border: 1px solid var(--border); color: #fff; border-radius: 8px; box-sizing: border-box; font-size: 13px; transition: 0.3s; }
     input:focus { border-color: var(--gold); outline: none; }
 
-    /* Busca compacta */
-    #lista-busca { background: #000; position: absolute; width: 100%; max-width: 900px; z-index: 100; border: 1px solid var(--gold); border-top: none; max-height: 200px; overflow-y: auto; }
-    .item-busca { padding: 10px; border-bottom: 1px solid #111; cursor: pointer; font-size: 12px; color: var(--gold); }
-    .item-busca:hover { background: #1a1a1a; }
+    /* Fotos em Mini-Grid */
+    .photos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-    .btn-main { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 20px; }
-    .logout-btn { background: none; color: #444; border: none; font-size: 10px; cursor: pointer; text-decoration: underline; margin-top: 20px; }
+    /* Ações */
+    .actions { display: flex; gap: 15px; margin-top: 20px; }
+    .btn-pub { flex: 2; padding: 20px; background: var(--gold); color: #000; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+    .btn-new { flex: 1; padding: 20px; background: #222; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+    .btn-pub:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(241, 196, 15, 0.2); }
     
-    #admin-panel { display: none; position: relative; }
-    #status { text-align: center; margin-top: 10px; font-weight: bold; font-size: 12px; }
+    .logout-btn { background: none; color: #444; border: none; cursor: pointer; font-size: 11px; text-decoration: underline; }
+    #status { text-align: center; margin-top: 15px; font-weight: bold; font-size: 13px; }
+    #admin-panel { display: none; }
   </style>
 </head>
 <body>
 
-  <div class="container" id="login-screen">
-    <h2>Acesso Admin</h2>
-    <div class="grid-3">
-      <div class="input-group"><label>Usuário:</label><input type="text" id="gh-user"></div>
-      <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo"></div>
-      <div class="input-group"><label>GitHub Key:</label><input type="password" id="gh-token"></div>
-    </div>
-    <button class="btn-main" onclick="fazerLogin()">Entrar</button>
+  <div class="dashboard" id="login-screen" style="max-width: 450px;">
+    <h2 style="text-align: center; color: var(--gold);">ACESSO MASTER</h2>
+    <div class="input-group"><label>Usuário GitHub:</label><input type="text" id="gh-user"></div>
+    <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo"></div>
+    <div class="input-group"><label>GitHub Token:</label><input type="password" id="gh-token"></div>
+    <button class="btn-pub" onclick="fazerLogin()">ENTRAR NO SISTEMA</button>
   </div>
 
-  <div class="container" id="admin-panel">
-    <h2>Direct Shop Dashboard</h2>
+  <div class="dashboard" id="admin-panel">
+    <div class="header-dash">
+      <h2>DIRECT SHOP <span style="color:#fff; font-weight: 100;">DASHBOARD</span></h2>
+      <button class="logout-btn" onclick="logout()">Sair do Sistema</button>
+    </div>
 
-    <div class="input-group">
-      <input type="text" id="busca-editar" placeholder="🔍 Buscar produto para editar..." oninput="buscarParaEditar()">
+    <div class="search-box">
+      <input type="text" id="busca-editar" placeholder="🔍 BUSCAR PRODUTO PARA EDITAR OU LIMPAR..." oninput="buscarParaEditar()">
       <div id="lista-busca"></div>
     </div>
 
-    <div class="section-title">Dados Básicos</div>
-    <div class="grid-2">
-      <div class="input-group"><label>Título:</label><input type="text" id="p-titulo"></div>
-      <div class="input-group"><label>Subtítulo:</label><input type="text" id="p-subtitulo"></div>
-    </div>
+    <div class="main-grid">
+      <div class="col">
+        <div class="column-title">Informações de Venda</div>
+        <div class="input-group"><label>Título do Produto:</label><input type="text" id="p-titulo"></div>
+        <div class="input-row">
+          <div class="input-group"><label>Subtítulo (Ex: 100ml):</label><input type="text" id="p-subtitulo"></div>
+          <div class="input-group"><label>Preço (R$):</label><input type="text" id="p-preco"></div>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>Categoria Oficial:</label>
+            <select id="p-categoria">
+              <option value="perfumes">Perfumes</option>
+              <option value="tecnologia">Tecnologia</option>
+              <option value="beleza">Beleza e Cuidados Pessoais</option>
+              <option value="ferramentas">Ferramentas</option>
+              <option value="casa">Casa e Móveis</option>
+              <option value="esportes">Esportes e Fitness</option>
+              <option value="saude">Saúde</option>
+              <option value="veiculos">Acessórios para Veículos</option>
+              <option value="moda">Moda</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Selo:</label>
+            <select id="p-tag">
+              <option value="">Sem Selo</option>
+              <option value="Mais Vendido">🔥 Mais Vendido</option>
+              <option value="Oferta do Dia">⚡ Oferta do Dia</option>
+              <option value="Promoção">💎 Promoção</option>
+            </select>
+          </div>
+        </div>
 
-    <div class="grid-3">
-      <div class="input-group"><label>Preço (R$):</label><input type="text" id="p-preco"></div>
-      <div class="input-group">
-        <label>Categoria:</label>
-        <select id="p-categoria">
-          <option value="perfumes">Perfumes</option>
-          <option value="tecnologia">Tecnologia</option>
-          <option value="beleza">Beleza e Cuidados</option>
-          <option value="ferramentas">Ferramentas</option>
-          <option value="casa">Casa e Móveis</option>
-          <option value="esportes">Esportes e Fitness</option>
-          <option value="saude">Saúde</option>
-          <option value="veiculos">Veículos</option>
-          <option value="moda">Moda</option>
-        </select>
+        <div class="column-title">Logística e Destino</div>
+        <div class="input-row">
+          <div class="input-group"><label>ID Loja (Robô):</label><input type="text" id="p-loja" value="ml"></div>
+          <div class="input-group"><label>Estoque Atual:</label><input type="number" id="p-estoque"></div>
+        </div>
+        <div class="input-group"><label>Link Direto de Afiliado:</label><input type="text" id="p-link"></div>
       </div>
-      <div class="input-group">
-        <label>Selo:</label>
-        <select id="p-tag">
-          <option value="">Nenhum</option>
-          <option value="Mais Vendido">🔥 Mais Vendido</option>
-          <option value="Oferta do Dia">⚡ Oferta do Dia</option>
-          <option value="Promoção">💎 Promoção</option>
-        </select>
+
+      <div class="col">
+        <div class="column-title">Visual (Links das Imagens)</div>
+        <div class="photos-grid">
+          <div class="input-group"><label>Foto 1 (Capa):</label><input type="text" id="img1"></div>
+          <div class="input-group"><label>Foto 2:</label><input type="text" id="img2"></div>
+          <div class="input-group"><label>Foto 3:</label><input type="text" id="img3"></div>
+          <div class="input-group"><label>Foto 4:</label><input type="text" id="img4"></div>
+        </div>
+
+        <div class="column-title">Social Proof</div>
+        <div class="input-row">
+          <div class="input-group"><label>Nota (0-5):</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
+          <div class="input-group"><label>Avaliações:</label><input type="number" id="p-avaliacoes"></div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-new" onclick="limparFormulario()">Limpar / Novo</button>
+          <button class="btn-pub" id="btn-save" onclick="salvarProduto()">Publicar no Site</button>
+        </div>
+        <div id="status"></div>
       </div>
     </div>
-
-    <div class="section-title">Status & Fotos</div>
-    <div class="grid-3">
-      <div class="input-group"><label>Nota:</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
-      <div class="input-group"><label>Avaliações:</label><input type="number" id="p-avaliacoes"></div>
-      <div class="input-group"><label>Estoque:</label><input type="number" id="p-estoque"></div>
-    </div>
-
-    <div class="grid-2">
-      <div class="input-group"><label>Fotos (Links):</label>
-        <input type="text" id="img1" placeholder="Foto 1 (Capa)" style="margin-bottom:5px">
-        <input type="text" id="img2" placeholder="Foto 2">
-      </div>
-      <div class="input-group"><label>&nbsp;</label>
-        <input type="text" id="img3" placeholder="Foto 3" style="margin-bottom:5px">
-        <input type="text" id="img4" placeholder="Foto 4">
-      </div>
-    </div>
-
-    <div class="section-title">Conexão</div>
-    <div class="grid-2">
-      <div class="input-group"><label>ID Loja (Robô):</label><input type="text" id="p-loja" value="ml"></div>
-      <div class="input-group"><label>Link do Produto:</label><input type="text" id="p-link"></div>
-    </div>
-
-    <button class="btn-main" id="btn-save" onclick="salvarProduto()">Publicar no Site</button>
-    <div id="status"></div>
-    <center><button class="logout-btn" onclick="logout()">Sair</button></center>
   </div>
 
   <script>
     let produtosCarregados = [];
     let editandoIndex = null;
+
     window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
-    function mostrarPainel() { document.getElementById('login-screen').style.display='none'; document.getElementById('admin-panel').style.display='block'; carregarListaEdicao(); }
+
+    function mostrarPainel() { 
+      document.getElementById('login-screen').style.display='none'; 
+      document.getElementById('admin-panel').style.display='block'; 
+      carregarListaEdicao(); 
+    }
+
     function logout() { localStorage.clear(); location.reload(); }
+
     function fazerLogin() {
       const u = document.getElementById('gh-user').value, r = document.getElementById('gh-repo').value, t = document.getElementById('gh-token').value;
       if(!u || !r || !t) return alert("Preencha tudo!");
       localStorage.setItem('gh_user', u); localStorage.setItem('gh_repo', r); localStorage.setItem('gh_token', t);
       mostrarPainel();
     }
+
     async function carregarListaEdicao() {
       const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
       try {
         const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/produtos.json`, { headers: { 'Authorization': `token ${t}` } });
         const file = await res.json();
         produtosCarregados = JSON.parse(atob(file.content));
-      } catch (e) { console.log("Erro ao carregar lista"); }
+      } catch (e) { console.log("Aguardando arquivo..."); }
     }
+
+    function limparFormulario() {
+      editandoIndex = null;
+      const ids = ['p-titulo', 'p-subtitulo', 'p-preco', 'p-link', 'p-avaliacoes', 'p-estoque', 'img1', 'img2', 'img3', 'img4'];
+      ids.forEach(id => document.getElementById(id).value = "");
+      document.getElementById('p-nota').value = "4.8";
+      document.getElementById('p-loja').value = "ml";
+      document.getElementById('p-tag').value = "";
+      document.getElementById('p-categoria').value = "perfumes";
+      document.getElementById('btn-save').innerText = "PUBLICAR NO SITE";
+      document.getElementById('status').innerText = "";
+    }
+
     function buscarParaEditar() {
       const termo = document.getElementById('busca-editar').value.toLowerCase();
       const lista = document.getElementById('lista-busca');
@@ -158,23 +194,28 @@
             document.getElementById('p-loja').value = p.loja;
             document.getElementById('p-categoria').value = p.categoria || "perfumes";
             for(let i=1; i<=4; i++) { document.getElementById(`img${i}`).value = (p.imagens && p.imagens[i-1]) ? p.imagens[i-1] : ""; }
-            document.getElementById('btn-save').innerText = "ATUALIZAR AGORA";
+            document.getElementById('btn-save').innerText = "ATUALIZAR PRODUTO";
+            document.getElementById('busca-editar').value = "";
             lista.innerHTML = "";
           };
           lista.appendChild(item);
         }
       });
     }
+
     async function salvarProduto() {
       const btn = document.getElementById('btn-save'), st = document.getElementById('status');
       const imgs = [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(i => i !== "");
       const user = localStorage.getItem('gh_user'), repo = localStorage.getItem('gh_repo'), token = localStorage.getItem('gh_token');
       const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
-      btn.disabled = true; btn.innerText = "SALVANDO...";
+      
+      btn.disabled = true; btn.innerText = "ENVIANDO...";
+
       try {
         const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
         const file = await res.json();
         let content = JSON.parse(atob(file.content));
+
         const novoProduto = {
           titulo: document.getElementById('p-titulo').value,
           subtitulo: document.getElementById('p-subtitulo').value,
@@ -189,13 +230,20 @@
           imagens: imgs,
           data: editandoIndex !== null ? content[editandoIndex].data : new Date().toLocaleDateString('pt-BR')
         };
+
         if (editandoIndex !== null) content[editandoIndex] = novoProduto; else content.unshift(novoProduto);
+
         const save = await fetch(url, {
           method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: "Update", content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))), sha: file.sha })
         });
-        if(save.ok) { st.style.color = "#2ecc71"; st.innerText = "SALVO!"; setTimeout(() => location.reload(), 1000); }
-      } catch (e) { alert("Erro!"); btn.disabled = false; btn.innerText = "Tentar Novamente"; }
+
+        if(save.ok) { 
+          st.style.color = "#2ecc71"; st.innerText = "🚀 PRODUTO PUBLICADO!"; 
+          setTimeout(() => limparFormulario(), 1500); 
+          carregarListaEdicao(); // Recarrega a lista interna
+        }
+      } catch (e) { alert("Erro de conexão!"); btn.disabled = false; btn.innerText = "TENTAR NOVAMENTE"; }
     }
   </script>
 </body>
