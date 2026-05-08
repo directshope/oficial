@@ -19,7 +19,6 @@ function renderizar(lista) {
   container.innerHTML = "";
 
   lista.forEach((p, index) => {
-    // Lógica das estrelas premium
     let estrelas = "";
     const nota = parseFloat(p.nota) || 0;
     for (let i = 1; i <= 5; i++) {
@@ -28,34 +27,29 @@ function renderizar(lista) {
       else estrelas += '<span class="star">★</span>';
     }
 
-    // Pega a primeira imagem para o card principal
     const imgCard = p.imagens && p.imagens.length > 0 ? p.imagens[0] : 'images/placeholder.png';
 
-    // Criamos o card. O novo produto entra na sequência correta
+    // LÓGICA DO ÍCONE AUTOMÁTICO
+    let logoLoja = "";
+    if (p.loja === "ml") logoLoja = '<img src="images/logos/ml.png" class="store-icon" title="Mercado Livre">';
+    else if (p.loja === "shopee") logoLoja = '<img src="images/logos/shopee.png" class="store-icon" title="Shopee">';
+
     const card = `
       <div class="card">
+        ${logoLoja}
         ${p.tag ? `<div class="badge">${p.tag}</div>` : ''}
         <img src="${imgCard}" onclick="abrirGaleria(${index})" alt="${p.titulo}">
-        
         <h3>${p.titulo}</h3>
-        
         ${p.subtitulo ? `<p style="font-size:12px; color:#aaa; margin-top:-5px; font-weight:bold;">${p.subtitulo}</p>` : ''}
-        
-        <div class="stars-row">
-          ${estrelas} <span class="rev-text">(${p.avaliacoes || 0})</span>
-        </div>
-        
+        <div class="stars-row">${estrelas} <span class="rev-text">(${p.avaliacoes || 0})</span></div>
         <p class="price">R$ ${p.preco}</p>
-        
         ${p.estoque ? `<p class="stock-tag">Restam apenas ${p.estoque} unidades!</p>` : ''}
-        
         <button onclick="window.open('${p.link}')">Comprar Agora</button>
       </div>
     `;
     container.innerHTML += card;
   });
 }
-
 // --- FUNÇÕES DA GALERIA PREMIUM ---
 
 function abrirGaleria(idx) {
