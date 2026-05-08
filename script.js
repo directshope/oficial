@@ -41,6 +41,7 @@ function renderizar(lista) {
         <div class="stars-row">
           ${estrelas} <span class="rev-text">(${p.avaliacoes || 0})</span>
         </div>
+        <span class="card-category">${p.categoria || ""}</span>
         
         <div class="card-footer">
           <p class="price">R$ ${p.preco}</p>
