@@ -5,7 +5,16 @@ async function carregarProdutos() {
   try {
     // Adicionamos o timestamp para evitar que o navegador use o cache antigo
     const res = await fetch("produtos.json?t=" + new Date().getTime());
-    produtos = await res.json();
+    let produtosOriginais = await res.json();
+    
+    // --- EMBARALHADOR DE VITRINE ---
+    // Mistura a ordem dos produtos toda vez que a página carrega
+    for (let i = produtosOriginais.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [produtosOriginais[i], produtosOriginais[j]] = [produtosOriginais[j], produtosOriginais[i]];
+    }
+    
+    produtos = produtosOriginais;
     produtosFiltrados = [...produtos]; // Inicialmente, todos estão na lista
     renderizar(produtosFiltrados);
   } catch (e) { 
