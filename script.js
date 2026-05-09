@@ -2,13 +2,13 @@ let produtos = [];
 let produtosFiltrados = []; // Para a galeria não se perder na busca
 
 async function carregarProdutos() {
+async function carregarProdutos() {
   try {
     // Adicionamos o timestamp para evitar que o navegador use o cache antigo
     const res = await fetch("produtos.json?t=" + new Date().getTime());
     let produtosOriginais = await res.json();
     
     // --- EMBARALHADOR DE VITRINE ---
-    // Mistura a ordem dos produtos toda vez que a página carrega
     for (let i = produtosOriginais.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [produtosOriginais[i], produtosOriginais[j]] = [produtosOriginais[j], produtosOriginais[i]];
@@ -17,6 +17,22 @@ async function carregarProdutos() {
     produtos = produtosOriginais;
     produtosFiltrados = [...produtos]; // Inicialmente, todos estão na lista
     renderizar(produtosFiltrados);
+
+    // --- CRIADOR DINÂMICO DE CATEGORIAS ---
+    const selectCategoria = document.getElementById("categoria");
+    if (selectCategoria) {
+        // Pega todas as categorias únicas do seu banco de dados e ignora as vazias
+        const categoriasUnicas = [...new Set(produtos.map(p => p.categoria).filter(c => c))];
+        
+        // Limpa as categorias velhas do HTML e deixa só a "Todas"
+        selectCategoria.innerHTML = '<option value="todos">Todas as Categorias</option>';
+        
+        // Adiciona as categorias exatas que vieram do seu painel Python
+        categoriasUnicas.forEach(cat => {
+            selectCategoria.innerHTML += `<option value="${cat}">${cat}</option>`;
+        });
+    }
+
   } catch (e) { 
     console.log("Erro ao carregar produtos. Verifique o arquivo produtos.json."); 
   }
