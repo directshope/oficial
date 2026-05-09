@@ -161,7 +161,7 @@
         <div class="input-group"><label>Link de Compra:</label><input type="text" id="p-link"></div>
     </div>
 
-    <button class="btn-main" id="btn-save" onclick="salvarProduto()">Publicar no GitHub</button>
+    <button class="btn-main" id="btn-save" onclick="salvarProduto()">Publicar no Site</button>
     <div id="status"></div>
     <button class="logout-btn" onclick="logout()">Desconectar Conta</button>
 </div>
@@ -296,7 +296,18 @@
             if(save.ok) {
                 st.style.display = "block"; st.style.background = "#2ecc7122"; st.style.color = "#2ecc71";
                 st.innerText = "🚀 PUBLICADO COM SUCESSO NO GITHUB!";
-                setTimeout(() => location.reload(), 1500);
+                
+                // Sincroniza a lista local com o que foi enviado para o GitHub
+                produtosCarregados = content;
+                editandoIndex = null;
+                
+                // Limpa o formulário para o próximo produto sem recarregar a página
+                document.querySelectorAll('input:not([type=password]), textarea').forEach(input => input.value = "");
+                document.getElementById('btn-save').innerText = "Publicar no GitHub";
+                document.getElementById('btn-save').disabled = false;
+                
+                // Esconde a mensagem de sucesso após 3 segundos
+                setTimeout(() => { st.style.display = "none"; }, 3000);
             } else { throw new Error(); }
 
         } catch (e) {
