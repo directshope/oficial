@@ -12,7 +12,6 @@ body {
   top: 0;
   display: flex;
   align-items: center;
-  justify-content: center; /* Centraliza o conteúdo no monitor grande */
   gap: 15px;
   padding: 15px;
   background: rgba(0,0,0,0.9);
