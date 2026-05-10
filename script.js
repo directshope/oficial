@@ -107,8 +107,19 @@ function abrirGaleria(idx) {
     });
   }
   
-  document.getElementById('modal-galeria').style.display = 'flex';
+ document.getElementById('modal-galeria').style.display = 'flex';
+
+const fotoModal = document.getElementById('foto-grande-modal');
+
+fotoModal.addEventListener('mousemove', () => {
+  fotoModal.classList.add('zoom-ativo');
+});
+
+fotoModal.addEventListener('mouseleave', () => {
+  fotoModal.classList.remove('zoom-ativo');
+});
 }
+
 
 function fecharGaleria() { 
   document.getElementById('modal-galeria').style.display = 'none'; 
