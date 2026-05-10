@@ -83,10 +83,29 @@ function abrirGaleria(idx) {
   document.getElementById('modal-titulo-produto').innerText = p.titulo;
   document.getElementById('modal-descricao').innerText = p.descricao || "";
   
-  // Atualiza o link de compra do modal
   document.getElementById('modal-link-compra').onclick = function() {
     window.open(p.link, '_blank');
   };
+
+  // Restaura a lógica das 4 miniaturas sem quebrar sua ferramenta
+  const containerMinis = document.getElementById('miniaturas-container');
+  containerMinis.innerHTML = "";
+  
+  if (p.imagens && p.imagens.length > 0) {
+    p.imagens.forEach((imgUrl, i) => {
+      const imgEl = document.createElement('img');
+      imgEl.src = imgUrl;
+      imgEl.className = 'miniatura';
+      if (i === 0) imgEl.classList.add('active'); // Destaca a primeira
+      
+      imgEl.onclick = function() {
+        document.getElementById('foto-grande-modal').src = imgUrl;
+        document.querySelectorAll('.miniatura').forEach(m => m.classList.remove('active'));
+        imgEl.classList.add('active');
+      };
+      containerMinis.appendChild(imgEl);
+    });
+  }
   
   document.getElementById('modal-galeria').style.display = 'flex';
 }
