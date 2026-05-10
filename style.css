@@ -68,14 +68,13 @@ body.premium-dark {
   display: flex;
   align-items: center;
 }
-.marcas-track {
-  display: flex;
-  gap: 60px;
+display: flex;
+  width: max-content;
   align-items: center;
   animation: scrollMarcas 60s linear infinite;
   white-space: nowrap;
 }
-.marca-item { font-size: 16px; font-weight: 800; color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; transition: 0.3s; }
+.marca-item { padding-right: 60px; font-size: 16px; font-weight: 800; color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; transition: 0.3s; }
 .marca-item:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
 @keyframes scrollMarcas {
