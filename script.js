@@ -109,15 +109,6 @@ function abrirGaleria(idx) {
   
  document.getElementById('modal-galeria').style.display = 'flex';
 
-const fotoModal = document.getElementById('foto-grande-modal');
-
-fotoModal.addEventListener('mousemove', () => {
-  fotoModal.classList.add('zoom-ativo');
-});
-
-fotoModal.addEventListener('mouseleave', () => {
-  fotoModal.classList.remove('zoom-ativo');
-});
 }
 
 
@@ -141,6 +132,37 @@ if (slidesContainer) {
     if (slideIndex > 2) slideIndex = 0; 
     slidesContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
   }, 4000); 
+}
+
+// ZOOM CORRIGIDO - CARREGA UMA VEZ SÓ NO FINAL DO ARQUIVO
+const fotoModal = document.getElementById('foto-grande-modal');
+
+if (fotoModal) {
+  fotoModal.onclick = function() {
+    this.classList.toggle('zoom-ativo');
+    if (!this.classList.contains('zoom-ativo')) {
+      this.style.transform = "scale(1)";
+      this.style.transformOrigin = "center";
+    }
+  };
+
+  fotoModal.addEventListener('mousemove', (e) => {
+    if (fotoModal.classList.contains('zoom-ativo')) {
+      const { left, top, width, height } = fotoModal.getBoundingClientRect();
+      // clientX resolve o erro da imagem sumir ao mover o mouse
+      const x = ((e.clientX - left) / width) * 100;
+      const y = ((e.clientY - top) / height) * 100;
+      
+      fotoModal.style.transformOrigin = `${x}% ${y}%`;
+      fotoModal.style.transform = "scale(2.5)";
+    }
+  });
+
+  fotoModal.addEventListener('mouseleave', () => {
+    fotoModal.classList.remove('zoom-ativo');
+    fotoModal.style.transform = "scale(1)";
+    fotoModal.style.transformOrigin = "center";
+  });
 }
 
 // Inicia o sistema
