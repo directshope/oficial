@@ -214,19 +214,18 @@ body.premium-dark {
   align-items: center;
   backdrop-filter: blur(8px);
 }
-.modal-content-premium { 
-  background: rgba(15, 15, 18, 0.98); 
-  padding: 40px; 
-  border-radius: 24px; 
-  width: 90%; 
-  max-width: 800px; 
-  text-align: center; 
-  position: relative; 
-  border: 1px solid rgba(241, 196, 15, 0.3); 
-  max-height: 95vh; 
-  overflow-y: auto; 
-  overflow-x: hidden; 
-  box-shadow: 0 0 50px rgba(0,0,0,1), 0 0 20px rgba(241, 196, 15, 0.1);
+.modal-content-premium {
+  background: rgba(15, 15, 18, 0.98);
+  padding: 40px;
+  border-radius: 24px;
+  width: 95%;
+  max-width: 800px;
+  text-align: center;
+  position: relative;
+  border: 1px solid rgba(241, 196, 15, 0.3);
+  max-height: 90vh;
+  overflow: hidden; /* ELITE: Mata qualquer barra de rolagem interna */
+  box-shadow: 0 0 50px rgba(0, 0, 0, 1), 0 0 20px rgba(241, 196, 15, 0.1);
   backdrop-filter: blur(20px);
 }
 .fechar-modal { position: absolute; top: 15px; right: 25px; font-size: 30px; color: #fff; cursor: pointer; opacity: 0.6; transition: 0.3s; }
