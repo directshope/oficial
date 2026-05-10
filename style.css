@@ -70,7 +70,7 @@ body.premium-dark {
 }
 .marcas-track {
   display: flex;
-  width: max-content;
+  gap: 60px;
   align-items: center;
   animation: scrollMarcas 30s linear infinite;
   white-space: nowrap;
