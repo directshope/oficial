@@ -72,7 +72,7 @@ body.premium-dark {
   display: flex;
   gap: 60px;
   align-items: center;
-  animation: scrollMarcas 30s linear infinite;
+  animation: scrollMarcas 60s linear infinite;
   white-space: nowrap;
 }
 .marca-item { font-size: 16px; font-weight: 800; color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; transition: 0.3s; }
