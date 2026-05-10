@@ -29,7 +29,7 @@ body {
   max-width: 1300px; 
   margin: 0 auto; 
   overflow: hidden; 
-  height: 450px; 
+  height: 600px; 
 }
 
 .slides { display: flex; transition: 0.5s; height: 100%; }
