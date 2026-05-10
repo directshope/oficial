@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DIRECT SHOP | Oficial</title>
+  <title>DIRECT SHOP | Premium Official</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,11 +13,13 @@
 </head>
 <body class="premium-dark">
 
+<div class="bg-glow"></div>
+
 <header class="header">
   <div class="logo">DIRECT SHOP</div>
-  <input type="text" id="search" placeholder="Buscar produtos...">
+  <input type="text" id="search" placeholder="Procurar produtos exclusivos...">
   <select id="categoria">
-    <option value="todos">Categorias</option>
+    <option value="todos">Todas as Categorias</option>
     <option value="perfumes">Perfumes</option>
     <option value="tecnologia">Tecnologia</option>
     <option value="beleza">Beleza e Cuidados</option>
@@ -25,34 +27,47 @@
     <option value="casa">Casa e Móveis</option>
     <option value="esportes">Esportes e Fitness</option>
     <option value="saude">Saúde</option>
-    <option value="veiculos">Acessórios para Veículos</option>
+    <option value="veiculos">Acessórios auto</option>
     <option value="moda">Moda</option>
   </select>
 </header>
 
 <section class="banner">
   <div class="slides" id="slides">
-    <img src="images/banner1.png">
-    <img src="images/banner2.png">
-    <img src="images/banner3.png">
+    <img src="images/banner1.png" alt="Banner 1">
+    <img src="images/banner2.png" alt="Banner 2">
+    <img src="images/banner3.png" alt="Banner 3">
+  </div>
+  <div class="banner-fade"></div>
+</section>
+
+<section class="marcas-container">
+  <div class="marcas-track">
+    <span class="marca-item">APPLE</span>
+    <span class="marca-item">XIAOMI</span>
+    <span class="marca-item">SAMSUNG</span>
+    <span class="marca-item">JBL</span>
+    <span class="marca-item">BASEUS</span>
+    <span class="marca-item">SONY</span>
+    <span class="marca-item">LENOVO</span>
+    <span class="marca-item">APPLE</span>
+    <span class="marca-item">XIAOMI</span>
+    <span class="marca-item">SAMSUNG</span>
+    <span class="marca-item">JBL</span>
+    <span class="marca-item">BASEUS</span>
+    <span class="marca-item">SONY</span>
+    <span class="marca-item">LENOVO</span>
   </div>
 </section>
 
 <section class="nav-premium-container">
   <div class="nav-premium-card">
-    <div class="nav-left">
-      <span class="nav-label">EXPLORE NOSSAS LOJAS</span>
-    </div>
-    <div class="nav-center">
-      <div class="tabs-premium" id="abas-lojas">
-        <button class="tab-link active" data-loja="all">Todos</button>
-        <button class="tab-link" data-loja="ml">Mercado Livre</button>
-        <button class="tab-link" data-loja="shopee">Shopee</button>
-        <button class="tab-link" data-loja="tiktok">TikTok</button>
-      </div>
-    </div>
-    <div class="nav-right">
-      <button id="btn-ver-todos" class="gold-button-small">VER TUDO</button>
+    <div class="nav-label">EXPLORE AS LOJAS</div>
+    <div class="tabs-premium" id="abas-lojas">
+      <button class="tab-link active" data-loja="all">Todos</button>
+      <button class="tab-link" data-loja="ml">Mercado Livre</button>
+      <button class="tab-link" data-loja="shopee">Shopee</button>
+      <button class="tab-link" data-loja="tiktok">TikTok</button>
     </div>
   </div>
 </section>
