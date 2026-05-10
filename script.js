@@ -147,22 +147,23 @@ if (fotoModal) {
   };
 
   fotoModal.addEventListener('mousemove', (e) => {
-    if (fotoModal.classList.contains('zoom-ativo')) {
-      const { left, top, width, height } = fotoModal.getBoundingClientRect();
-      // clientX resolve o erro da imagem sumir ao mover o mouse
-      const x = ((e.clientX - left) / width) * 100;
-      const y = ((e.clientY - top) / height) * 100;
-      
-      fotoModal.style.transformOrigin = `${x}% ${y}%`;
-      fotoModal.style.transform = "scale(2.5)";
-    }
-  });
+  if (fotoModal.classList.contains('zoom-ativo')) {
+    const { left, top, width, height } = fotoModal.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    
+    // transform-origin não altera o tamanho real do elemento, por isso é ultra-leve
+    fotoModal.style.transformOrigin = `${x}% ${y}%`;
+    fotoModal.style.transform = "scale(2.2)"; 
+  }
+});
 
-  fotoModal.addEventListener('mouseleave', () => {
-    fotoModal.classList.remove('zoom-ativo');
-    fotoModal.style.transform = "scale(1)";
-    fotoModal.style.transformOrigin = "center";
-  });
+// RESET AUTOMÁTICO: A imagem volta ao normal quando o mouse sai dela
+fotoModal.addEventListener('mouseleave', () => {
+  fotoModal.classList.remove('zoom-ativo');
+  fotoModal.style.transform = "scale(1)";
+  fotoModal.style.transformOrigin = "center";
+});
 }
 
 // Inicia o sistema
