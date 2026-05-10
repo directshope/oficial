@@ -69,7 +69,7 @@ body.premium-dark {
   align-items: center;
 }
 .marcas-track {
-display: flex;
+  display: flex;
   width: max-content;
   align-items: center;
   animation: scrollMarcas 60s linear infinite;
