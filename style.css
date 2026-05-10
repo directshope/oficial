@@ -131,9 +131,9 @@ body.premium-dark {
 
 /* CARDS PREMIUM (Hover Cinematográfico) */
 .card {
-  background: rgba(20, 20, 24, 0.8);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  background: rgba(32, 32, 36, 0.95);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   padding: 20px;
   position: relative;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -150,7 +150,7 @@ body.premium-dark {
 
 .badge { position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; padding: 6px 14px; font-size: 11px; font-weight: 800; border-radius: 20px; z-index: 10; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3); }
 
-.card img { width: 100%; height: 220px; object-fit: contain; margin-bottom: 20px; cursor: zoom-in; transition: transform 0.5s ease; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); }
+.card img { width: 100%; height: 220px; object-fit: contain; margin-bottom: 20px; cursor: zoom-in; transition: transform 0.5s ease; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); border-radius: 15px; }
 .card:hover img { transform: scale(1.05); }
 
 .card h3 { font-size: 16px; font-weight: 600; color: #fff; height: 45px; overflow: hidden; margin: 0 0 10px; line-height: 1.4; }
@@ -181,8 +181,21 @@ body.premium-dark {
 
 /* MODAL DA GALERIA */
 .modal-foto { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-.modal-content-premium { background: #0a0a0c; padding: 35px; border-radius: 20px; width: 90%; max-width: 650px; text-align: center; position: relative; border: 1px solid rgba(255,255,255,0.1); max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
-.foto-principal-modal { width: 100%; height: 350px; object-fit: contain; margin-bottom: 25px; }
+.modal-content-premium { 
+  background: rgba(15, 15, 18, 0.98); 
+  padding: 40px; 
+  border-radius: 24px; 
+  width: 90%; 
+  max-width: 700px; 
+  text-align: center; 
+  position: relative; 
+  border: 1px solid rgba(241, 196, 15, 0.3); 
+  max-height: 90vh; 
+  overflow-y: auto; 
+  box-shadow: 0 0 50px rgba(0,0,0,1), 0 0 20px rgba(241, 196, 15, 0.1);
+  backdrop-filter: blur(20px);
+}
+.foto-principal-modal { width: 100%; height: 350px; object-fit: contain; margin-bottom: 25px; border-radius: 18px; background: rgba(255,255,255,0.02); }
 .fechar-modal { position: absolute; top: 15px; right: 25px; font-size: 30px; color: #fff; cursor: pointer; opacity: 0.6; transition: 0.3s; }
 .fechar-modal:hover { opacity: 1; color: #f1c40f; transform: scale(1.1); }
 #modal-titulo-produto { color: #f1c40f; font-weight: 800; margin-bottom: 15px; font-size: 22px; }
