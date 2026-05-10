@@ -12,6 +12,7 @@ body {
   top: 0;
   display: flex;
   align-items: center;
+  justify-content: center; /* Centraliza o conteúdo no monitor grande */
   gap: 15px;
   padding: 15px;
   background: rgba(0,0,0,0.9);
@@ -24,9 +25,22 @@ body {
 #search { flex: 1; }
 
 /* BANNER */
-.banner { width: 100%; overflow: hidden; height: 600px; }
+.banner { 
+  width: 100%; 
+  max-width: 1300px; 
+  margin: 0 auto; 
+  overflow: hidden; 
+  height: 450px; 
+}
+
 .slides { display: flex; transition: 0.5s; height: 100%; }
-.slides img { width: 100%; height: auto; display: block; }
+
+.slides img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  display: block; 
+}
 
 /* ABAS */
 .tabs { display: flex; justify-content: center; gap: 10px; margin: 20px; }
@@ -36,11 +50,12 @@ body {
 /* PRODUTOS - GRID */
 .produtos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  grid-template-columns: repeat(auto-fill, minmax(280px, 320px)); /* Trava o tamanho dos cards */
   gap: 25px;
   padding: 20px;
+  max-width: 1300px; /* Não deixa o site esticar infinito no monitor grande */
+  margin: 0 auto; /* Centraliza o bloco na tela */
   justify-content: center;
-  align-items: start;
 }
 
 /* CARD PREMIUM - ALTURA TRAVADA */
@@ -152,12 +167,19 @@ body {
 }
 
 .modal-content-premium {
-  background: #1a1a1a; padding: 20px; border-radius: 15px;
-  width: 90%; max-width: 600px; text-align: center; position: relative;
+  background: #1a1a1a; 
+  padding: 20px; 
+  border-radius: 15px;
+  width: 95%; 
+  max-width: 600px; 
+  max-height: 90vh; 
+  overflow-y: auto; 
+  text-align: center; 
+  position: relative;
   border: 1px solid #333;
 }
 
-.foto-principal-modal { width: 100%; height: 400px; object-fit: contain; border-radius: 10px; background: #fff; }
+.foto-principal-modal { width: 100%; max-height: 350px; object-fit: contain; border-radius: 10px; background: #fff; }
 .fechar-modal { position: absolute; top: 10px; right: 20px; font-size: 35px; color: #fff; cursor: pointer; }
 .miniaturas-row { display: flex; justify-content: center; gap: 10px; margin-top: 15px; overflow-x: auto; padding: 10px 0; }
 .miniatura { width: 70px; height: 70px; object-fit: cover; border-radius: 5px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; background: #fff; }
