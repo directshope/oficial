@@ -233,3 +233,42 @@ body.premium-dark {
 #modal-titulo-produto { color: #f1c40f; font-weight: 800; margin-bottom: 15px; font-size: 22px; }
 #modal-descricao { color: #aaa; text-align: left; font-size: 14px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; line-height: 1.6; }
 .modal-cta { margin-top: 25px; }
+
+/* MINIATURAS PREMIUM DO MODAL */
+.miniaturas-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.miniatura {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.35s ease;
+  box-sizing: border-box;
+}
+
+.miniatura:hover {
+  transform: translateY(-4px) scale(1.05);
+  border-color: rgba(241, 196, 15, 0.6);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+}
+
+.miniatura.active {
+  border-color: #f1c40f;
+  box-shadow: 0 0 20px rgba(241, 196, 15, 0.35);
+}
+
+/* ANIMAÇÃO SUAVE DA FOTO GRANDE */
+#foto-grande-modal {
+  transition: all 0.4s ease;
+}
