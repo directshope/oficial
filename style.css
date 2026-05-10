@@ -272,3 +272,13 @@ body.premium-dark {
 #foto-grande-modal {
   transition: all 0.4s ease;
 }
+
+/* ZOOM PREMIUM NA FOTO */
+.foto-principal-modal {
+  cursor: zoom-in;
+  transition: transform 0.25s ease;
+}
+
+.zoom-ativo {
+  transform: scale(1.8);
+}
