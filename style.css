@@ -155,10 +155,12 @@ body.premium-dark {
   height: 220px;
   object-fit: contain;
   margin-bottom: 20px;
-  border-radius: 30px !important; /* Arredondamento forte e obrigatório */
-  background: rgba(255, 255, 255, 0.03); /* ISSO FORÇA A CURVA APARECER EM QUALQUER FOTO */
-  border: 1px solid rgba(255, 255, 255, 0.05); /* Toque final de elite */
   display: block;
+  /* ARREDONDAMENTO ROBUSTO DA FOTO */
+  border-radius: 25px !important;
+  background: rgba(255, 255, 255, 0.03); /* Cria a base para a curva ser visível em qualquer foto */
+  clip-path: inset(0 round 25px); /* Força o recorte arredondado no conteúdo da imagem */
+  -webkit-clip-path: inset(0 round 25px);
 }
 
 .card:hover img { transform: scale(1.05); }
