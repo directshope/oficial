@@ -153,9 +153,11 @@ body.premium-dark {
 .card img {
   width: 100%;
   height: 220px;
-  object-fit: contain; /* Garante que a imagem NÃO seja cortada */
+  object-fit: contain; /* Mantém o produto inteiro, sem cortes */
   margin-bottom: 20px;
-  border-radius: 20px !important; /* Arredonda as pontas da foto */
+  border-radius: 12px; /* Arredonda apenas o necessário */
+  padding: 10px; /* Cria um respiro para o arredondamento não "comer" o produto */
+  box-sizing: border-box;
   display: block;
 }
 .card:hover img { transform: scale(1.05); }
