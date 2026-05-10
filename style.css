@@ -150,7 +150,7 @@ body.premium-dark {
 
 .badge { position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; padding: 6px 14px; font-size: 11px; font-weight: 800; border-radius: 20px; z-index: 10; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3); }
 
-.card img { width: 100%; height: 220px; object-fit: contain; margin-bottom: 20px; cursor: zoom-in; transition: transform 0.5s ease; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); border-radius: 15px; }
+.card img { width: 100%; height: 220px; object-fit: contain; margin-bottom: 20px; cursor: zoom-in; transition: transform 0.5s ease; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); border-radius: 15px !important; }
 .card:hover img { transform: scale(1.05); }
 
 .card h3 { font-size: 16px; font-weight: 600; color: #fff; height: 45px; overflow: hidden; margin: 0 0 10px; line-height: 1.4; }
@@ -180,7 +180,7 @@ body.premium-dark {
 }
 
 /* MODAL DA GALERIA */
-.modal-foto { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+.foto-principal-modal { width: auto; max-width: 100%; height: 350px; object-fit: contain; margin-bottom: 25px; border-radius: 18px; background: rgba(255,255,255,0.02); display: block; margin-left: auto; margin-right: auto; }
 .modal-content-premium { 
   background: rgba(15, 15, 18, 0.98); 
   padding: 40px; 
