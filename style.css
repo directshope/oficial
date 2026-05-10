@@ -65,8 +65,6 @@ body.premium-dark {
   padding: 15px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.02);
   border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-  display: flex;
-  align-items: center;
 }
 .marcas-track {
   display: flex;
@@ -80,7 +78,7 @@ body.premium-dark {
 
 @keyframes scrollMarcas {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-33.33%); }
 }
 
 /* CARD FLUTUANTE DE ABAS (Glass + Glow) */
