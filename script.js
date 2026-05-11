@@ -165,17 +165,39 @@ document.getElementById("search").addEventListener("input", e => {
   renderizar(produtosFiltrados);
 });
 
-// BANNER SLIDER AUTOMÁTICO
-let slideIndex = 0;
-const slidesContainer = document.getElementById("slides");
+// BANNER SLIDER AUTOMÁTICO DINÂMICO
+async function carregarBanners() {
+  try {
+    const res = await fetch("banners.json?t=" + new Date().getTime());
+    if (res.ok) {
+      const banners = await res.json();
+      const slidesContainer = document.getElementById("slides");
+      if (!slidesContainer || banners.length === 0) return;
+      
+      slidesContainer.innerHTML = ""; // Limpa a área
+      
+      // Cria as imagens no HTML
+      banners.forEach((imgSrc, index) => {
+        const img = document.createElement("img");
+        img.src = imgSrc;
+        img.alt = "Banner " + (index + 1);
+        slidesContainer.appendChild(img);
+      });
 
-if (slidesContainer) {
-  setInterval(() => {
-    slideIndex++;
-    if (slideIndex > 2) slideIndex = 0; 
-    slidesContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
-  }, 4000); 
+      // Lógica do carrossel inteligente (sem limite fixo)
+      let slideIndex = 0;
+      setInterval(() => {
+        slideIndex++;
+        if (slideIndex >= banners.length) slideIndex = 0; 
+        slidesContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
+      }, 4000); 
+    }
+  } catch(e) { 
+    console.log("Aviso: Não foi possível carregar banners.json"); 
+  }
 }
+// Executa a função imediatamente ao carregar o script
+carregarBanners();
 
 // LÓGICA DE ZOOM TIPO "LUPA"
 const fotoModal = document.getElementById('foto-grande-modal');
