@@ -154,7 +154,7 @@ if (fotoModal) {
     
     // transform-origin não altera o tamanho real do elemento, por isso é ultra-leve
     fotoModal.style.transformOrigin = `${x}% ${y}%`;
-    fotoModal.style.transform = "scale(2.2)"; 
+    fotoModal.style.transform = "scale(1.18)"; 
   }
 });
 
