@@ -131,16 +131,12 @@ body.premium-dark {
 
 /* CARDS PREMIUM (Hover Cinematográfico) */
 .card {
-  background: rgba(32, 32, 36, 0.95);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  position: relative;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  display: flex;
-  flex-direction: column;
-  min-height: 520px;
-  backdrop-filter: blur(10px);
+  position: relative; /* ESSA LINHA É A CHAVE: ela trava o selo no canto do card */
+  background: var(--card-bg);
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .card:hover { 
   transform: translateY(-10px); 
@@ -159,8 +155,7 @@ body.premium-dark {
   color: #000;
   text-transform: uppercase;
   z-index: 10;
-  letter-spacing: 1px;
-  border-bottom-right-radius: 8px; /* Pequeno detalhe premium no canto interno */
+  border-radius: 0; /* Isso garante que seja um retângulo reto como antes */
 }
 
 /* Efeito de Brilho Pulsante para Ofertas e Mais Vendidos */
