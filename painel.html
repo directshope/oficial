@@ -86,13 +86,13 @@
         <div class="input-group" style="background: #16161a; padding: 20px; border-radius: 15px; border: 1px solid var(--border);">
             <label style="color: var(--gold);">🛒 Loja Ativa:</label>
             <select id="loja-ativa" onchange="carregarDadosLoja()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">
-                <option value="ml">Mercado Livre (ml.json)</option>
-                <option value="shopee">Shopee (shopee.json)</option>
-                <option value="tiktok">TikTok (tiktok.json)</option>
-            </select>
+    <option value="ml">Mercado Livre</option>
+    <option value="shopee">Shopee</option>
+    <option value="tiktok">TikTok</option>
+</select>
         </div>
 
-        <div class="section-title">🔍 Editar Existente</div>
+        <div class="section-title">🔍 Localizar e Alterar Produtos</div>
         <div class="input-group">
             <input type="text" id="busca-editar" placeholder="Buscar produto nesta loja..." oninput="buscarNoJson()">
             <div id="lista-busca"></div>
@@ -101,7 +101,7 @@
         <div class="section-title">📦 Dados do Produto</div>
         <div class="grid">
             <div class="input-group"><label>Título:</label><input type="text" id="p-titulo"></div>
-            <div class="input-group"><label>Subtítulo:</label><input type="text" id="p-subtitulo"></div>
+            <div class="input-group"><label>Marca, Volume ou Detalhe (Destaque):</label><input type="text" id="p-subtitulo" placeholder="Ex: 200ml ou Logitech"></div>
         </div>
         <div class="grid">
             <div class="input-group"><label>Preço:</label><input type="text" id="p-preco"></div>
@@ -109,12 +109,16 @@
             <div class="input-group">
                 <label>Selo:</label>
                 <select id="p-tag">
-                    <option value="">Nenhum</option>
-                    <option value="Mais Vendido">🔥 Mais Vendido</option>
-                    <option value="Oferta do Dia">⚡ Oferta do Dia</option>
-                    <option value="Promoção">💎 Promoção</option>
-                    <option value="Frete Grátis">🚚 Frete Grátis</option>
-                </select>
+    <option value="">Nenhum Selo</option>
+    <option value="Mais Vendido">🔥 Campeão de Vendas</option>
+    <option value="Oferta Relâmpago">⚡ Oferta Relâmpago</option>
+    <option value="Seleção Premium">💎 Seleção Premium</option>
+    <option value="Últimas Unidades">⚠️ Últimas Unidades</option>
+    <option value="Testado e Aprovado">✅ Testado e Aprovado</option>
+    <option value="Exclusivo">🚀 Lançamento Exclusivo</option>
+    <option value="Custo-Benefício">💰 Melhor Custo-Benefício</option>
+    <option value="Frete Grátis">🚚 Frete Grátis</option>
+</select>
             </div>
         </div>
         <div class="input-group"><label>Descrição:</label><textarea id="p-descricao" rows="3"></textarea></div>
