@@ -121,6 +121,11 @@
 </select>
             </div>
         </div>
+        <div class="grid">
+            <div class="input-group"><label>Nota (1.0 a 5.0):</label><input type="text" id="p-nota" placeholder="Ex: 4.8"></div>
+            <div class="input-group"><label>Nº Avaliações:</label><input type="text" id="p-avaliacoes" placeholder="Ex: 150"></div>
+            <div class="input-group"><label>Estoque:</label><input type="text" id="p-estoque" placeholder="Ex: 12"></div>
+        </div>
         <div class="input-group"><label>Descrição:</label><textarea id="p-descricao" rows="3"></textarea></div>
         
         <div class="section-title">🖼️ Imagens (Links)</div>
@@ -286,6 +291,9 @@
         document.getElementById('p-tag').value = p.tag || "";
         document.getElementById('p-descricao').value = p.descricao || "";
         document.getElementById('p-link').value = p.link;
+        document.getElementById('p-nota').value = p.nota || "";
+        document.getElementById('p-avaliacoes').value = p.avaliacoes || "";
+        document.getElementById('p-estoque').value = p.estoque || "";
         for(let i=1;i<=4;i++) document.getElementById(`img${i}`).value = p.imagens[i-1] || "";
         document.getElementById('btn-save').innerText = "ATUALIZAR ITEM";
         window.scrollTo({top:0, behavior:'smooth'});
@@ -304,7 +312,9 @@
             descricao: document.getElementById('p-descricao').value,
             link: document.getElementById('p-link').value,
             imagens: imgs,
-            nota: "4.8", avaliacoes: "150", estoque: "10",
+            nota: document.getElementById('p-nota').value,
+            avaliacoes: document.getElementById('p-avaliacoes').value,
+            estoque: document.getElementById('p-estoque').value,
             data: new Date().toLocaleDateString('pt-BR')
         };
 
