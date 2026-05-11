@@ -205,64 +205,100 @@ body.premium-dark {
 .modal-foto {
   display: none; 
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(8, 8, 10, 0.35); /* Fundo externo muito mais suave e transparente */
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
   z-index: 9999; 
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(12px); /* Desfoque externo equilibrado */
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px;
 }
+
 .modal-content-premium {
-  background: rgba(20, 20, 25, 0.25); /* Fundo interno bem transparente (Glassmorphism) */
-  padding: 40px;
+  background: rgba(25, 25, 30, 0.4);
   border-radius: 24px;
   width: 95%;
-  max-width: 800px;
-  text-align: center;
+  max-width: 1000px; /* Um pouco mais largo para o layout lado a lado */
+  max-height: 85vh;
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.08); /* Borda branca quase invisível, muito mais elegante que a dourada forte */
-  max-height: 90vh;
-  overflow: hidden; 
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); /* Sombra difusa e brilho interno (inset) */
-  backdrop-filter: blur(35px); /* O verdadeiro efeito de vidro luxuoso na caixa */
-  -webkit-backdrop-filter: blur(35px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  display: flex; /* Layout em colunas */
+  flex-direction: row;
+  overflow: hidden; /* O scroll será interno */
 }
-.fechar-modal { 
-  position: absolute; 
-  top: 20px; 
-  right: 25px; 
-  font-size: 32px; 
-  color: rgba(255, 255, 255, 0.4); 
-  cursor: pointer; 
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
-  z-index: 10; 
+
+/* Ajuste para celulares */
+@media (max-width: 768px) {
+  .modal-content-premium { flex-direction: column; overflow-y: auto; }
 }
-.fechar-modal:hover { 
-  color: #fff; 
-  transform: scale(1.1) rotate(90deg); /* Toque cirúrgico na animação ao passar o mouse */
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); 
+
+/* Lado Esquerdo: Imagem */
+.modal-esquerda {
+  flex: 1.2;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  position: relative;
 }
-#modal-titulo-produto { 
-  color: #ffffff; /* Título em branco fica mais clean e Premium do que colorido */
-  font-weight: 500; 
-  margin-bottom: 15px; 
-  font-size: 24px; 
-  letter-spacing: 0.5px; 
+
+/* Lado Direito: Informações */
+.modal-direita {
+  flex: 1;
+  padding: 40px;
+  text-align: left;
+  overflow-y: auto; /* Permite rolar apenas o texto se for grande */
+  display: flex;
+  flex-direction: column;
 }
+
+.foto-principal-modal {
+  max-width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+  border-radius: 12px;
+  cursor: crosshair; /* Indica que tem zoom */
+}
+
+/* Lente de Zoom */
+.zoom-lens {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 150px;
+  height: 150px;
+  background-repeat: no-repeat;
+  visibility: hidden;
+  pointer-events: none;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  z-index: 100;
+}
+
+#modal-titulo-produto { font-size: 26px; color: #fff; margin-bottom: 10px; font-weight: 600; }
 #modal-descricao { 
-  color: rgba(255, 255, 255, 0.65); /* Texto descritivo mais suave para não cansar a vista */
-  text-align: left; 
-  font-size: 14px; 
-  border-top: 1px solid rgba(255, 255, 255, 0.06); /* Linha divisória ultra fina */
-  padding-top: 20px; 
-  line-height: 1.8; 
-  font-weight: 300; /* Fonte com peso mais leve para o visual "fino" */
+  color: rgba(255, 255, 255, 0.7); 
+  font-size: 15px; 
+  line-height: 1.6; 
+  margin-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 15px;
 }
-.modal-cta { margin-top: 25px; box-shadow: 0 10px 25px rgba(241, 196, 15, 0.15); }
+
+.fechar-modal { 
+  position: absolute; top: 20px; right: 20px; 
+  font-size: 30px; color: #fff; cursor: pointer; opacity: 0.5; transition: 0.3s;
+  z-index: 101;
+}
+.fechar-modal:hover { opacity: 1; transform: rotate(90deg); }
+
+.modal-cta { margin-top: auto; padding-top: 20px; }
 
 /* MINIATURAS PREMIUM DO MODAL */
 .miniaturas-row {
