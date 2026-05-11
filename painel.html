@@ -234,7 +234,7 @@
                 headers: { 'Authorization': `token ${t}` }
             });
             const data = await res.json();
-            return JSON.parse(atob(data.content));
+            return JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\s/g, '')))));
         } catch(e) { return []; }
     }
 
