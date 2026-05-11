@@ -1,0 +1,6 @@
+[
+  { "id": "all", "nome": "Todos os Produtos" },
+  { "id": "ml", "nome": "Mercado Livre" },
+  { "id": "shopee", "nome": "Shopee" },
+  { "id": "tiktok", "nome": "TikTok" }
+]
