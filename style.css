@@ -155,11 +155,11 @@ body.premium-dark {
   padding: 5px 12px;
   font-size: 10px;
   font-weight: 800;
-  background: var(--gold);
+  background: #f1c40f; /* Cor dourada fixa para ser visível e premium */
   color: #000;
   text-transform: uppercase;
   z-index: 10;
-  box-shadow: 0 0 15px rgba(241, 196, 15, 0.6); /* ESTA LINHA CRIA O BRILHO EXTERNO */
+  box-shadow: 0 0 15px rgba(241, 196, 15, 0.6); /* O brilho que você queria */
 }
 
 .card img {
