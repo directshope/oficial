@@ -148,7 +148,48 @@ body.premium-dark {
   box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 30px rgba(241, 196, 15, 0.15); 
 }
 
-.badge { position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; padding: 6px 14px; font-size: 11px; font-weight: 800; border-radius: 20px; z-index: 10; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3); }
+.badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 50px;
+  text-transform: uppercase;
+  z-index: 10;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  background: var(--gold); /* Cor padrão */
+  color: #000;
+}
+
+/* Efeito de Brilho Pulsante para Ofertas e Mais Vendidos */
+.badge:contains("Oferta"), .badge:contains("Vendido") {
+  animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+  0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(241, 196, 15, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); }
+}
+
+/* Cores Diferenciadas para impacto visual */
+[data-tag="Seleção Premium"], [data-tag="Exclusivo"] {
+  background: linear-gradient(135deg, #f1c40f, #ffffff) !important;
+  color: #000 !important;
+}
+
+[data-tag="Oferta Relâmpago"], [data-tag="Últimas Unidades"] {
+  background: #e74c3c !important;
+  color: #fff !important;
+}
+
+[data-tag="Testado e Aprovado"], [data-tag="Frete Grátis"] {
+  background: #2ecc71 !important;
+  color: #fff !important;
+}
 
 .card img {
   width: 100%;
