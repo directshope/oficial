@@ -122,7 +122,7 @@
             </div>
         </div>
         <div class="grid">
-            <div class="input-group"><label>Nota (1.0 a 5.0):</label><input type="text" id="p-nota" placeholder="Ex: 4.8"></div>
+            <div class="input-group"><label>Nota Produtos:</label><input type="text" id="p-nota" placeholder="Ex: 4.8"></div>
             <div class="input-group"><label>Nº Avaliações:</label><input type="text" id="p-avaliacoes" placeholder="Ex: 150"></div>
             <div class="input-group"><label>Estoque:</label><input type="text" id="p-estoque" placeholder="Ex: 12"></div>
         </div>
@@ -205,6 +205,7 @@
     function mostrarPainel() {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('admin-panel').style.display = 'block';
+        document.querySelectorAll('input').forEach(i => i.autocomplete = 'off');
         carregarDadosLoja();
         carregarConfig('categorias');
     }
