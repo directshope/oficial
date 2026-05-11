@@ -3,317 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Direct Shop | Dashboard Premium</title>
+    <title>Direct Shop | Dashboard Sênior</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #f1c40f;
-            --dark-bg: #050505;
-            --card-bg: #111111;
+            --dark-bg: #060608;
+            --card-bg: #0f0f12;
             --input-bg: #000;
-            --border: #222;
+            --border: #1f1f23;
             --text: #ffffff;
             --text-muted: #888;
+            --success: #2ecc71;
+            --danger: #e74c3c;
         }
 
         body { 
-            margin: 0; 
-            font-family: 'Inter', sans-serif; 
-            background: var(--dark-bg); 
-            color: var(--text); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            padding: 20px; 
+            margin: 0; font-family: 'Poppins', sans-serif; background: var(--dark-bg); color: var(--text); 
+            min-height: 100vh; padding: 20px; display: flex; justify-content: center;
         }
 
-        .container { 
-            background: var(--card-bg); 
-            width: 100%; 
-            max-width: 850px; 
-            padding: 40px; 
-            border-radius: 20px; 
-            box-shadow: 0 30px 100px rgba(0,0,0,0.9); 
-            border: 1px solid var(--border); 
-        }
+        .container { background: var(--card-bg); width: 100%; max-width: 1000px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
 
-        h2 { color: var(--gold); text-transform: uppercase; text-align: center; margin-bottom: 30px; letter-spacing: 3px; font-weight: 900; }
+        h2 { color: var(--gold); text-transform: uppercase; text-align: center; margin-bottom: 30px; letter-spacing: 4px; font-weight: 900; font-size: 22px; }
+
+        /* NAVEGAÇÃO */
+        .dashboard-tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; overflow-x: auto; }
+        .tab-btn { background: #16161a; border: 1px solid var(--border); color: var(--text-muted); padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 13px; text-transform: uppercase; transition: 0.3s; white-space: nowrap; }
+        .tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2); }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* FORMULÁRIOS */
+        .section-title { font-size: 12px; color: var(--gold); border-left: 3px solid var(--gold); padding-left: 10px; margin: 30px 0 20px; text-transform: uppercase; font-weight: bold; }
+        .input-group { margin-bottom: 20px; position: relative; }
+        label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); border-radius: 12px; font-size: 14px; box-sizing: border-box; }
+        input:focus, select:focus, textarea:focus { border-color: var(--gold); outline: none; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+
+        /* BOTÕES */
+        .btn-main { width: 100%; padding: 18px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; border: none; border-radius: 15px; font-size: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3); }
+        .btn-danger { background: #e74c3c22; color: #e74c3c; border: 1px solid #e74c3c; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 11px; }
+
+        /* LISTAS */
+        #lista-busca { background: #0f0f12; border: 1px solid var(--gold); position: absolute; width: 100%; z-index: 100; max-height: 250px; overflow-y: auto; display: none; border-radius: 12px; margin-top: 5px; }
+        .item-busca { padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 13px; }
+        .item-busca:hover { background: #1a1a1f; color: var(--gold); }
+        .data-list { margin-top: 20px; border: 1px solid var(--border); border-radius: 15px; overflow: hidden; }
+        .data-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #16161a; border-bottom: 1px solid var(--border); }
+
+        #status { margin-top: 20px; text-align: center; font-weight: bold; padding: 15px; border-radius: 12px; display: none; }
+        .logout-btn { background: none; color: #444; border: none; font-size: 11px; cursor: pointer; text-decoration: underline; margin-top: 40px; display: block; width: 100%; text-align: center; }
         
-        .section-title { 
-            font-size: 11px; color: var(--gold); border-bottom: 1px solid var(--border); 
-            padding-bottom: 8px; margin: 25px 0 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;
-        }
-
-        .input-group { margin-bottom: 15px; position: relative; }
-        label { display: block; margin-bottom: 6px; color: var(--text-muted); font-size: 10px; text-transform: uppercase; font-weight: bold; }
-        
-        input, select, textarea { 
-            width: 100%; padding: 12px; background: var(--input-bg); border: 1px solid var(--border); 
-            color: var(--text); border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: 0.3s; 
-        }
-
-        input:focus, select:focus, textarea:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 10px rgba(241, 196, 15, 0.1); }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-
-        button.btn-main { 
-            width: 100%; padding: 18px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); 
-            color: #000; border: none; border-radius: 10px; font-size: 15px; font-weight: 800; 
-            cursor: pointer; text-transform: uppercase; transition: 0.4s; margin-top: 20px;
-        }
-
-        button.btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3); }
-        button.btn-main:disabled { background: #444; cursor: not-allowed; transform: none; }
-
-        #lista-busca { 
-            background: #000; border: 1px solid var(--gold); position: absolute; width: 100%; 
-            z-index: 100; max-height: 200px; overflow-y: auto; display: none; border-radius: 0 0 8px 8px;
-        }
-
-        .item-busca { padding: 12px; border-bottom: 1px solid #111; cursor: pointer; font-size: 13px; color: var(--gold); }
-        .item-busca:hover { background: #1a1a1a; }
-
-        #status { margin-top: 20px; text-align: center; font-weight: bold; padding: 12px; border-radius: 8px; display: none; }
-        
-        .logout-btn { background: none; color: #555; border: none; font-size: 11px; cursor: pointer; text-decoration: underline; margin-top: 30px; display: block; width: 100%; text-align: center; }
-        .logout-btn:hover { color: var(--gold); }
-
-        #admin-panel { display: none; }
+        #login-screen { display: flex; flex-direction: column; gap: 15px; }
+        #admin-panel { display: none; width: 100%; }
     </style>
 </head>
 <body>
 
 <div class="container" id="login-screen">
-    <h2>Acesso Admin</h2>
-    <div class="input-group"><label>Usuário GitHub:</label><input type="text" id="gh-user" placeholder="ex: seu-usuario"></div>
-    <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo" placeholder="ex: nome-do-projeto"></div>
-    <div class="input-group"><label>GitHub Token (Key):</label><input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx"></div>
-    <button class="btn-main" onclick="fazerLogin()">Entrar no Painel</button>
+    <h2>Acesso Admin Premium</h2>
+    <div class="input-group"><label>Usuário GitHub:</label><input type="text" id="gh-user"></div>
+    <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo"></div>
+    <div class="input-group"><label>Token GitHub:</label><input type="password" id="gh-token"></div>
+    <button class="btn-main" onclick="fazerLogin()">Entrar no Dashboard</button>
 </div>
 
 <div class="container" id="admin-panel">
-    <h2>Direct Shop Dashboard</h2>
+    <h2>Direct Shop Management</h2>
 
-    <div class="section-title">🔍 Editar Produto Existente</div>
-    <div class="input-group">
-        <input type="text" id="busca-editar" placeholder="Digite o nome do produto para buscar..." oninput="buscarParaEditar()">
-        <div id="lista-busca"></div>
+    <div class="dashboard-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-produtos')">📦 Produtos</button>
+        <button class="tab-btn" onclick="switchTab('tab-categorias')">📁 Categorias</button>
+        <button class="tab-btn" onclick="switchTab('tab-marcas')">🏷️ Marcas</button>
+        <button class="tab-btn" onclick="switchTab('tab-banners')">🖼️ Banners</button>
     </div>
 
-    <div class="section-title">📦 Dados do Produto</div>
-    <div class="grid">
-        <div class="input-group"><label>Título:</label><input type="text" id="p-titulo"></div>
-        <div class="input-group"><label>Subtítulo (Ex: 200ml):</label><input type="text" id="p-subtitulo"></div>
-    </div>
-
-    <div class="grid">
-        <div class="input-group"><label>Preço (R$):</label><input type="text" id="p-preco" placeholder="0,00"></div>
-        <div class="input-group">
-            <label>Categoria:</label>
-            <select id="p-categoria">
-                <option value="perfumes">Perfumes</option>
-                <option value="tecnologia">Tecnologia</option>
-                <option value="beleza">Beleza e Cuidados</option>
-                <option value="ferramentas">Ferramentas</option>
-                <option value="casa">Casa e Móveis</option>
-                <option value="esportes">Esportes e Fitness</option>
-                <option value="saude">Saúde</option>
-                <option value="veiculos">Acessórios para Veículos</option>
-                <option value="moda">Moda</option>
+    <div id="tab-produtos" class="tab-content active">
+        <div class="input-group" style="background: #16161a; padding: 20px; border-radius: 15px; border: 1px solid var(--border);">
+            <label style="color: var(--gold);">🛒 Loja Ativa:</label>
+            <select id="loja-ativa" onchange="carregarDadosLoja()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">
+                <option value="ml">Mercado Livre (ml.json)</option>
+                <option value="shopee">Shopee (shopee.json)</option>
+                <option value="tiktok">TikTok (tiktok.json)</option>
             </select>
         </div>
+
+        <div class="section-title">🔍 Editar Existente</div>
         <div class="input-group">
-            <label>Selo:</label>
-            <select id="p-tag">
-                <option value="">Nenhum</option>
-                <option value="Mais Vendido">🔥 Mais Vendido</option>
-                <option value="Oferta do Dia">⚡ Oferta do Dia</option>
-                <option value="Promoção">💎 Promoção</option>
-                <option value="Frete Grátis">🚚 Frete Grátis</option>
-            </select>
+            <input type="text" id="busca-editar" placeholder="Buscar produto nesta loja..." oninput="buscarNoJson()">
+            <div id="lista-busca"></div>
         </div>
+
+        <div class="section-title">📦 Dados do Produto</div>
+        <div class="grid">
+            <div class="input-group"><label>Título:</label><input type="text" id="p-titulo"></div>
+            <div class="input-group"><label>Subtítulo:</label><input type="text" id="p-subtitulo"></div>
+        </div>
+        <div class="grid">
+            <div class="input-group"><label>Preço:</label><input type="text" id="p-preco"></div>
+            <div class="input-group"><label>Categoria:</label><select id="p-categoria"></select></div>
+            <div class="input-group">
+                <label>Selo:</label>
+                <select id="p-tag">
+                    <option value="">Nenhum</option>
+                    <option value="Mais Vendido">🔥 Mais Vendido</option>
+                    <option value="Oferta do Dia">⚡ Oferta do Dia</option>
+                    <option value="Promoção">💎 Promoção</option>
+                    <option value="Frete Grátis">🚚 Frete Grátis</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group"><label>Descrição:</label><textarea id="p-descricao" rows="3"></textarea></div>
+        
+        <div class="section-title">🖼️ Imagens (Links)</div>
+        <div class="grid">
+            <input type="text" id="img1" placeholder="Link Foto 1">
+            <input type="text" id="img2" placeholder="Link Foto 2">
+            <input type="text" id="img3" placeholder="Link Foto 3">
+            <input type="text" id="img4" placeholder="Link Foto 4">
+        </div>
+
+        <div class="section-title">🔗 Link de Compra</div>
+        <input type="text" id="p-link" style="margin-bottom:20px">
+        <button class="btn-main" id="btn-save" onclick="salvarProduto()">Publicar Produto</button>
     </div>
 
-    <div class="grid">
-        <div class="input-group"><label>Nota (0-5):</label><input type="number" id="p-nota" step="0.1" value="4.8"></div>
-        <div class="input-group"><label>Avaliações:</label><input type="number" id="p-avaliacoes"></div>
-        <div class="input-group"><label>Estoque:</label><input type="number" id="p-estoque"></div>
+    <div id="tab-categorias" class="tab-content">
+        <div class="section-title">📁 Adicionar Categoria</div>
+        <div class="grid">
+            <input type="text" id="nova-cat-nome" placeholder="Nome (Ex: Games)">
+            <input type="text" id="nova-cat-id" placeholder="ID (Ex: games)">
+            <button class="btn-main" style="margin-top:0" onclick="gerenciarItem('categorias', 'add')">Adicionar</button>
+        </div>
+        <div class="data-list" id="lista-categorias-admin"></div>
     </div>
 
-    <div class="input-group">
-        <label>Descrição Detalhada:</label>
-        <textarea id="p-descricao" rows="3" placeholder="Detalhes técnicos, duração, marca..."></textarea>
+    <div id="tab-marcas" class="tab-content">
+        <div class="section-title">🏷️ Gestão de Marcas</div>
+        <div class="grid">
+            <input type="text" id="nova-marca" placeholder="Nome da Marca (Ex: SONY)">
+            <button class="btn-main" style="margin-top:0" onclick="gerenciarItem('marcas', 'add')">Adicionar</button>
+        </div>
+        <div class="data-list" id="lista-marcas-admin"></div>
     </div>
 
-    <div class="section-title">🖼️ Galeria de Imagens (Links)</div>
-    <div class="grid">
-        <div class="input-group"><label>Foto 1 (Capa):</label><input type="text" id="img1"></div>
-        <div class="input-group"><label>Foto 2:</label><input type="text" id="img2"></div>
-    </div>
-    <div class="grid">
-        <div class="input-group"><label>Foto 3:</label><input type="text" id="img3"></div>
-        <div class="input-group"><label>Foto 4:</label><input type="text" id="img4"></div>
-    </div>
-
-    <div class="section-title">🔗 Conexão e Destino</div>
-    <div class="grid">
-        <div class="input-group"><label>ID Loja (ex: ml ou shopee):</label><input type="text" id="p-loja" value="ml"></div>
-        <div class="input-group"><label>Link de Compra:</label><input type="text" id="p-link"></div>
+    <div id="tab-banners" class="tab-content">
+        <div class="section-title">🖼️ Enviar Novo Banner (PC -> GitHub)</div>
+        <div style="background:#16161a; padding:20px; border-radius:15px; border:1px dashed var(--gold); text-align:center;">
+            <input type="file" id="file-banner" accept="image/*" style="display:none">
+            <button class="btn-main" style="width:auto; padding:15px 30px" onclick="document.getElementById('file-banner').click()">Selecionar Imagem do PC</button>
+            <p id="file-name-display" style="font-size:12px; margin-top:10px; color:var(--gold)"></p>
+            <button class="btn-main" onclick="fazerUploadBanner()" style="background:var(--success); color:#000; margin-top:10px">Enviar para Pasta /Images</button>
+        </div>
+        <div class="section-title">📋 Banners Ativos</div>
+        <div class="data-list" id="lista-banners-admin"></div>
     </div>
 
-    <button class="btn-main" id="btn-save" onclick="salvarProduto()">Publicar no Site</button>
     <div id="status"></div>
-    <button class="logout-btn" onclick="logout()">Desconectar Conta</button>
+    <button class="logout-btn" onclick="logout()">Desconectar</button>
 </div>
 
 <script>
-    let produtosCarregados = [];
+    let produtosLoja = [];
+    let categorias = [];
+    let marcas = [];
+    let banners = [];
     let editandoIndex = null;
 
     window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
 
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+        if(tabId === 'tab-categorias') carregarConfig('categorias');
+        if(tabId === 'tab-marcas') carregarConfig('marcas');
+        if(tabId === 'tab-banners') carregarConfig('banners');
+    }
+
+    function fazerLogin() {
+        const u = document.getElementById('gh-user').value, r = document.getElementById('gh-repo').value, t = document.getElementById('gh-token').value;
+        if(!u || !r || !t) return alert("Preencha tudo!");
+        localStorage.setItem('gh_user', u); localStorage.setItem('gh_repo', r); localStorage.setItem('gh_token', t);
+        mostrarPainel();
+    }
+
     function mostrarPainel() {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('admin-panel').style.display = 'block';
-        carregarDadosGithub();
+        carregarDadosLoja();
+        carregarConfig('categorias');
     }
 
     function logout() { localStorage.clear(); location.reload(); }
 
-    function fazerLogin() {
-        const u = document.getElementById('gh-user').value.trim();
-        const r = document.getElementById('gh-repo').value.trim();
-        const t = document.getElementById('gh-token').value.trim();
-        if(!u || !r || !t) return alert("Preencha todos os campos!");
-        localStorage.setItem('gh_user', u);
-        localStorage.setItem('gh_repo', r);
-        localStorage.setItem('gh_token', t);
-        mostrarPainel();
+    // FUNÇÕES DE CARREGAMENTO
+    async function carregarDadosLoja() {
+        const loja = document.getElementById('loja-ativa').value;
+        produtosLoja = await fetchGitHub(`${loja}.json`);
+        editandoIndex = null;
+        document.getElementById('btn-save').innerText = "Publicar no Site";
     }
 
-    async function carregarDadosGithub() {
+    async function carregarConfig(tipo) {
+        const dados = await fetchGitHub(`${tipo}.json`);
+        if(tipo === 'categorias') {
+            categorias = dados;
+            const select = document.getElementById('p-categoria');
+            select.innerHTML = categorias.map(c => `<option value="${c.valor}">${c.nome}</option>`).join('');
+            renderLista('categorias', 'lista-categorias-admin');
+        }
+        if(tipo === 'marcas') { marcas = dados; renderLista('marcas', 'lista-marcas-admin'); }
+        if(tipo === 'banners') { banners = dados; renderLista('banners', 'lista-banners-admin'); }
+    }
+
+    // COMUNICAÇÃO GITHUB
+    async function fetchGitHub(file) {
         const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
         try {
-            const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/produtos.json`, {
+            const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/${file}?t=${Date.now()}`, {
                 headers: { 'Authorization': `token ${t}` }
             });
             const data = await res.json();
-            produtosCarregados = JSON.parse(decodeURIComponent(escape(atob(data.content))));
-        } catch (e) { console.error("Erro ao carregar JSON"); }
+            return JSON.parse(atob(data.content));
+        } catch(e) { return []; }
     }
 
-    function buscarParaEditar() {
+    async function saveGitHub(file, content, msg) {
+        const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
+        const url = `https://api.github.com/repos/${u}/${r}/contents/${file}`;
+        const res = await fetch(url, { headers: { 'Authorization': `token ${t}` } });
+        const fileData = await res.json();
+        
+        const body = JSON.stringify({
+            message: msg,
+            content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+            sha: fileData.sha
+        });
+
+        const save = await fetch(url, { method: 'PUT', headers: { 'Authorization': `token ${t}` }, body });
+        if(save.ok) showStatus("✅ SINCRONIZADO COM SUCESSO!");
+    }
+
+    // GESTÃO DE PRODUTOS
+    function buscarNoJson() {
         const termo = document.getElementById('busca-editar').value.toLowerCase();
         const lista = document.getElementById('lista-busca');
         lista.innerHTML = "";
-        if (termo.length < 2) { lista.style.display = "none"; return; }
-
-        const resultados = produtosCarregados.filter(p => p.titulo.toLowerCase().includes(termo));
-        if(resultados.length > 0) {
-            lista.style.display = "block";
-            resultados.forEach(p => {
-                const idx = produtosCarregados.indexOf(p);
-                const item = document.createElement('div');
-                item.className = "item-busca";
-                item.innerText = "✏️ EDITAR: " + p.titulo;
-                item.onclick = () => preencherFormulario(idx);
-                lista.appendChild(item);
+        if(termo.length < 2) { lista.style.display="none"; return; }
+        
+        const res = produtosLoja.filter(p => p.titulo.toLowerCase().includes(termo));
+        if(res.length > 0) {
+            lista.style.display="block";
+            res.forEach(p => {
+                const div = document.createElement('div');
+                div.className="item-busca";
+                div.innerText = `✏️ EDITAR: ${p.titulo}`;
+                div.onclick = () => {
+                    editandoIndex = produtosLoja.indexOf(p);
+                    preencherForm(p);
+                    lista.style.display="none";
+                };
+                lista.appendChild(div);
             });
         }
     }
 
-    function preencherFormulario(idx) {
-        const p = produtosCarregados[idx];
-        editandoIndex = idx;
+    function preencherForm(p) {
         document.getElementById('p-titulo').value = p.titulo;
         document.getElementById('p-subtitulo').value = p.subtitulo;
         document.getElementById('p-preco').value = p.preco;
         document.getElementById('p-categoria').value = p.categoria;
         document.getElementById('p-tag').value = p.tag || "";
-        document.getElementById('p-nota').value = p.nota;
-        document.getElementById('p-avaliacoes').value = p.avaliacoes;
-        document.getElementById('p-estoque').value = p.estoque;
         document.getElementById('p-descricao').value = p.descricao || "";
-        document.getElementById('p-loja').value = p.loja;
         document.getElementById('p-link').value = p.link;
-        
-        for(let i=1; i<=4; i++) {
-            document.getElementById(`img${i}`).value = (p.imagens && p.imagens[i-1]) ? p.imagens[i-1] : "";
-        }
-
-        document.getElementById('btn-save').innerText = "ATUALIZAR PRODUTO";
-        document.getElementById('lista-busca').style.display = "none";
-        window.scrollTo({ top: 150, behavior: 'smooth' });
+        for(let i=1;i<=4;i++) document.getElementById(`img${i}`).value = p.imagens[i-1] || "";
+        document.getElementById('btn-save').innerText = "ATUALIZAR ITEM";
+        window.scrollTo({top:0, behavior:'smooth'});
     }
 
     async function salvarProduto() {
-        const btn = document.getElementById('btn-save');
-        const st = document.getElementById('status');
-        const user = localStorage.getItem('gh_user'), repo = localStorage.getItem('gh_repo'), token = localStorage.getItem('gh_token');
-        
-        const imgs = [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(link => link !== "");
-        
-        const novoProduto = {
+        const loja = document.getElementById('loja-ativa').value;
+        const imgs = [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(v => v !== "");
+        const p = {
             titulo: document.getElementById('p-titulo').value,
             subtitulo: document.getElementById('p-subtitulo').value,
             preco: document.getElementById('p-preco').value,
-            tag: document.getElementById('p-tag').value,
-            nota: document.getElementById('p-nota').value,
-            avaliacoes: document.getElementById('p-avaliacoes').value,
-            estoque: document.getElementById('p-estoque').value,
-            link: document.getElementById('p-link').value,
-            loja: document.getElementById('p-loja').value,
+            loja: loja,
             categoria: document.getElementById('p-categoria').value,
+            tag: document.getElementById('p-tag').value,
             descricao: document.getElementById('p-descricao').value,
+            link: document.getElementById('p-link').value,
             imagens: imgs,
-            data: editandoIndex !== null ? produtosCarregados[editandoIndex].data : new Date().toLocaleDateString('pt-BR')
+            nota: "4.8", avaliacoes: "150", estoque: "10",
+            data: new Date().toLocaleDateString('pt-BR')
         };
 
-        btn.disabled = true; btn.innerText = "SINCRONIZANDO...";
+        if(editandoIndex !== null) produtosLoja[editandoIndex] = p;
+        else produtosLoja.unshift(p);
 
-        try {
-            const url = `https://api.github.com/repos/${user}/${repo}/contents/produtos.json`;
-            const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-            const file = await res.json();
-            
-            let content = JSON.parse(decodeURIComponent(escape(atob(file.content))));
-            
-            if (editandoIndex !== null) content[editandoIndex] = novoProduto;
-            else content.unshift(novoProduto);
+        await saveGitHub(`${loja}.json`, produtosLoja, `Update ${loja} via Painel`);
+        limparCampos();
+    }
 
-            const body = JSON.stringify({
-                message: "Update produtos.json via Painel",
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
-                sha: file.sha
-            });
+    // GESTÃO DE CONFIGURAÇÕES (Categorias, Marcas, Banners)
+    function renderLista(tipo, elementId) {
+        const container = document.getElementById(elementId);
+        container.innerHTML = "";
+        let lista = (tipo === 'categorias') ? categorias : (tipo === 'marcas' ? marcas : banners);
+        
+        lista.forEach((item, index) => {
+            const nome = tipo === 'categorias' ? item.nome : item;
+            const div = document.createElement('div');
+            div.className = "data-item";
+            div.innerHTML = `<span>${nome}</span> <button class="btn-danger" onclick="gerenciarItem('${tipo}', 'del', ${index})">Remover</button>`;
+            container.appendChild(div);
+        });
+    }
 
-            const save = await fetch(url, {
-                method: 'PUT',
-                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: body
-            });
-
-            if(save.ok) {
-                st.style.display = "block"; st.style.background = "#2ecc7122"; st.style.color = "#2ecc71";
-                st.innerText = "🚀 PUBLICADO COM SUCESSO NO GITHUB!";
-                
-                // Sincroniza a lista local com o que foi enviado para o GitHub
-                produtosCarregados = content;
-                editandoIndex = null;
-                
-                // Limpa o formulário para o próximo produto sem recarregar a página
-                document.querySelectorAll('input:not([type=password]), textarea').forEach(input => input.value = "");
-                document.getElementById('btn-save').innerText = "Publicar no GitHub";
-                document.getElementById('btn-save').disabled = false;
-                
-                // Esconde a mensagem de sucesso após 3 segundos
-                setTimeout(() => { st.style.display = "none"; }, 3000);
-            } else { throw new Error(); }
-
-        } catch (e) {
-            alert("Erro ao salvar! Verifique sua Key e o nome do Repositório.");
-            btn.disabled = false; btn.innerText = "Tentar Novamente";
+    async function gerenciarItem(tipo, acao, index = null) {
+        let lista = (tipo === 'categorias') ? categorias : (tipo === 'marcas' ? marcas : banners);
+        
+        if(acao === 'add') {
+            if(tipo === 'categorias') {
+                lista.push({ nome: document.getElementById('nova-cat-nome').value, valor: document.getElementById('nova-cat-id').value });
+            } else if(tipo === 'marcas') {
+                lista.push(document.getElementById('nova-marca').value.toUpperCase());
+            }
+        } else {
+            lista.splice(index, 1);
         }
+
+        await saveGitHub(`${tipo}.json`, lista, `Gerenciar ${tipo}`);
+        carregarConfig(tipo);
+    }
+
+    // UPLOAD DE BANNER (PC -> GITHUB)
+    document.getElementById('file-banner').onchange = function() {
+        document.getElementById('file-name-display').innerText = "Selecionado: " + this.files[0].name;
+    };
+
+    async function fazerUploadBanner() {
+        const fileInput = document.getElementById('file-banner');
+        if(fileInput.files.length === 0) return alert("Selecione uma imagem!");
+        
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = async function() {
+            const base64Content = reader.result.split(',')[1];
+            const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
+            const fileName = file.name.replace(/\s+/g, '_').toLowerCase();
+            
+            // 1. Sobe a imagem física para a pasta /images
+            await fetch(`https://api.github.com/repos/${u}/${r}/contents/images/${fileName}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: `Upload banner ${fileName}`, content: base64Content })
+            });
+
+            // 2. Adiciona o caminho no banners.json
+            banners.push(`images/${fileName}`);
+            await saveGitHub(`banners.json`, banners, `Link banner no JSON`);
+            carregarConfig('banners');
+            alert("Banner enviado com sucesso!");
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function showStatus(txt) {
+        const s = document.getElementById('status');
+        s.innerText = txt; s.style.display = "block";
+        setTimeout(() => s.style.display="none", 3000);
+    }
+
+    function limparCampos() {
+        document.querySelectorAll('#tab-produtos input, #tab-produtos textarea').forEach(i => i.value = "");
+        editandoIndex = null;
+        document.getElementById('btn-save').innerText = "Publicar no Site";
     }
 </script>
 </body>
