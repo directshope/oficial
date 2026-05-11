@@ -306,15 +306,15 @@
             titulo: document.getElementById('p-titulo').value,
             subtitulo: document.getElementById('p-subtitulo').value,
             preco: document.getElementById('p-preco').value,
-            loja: loja,
-            categoria: document.getElementById('p-categoria').value,
             tag: document.getElementById('p-tag').value,
-            descricao: document.getElementById('p-descricao').value,
-            link: document.getElementById('p-link').value,
-            imagens: imgs,
             nota: document.getElementById('p-nota').value,
             avaliacoes: document.getElementById('p-avaliacoes').value,
             estoque: document.getElementById('p-estoque').value,
+            link: document.getElementById('p-link').value,
+            loja: loja,
+            categoria: document.getElementById('p-categoria').options[document.getElementById('p-categoria').selectedIndex].text,
+            descricao: document.getElementById('p-descricao').value,
+            imagens: imgs,
             data: new Date().toLocaleDateString('pt-BR')
         };
 
