@@ -202,39 +202,38 @@ body.premium-dark {
   margin-right: auto;
   filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3)); /* Traz a imagem para frente, dando profundidade */
 }
+/* MODAL DA GALERIA - VITRINE PREMIUM */
 .modal-foto {
   display: none; 
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.7);
   z-index: 9999; 
-  justify-content: center;
-  align-items: center;
+  justify-content: center; align-items: center;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .modal-content-premium {
-  background: rgba(25, 25, 30, 0.4);
+  background: rgba(15, 15, 18, 0.95);
   border-radius: 24px;
-  width: 95%;
-  max-width: 1000px; /* Um pouco mais largo para o layout lado a lado */
-  max-height: 85vh;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 85vh; /* Limita a altura para não cortar */
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  display: flex; /* Layout em colunas */
+  border: 1px solid rgba(241, 196, 15, 0.3);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+  display: flex;
   flex-direction: row;
-  overflow: hidden; /* O scroll será interno */
+  overflow: hidden;
 }
 
 /* Ajuste para celulares */
 @media (max-width: 768px) {
   .modal-content-premium { flex-direction: column; overflow-y: auto; }
+  .modal-esquerda { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .modal-direita { overflow-y: visible !important; }
 }
 
 /* Lado Esquerdo: Imagem */
@@ -244,119 +243,73 @@ body.premium-dark {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.03);
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
 }
 
 /* Lado Direito: Informações */
 .modal-direita {
   flex: 1;
-  padding: 40px;
+  padding: 40px 30px;
   text-align: left;
-  overflow-y: auto; /* Permite rolar apenas o texto se for grande */
+  overflow-y: auto; /* A mágica que impede o corte: cria rolagem apenas no texto */
   display: flex;
   flex-direction: column;
-}
-
-.foto-principal-modal {
-  max-width: 100%;
-  max-height: 450px;
-  object-fit: contain;
-  border-radius: 12px;
-  cursor: crosshair; /* Indica que tem zoom */
 }
 
 /* Lente de Zoom */
 .zoom-lens {
   position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(241, 196, 15, 0.5);
   width: 150px;
   height: 150px;
   background-repeat: no-repeat;
   visibility: hidden;
   pointer-events: none;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
   z-index: 100;
 }
 
-#modal-titulo-produto { font-size: 26px; color: #fff; margin-bottom: 10px; font-weight: 600; }
-#modal-descricao { 
-  color: rgba(255, 255, 255, 0.7); 
-  font-size: 15px; 
-  line-height: 1.6; 
-  margin-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 15px;
+.foto-principal-modal {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 12px;
+  cursor: crosshair;
+  display: block;
+  margin: 0 auto;
 }
 
 .fechar-modal { 
-  position: absolute; top: 20px; right: 20px; 
-  font-size: 30px; color: #fff; cursor: pointer; opacity: 0.5; transition: 0.3s;
-  z-index: 101;
+  position: absolute; top: 15px; right: 20px; 
+  font-size: 32px; color: #fff; cursor: pointer; opacity: 0.5; transition: 0.3s;
+  z-index: 101; line-height: 1;
 }
-.fechar-modal:hover { opacity: 1; transform: rotate(90deg); }
+.fechar-modal:hover { opacity: 1; color: #f1c40f; transform: rotate(90deg) scale(1.1); }
 
-.modal-cta { margin-top: auto; padding-top: 20px; }
+#modal-titulo-produto { font-size: 24px; color: #f1c40f; margin-bottom: 15px; font-weight: 800; line-height: 1.3; margin-top: 0; }
+#modal-descricao { 
+  color: #ccc; 
+  font-size: 14px; 
+  line-height: 1.6; 
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 20px;
+  white-space: pre-wrap;
+}
+
+.modal-cta { margin-top: auto; padding-top: 20px; width: 100%; }
 
 /* MINIATURAS PREMIUM DO MODAL */
 .miniaturas-row {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 15px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  display: flex; justify-content: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; width: 100%;
 }
-
 .miniatura {
-  width: 75px;
-  height: 75px;
-  object-fit: contain;
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 6px;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: all 0.35s ease;
-  box-sizing: border-box;
+  width: 65px; height: 65px; object-fit: contain; background: #ffffff; border-radius: 10px;
+  padding: 5px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s ease;
 }
-
-.miniatura:hover {
-  transform: translateY(-4px) scale(1.05);
-  border-color: rgba(241, 196, 15, 0.6);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.35);
-}
-
-.miniatura.active {
-  border-color: #f1c40f;
-  box-shadow: 0 0 20px rgba(241, 196, 15, 0.35);
-}
-
-/* ANIMAÇÃO SUAVE DA FOTO GRANDE */
-#foto-grande-modal {
-  transition: all 0.4s ease;
-}
-
-/* ZOOM PREMIUM NA FOTO */
-.foto-principal-modal {
-  max-width: 100%;
-  max-height: 60vh;
-  object-fit: contain;
-  cursor: zoom-in;
-  transition: transform 0.18s ease-out;
-  transform-origin: center;
-  border-radius: 18px;
-  display: block;
-  margin: 0 auto 20px auto;
-  position: relative;
-  z-index: 1;
-}
-
-.foto-principal-modal.zoom-ativo {
-  transform: scale(1.18); /* Aumenta a imagem para ver detalhes */
-  cursor: zoom-out;
-  z-index: 10;
-}
+.miniatura:hover { transform: translateY(-4px); border-color: rgba(241, 196, 15, 0.6); }
+.miniatura.active { border-color: #f1c40f; box-shadow: 0 0 15px rgba(241, 196, 15, 0.3); }
 
