@@ -94,30 +94,55 @@ function renderizar(lista) {
   });
 }
 
-// LÓGICA DAS ABAS FLUTUANTES PREMIUM (Incluindo TikTok)
-document.querySelectorAll(".tab-link").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab-link").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
+// CARREGAR LOJAS DINAMICAMENTE E RECRIAR ABAS FLUTUANTES
+async function carregarLojas() {
+  try {
+    const res = await fetch("lojas.json?t=" + new Date().getTime());
+    if(res.ok) {
+      const lojasArray = await res.json();
+      const abasContainer = document.getElementById("abas-lojas");
+      if(!abasContainer) return;
+      
+      abasContainer.innerHTML = ""; // Limpa os botões antigos
+      
+      lojasArray.forEach((loja, index) => {
+        const btn = document.createElement("button");
+        btn.className = "tab-link";
+        if (index === 0) btn.classList.add("active"); // Deixa o primeiro (Todos) ativo por padrão
+        btn.setAttribute("data-loja", loja.id);
+        btn.textContent = loja.nome;
+        
+        // Embutindo a SUA lógica exata de clique e transição suave nos botões novos
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tab-link").forEach(t => t.classList.remove("active"));
+          btn.classList.add("active");
 
-    const categoriaLoja = tab.getAttribute("data-loja");
+          const categoriaLoja = btn.getAttribute("data-loja");
 
-    if (categoriaLoja === "all") {
-      produtosFiltrados = [...produtos];
-    } else {
-      produtosFiltrados = produtos.filter(p => p.loja === categoriaLoja);
+          if (categoriaLoja === "all") {
+            produtosFiltrados = [...produtos];
+          } else {
+            produtosFiltrados = produtos.filter(p => p.loja === categoriaLoja);
+          }
+          
+          // Efeito suave de transição ao renderizar (mantido intacto)
+          const container = document.getElementById("produtos");
+          container.style.opacity = 0;
+          setTimeout(() => {
+            renderizar(produtosFiltrados);
+            container.style.transition = "opacity 0.4s ease";
+            container.style.opacity = 1;
+          }, 200);
+        });
+        
+        abasContainer.appendChild(btn);
+      });
     }
-    
-    // Efeito suave de transição ao renderizar
-    const container = document.getElementById("produtos");
-    container.style.opacity = 0;
-    setTimeout(() => {
-      renderizar(produtosFiltrados);
-      container.style.transition = "opacity 0.4s ease";
-      container.style.opacity = 1;
-    }, 200);
-  });
-});
+  } catch(e) { 
+    console.log("Aviso: Não foi possível carregar lojas.json"); 
+  }
+}
+carregarLojas();
 
 // MODAL E BUSCA
 function abrirGaleria(idx) {
