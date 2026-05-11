@@ -167,8 +167,20 @@ body.premium-dark {
 .card h3 { font-size: 16px; font-weight: 600; color: #fff; height: 45px; overflow: hidden; margin: 0 0 10px; line-height: 1.4; }
 
 .stars-row { display: flex; align-items: center; gap: 4px; margin-bottom: 10px; }
-.star { color: #333; font-size: 13px; }
-.star.filled { color: #f1c40f; text-shadow: 0 0 5px rgba(241, 196, 15, 0.5); }
+/* Estrela Base (Fundo Cinza) */
+.star {
+    display: inline-block;
+    font-size: 16px;
+    position: relative;
+    color: #333; /* Cor da estrela vazia - um cinza escuro premium */
+}
+
+/* Preenchimento Dinâmico (Ouro) */
+.star.filled {
+    background: linear-gradient(90deg, #ffca28 var(--fill), #333 var(--fill));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 .rev-text { color: rgba(255, 255, 255, 0.4); font-size: 11px; margin-left: 5px; }
 
 .card-category { font-size: 11px; color: #70d6ff; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
