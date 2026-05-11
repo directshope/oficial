@@ -176,6 +176,28 @@ body.premium-dark {
 .card-footer { margin-top: auto; }
 .price { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 15px; }
 
+/* Subtítulo (Marca/Volume) */
+.card-subtitle { 
+    font-size: 13px; 
+    color: rgba(255, 255, 255, 0.5); 
+    margin: -5px 0 15px 0; 
+    font-weight: 400; 
+    display: block;
+}
+
+/* Estoque com visual de Escassez Premium */
+.stock-row {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: #666; /* Cor neutra para não brigar com a categoria */
+}
+.stock-qty {
+    color: #fff; /* O número em destaque */
+    font-weight: 800;
+}
+
 /* BOTÕES DOURADOS PREMIUM COM GLOW */
 .card button, .gold-button {
   width: 100%; padding: 16px; border: none; 
