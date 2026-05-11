@@ -190,12 +190,13 @@ body.premium-dark {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 8px;
-    color: #666; /* Cor neutra para não brigar com a categoria */
+    margin-bottom: 12px;
+    color: rgba(255, 255, 255, 0.35); /* Cinza uniforme e bem suave */
 }
+
 .stock-qty {
-    color: #fff; /* O número em destaque */
-    font-weight: 800;
+    color: rgba(255, 255, 255, 0.6); /* Um pouco mais claro que o texto, mas sem ser branco puro */
+    font-weight: 700;
 }
 
 /* BOTÕES DOURADOS PREMIUM COM GLOW */
