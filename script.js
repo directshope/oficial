@@ -1,6 +1,29 @@
 let produtos = [];
 let produtosFiltrados = [];
 
+// CARREGAR CATEGORIAS DINAMICAMENTE
+async function carregarCategorias() {
+  try {
+    const res = await fetch("categorias.json?t=" + new Date().getTime());
+    if(res.ok) {
+      const categoriasArray = await res.json();
+      const selectCategoria = document.getElementById("categoria");
+      selectCategoria.innerHTML = ""; // Garante que o select esteja limpo
+      
+      categoriasArray.forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat.valor;
+        option.textContent = cat.nome;
+        selectCategoria.appendChild(option);
+      });
+    }
+  } catch(e) { 
+    console.log("Aviso: Não foi possível carregar categorias.json"); 
+  }
+}
+// Executa a função imediatamente ao carregar o script
+carregarCategorias();
+
 async function carregarProdutos() {
   try {
     // 1. Cria gavetas vazias para cada loja
