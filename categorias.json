@@ -1,12 +1,46 @@
 [
-  { "valor": "todos", "nome": "Todas as Categorias" },
-  { "valor": "perfumes", "nome": "Perfumes" },
-  { "valor": "tecnologia", "nome": "Tecnologia" },
-  { "valor": "beleza", "nome": "Beleza e Cuidados" },
-  { "valor": "ferramentas", "nome": "Ferramentas" },
-  { "valor": "casa", "nome": "Casa e Móveis" },
-  { "valor": "esportes", "nome": "Esportes e Fitness" },
-  { "valor": "saude", "nome": "Saúde" },
-  { "valor": "veiculos", "nome": "Acessórios auto" },
-  { "valor": "moda", "nome": "Moda" }
+  {
+    "valor": "todos",
+    "nome": "Todas as Categorias"
+  },
+  {
+    "valor": "perfumes",
+    "nome": "Perfumes"
+  },
+  {
+    "valor": "tecnologia",
+    "nome": "Tecnologia"
+  },
+  {
+    "valor": "beleza",
+    "nome": "Beleza e Cuidados"
+  },
+  {
+    "valor": "ferramentas",
+    "nome": "Ferramentas"
+  },
+  {
+    "valor": "casa",
+    "nome": "Casa e MÃ³veis"
+  },
+  {
+    "valor": "esportes",
+    "nome": "Esportes e Fitness"
+  },
+  {
+    "valor": "saude",
+    "nome": "SaÃºde"
+  },
+  {
+    "valor": "veiculos",
+    "nome": "AcessÃ³rios auto"
+  },
+  {
+    "valor": "moda",
+    "nome": "Moda"
+  },
+  {
+    "nome": "Fones de ouvido",
+    "valor": "Fones de ouvido"
+  }
 ]
