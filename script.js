@@ -3,21 +3,41 @@ let produtosFiltrados = [];
 
 async function carregarProdutos() {
   try {
-    const res = await fetch("produtos.json?t=" + new Date().getTime());
-    let produtosOriginais = await res.json();
+    // 1. Cria gavetas vazias para cada loja
+    let ml = [], shopee = [], tiktok = [];
     
-    // Embaralhador Premium de Vitrine
+    // 2. Busca os dados de cada loja de forma independente, com proteção contra erros
+    try {
+      const resMl = await fetch("ml.json?t=" + new Date().getTime());
+      if(resMl.ok) ml = await resMl.json();
+    } catch(e) { console.log("Aviso: Não foi possível carregar ml.json"); }
+
+    try {
+      const resShopee = await fetch("shopee.json?t=" + new Date().getTime());
+      if(resShopee.ok) shopee = await resShopee.json();
+    } catch(e) { console.log("Aviso: Não foi possível carregar shopee.json"); }
+
+    try {
+      const resTiktok = await fetch("tiktok.json?t=" + new Date().getTime());
+      if(resTiktok.ok) tiktok = await resTiktok.json();
+    } catch(e) { console.log("Aviso: Não foi possível carregar tiktok.json"); }
+
+    // 3. Junta todos os produtos das três lojas em uma única lista mestre
+    let produtosOriginais = [...ml, ...shopee, ...tiktok];
+    
+    // Embaralhador Premium de Vitrine (Mantido intacto)
     for (let i = produtosOriginais.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [produtosOriginais[i], produtosOriginais[j]] = [produtosOriginais[j], produtosOriginais[i]];
     }
     
+    // 4. Envia para o site renderizar e aplicar os filtros que já existem
     produtos = produtosOriginais;
     produtosFiltrados = [...produtos];
     renderizar(produtosFiltrados);
     
   } catch (e) { 
-    console.log("Erro ao carregar produtos. Verifique o ficheiro produtos.json."); 
+    console.log("Erro crítico ao montar a vitrine central."); 
   }
 }
 
