@@ -79,7 +79,7 @@ function renderizar(lista) {
 
     const card = `
       <div class="card">
-        ${p.tag ? `<div class="badge" data-tag="${p.tag}">${p.tag}</div>` : ''}
+        ${p.tag ? `<div class="badge">${p.tag}</div>` : ''}
         <img src="${p.imagens[0]}" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
         <div class="stars-row">${estrelas} <span class="rev-text">(${p.avaliacoes || '0'})</span></div>
