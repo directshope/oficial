@@ -190,6 +190,33 @@ document.getElementById("search").addEventListener("input", e => {
   renderizar(produtosFiltrados);
 });
 
+// FILTRO DE CATEGORIAS INTELIGENTE (Trabalha junto com a Loja ativa)
+document.getElementById("categoria").addEventListener("change", (e) => {
+  const catSelecionada = e.target.value;
+  
+  // 1. Descobre qual loja está ativa no momento (para não misturar produtos)
+  const lojaAtiva = document.querySelector(".tab-link.active").getAttribute("data-loja");
+  
+  // 2. Separa os produtos da loja atual
+  let produtosTemp = (lojaAtiva === "all") ? [...produtos] : produtos.filter(p => p.loja === lojaAtiva);
+  
+  // 3. Filtra pela categoria escolhida
+  if (catSelecionada !== "todos") {
+    produtosTemp = produtosTemp.filter(p => p.categoria === catSelecionada);
+  }
+  
+  produtosFiltrados = produtosTemp;
+  
+  // 4. Renderiza com o mesmo efeito suave premium das abas
+  const container = document.getElementById("produtos");
+  container.style.opacity = 0;
+  setTimeout(() => {
+    renderizar(produtosFiltrados);
+    container.style.transition = "opacity 0.4s ease";
+    container.style.opacity = 1;
+  }, 200);
+});
+
 // BANNER SLIDER AUTOMÁTICO DINÂMICO
 async function carregarBanners() {
   try {
