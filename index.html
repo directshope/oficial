@@ -121,11 +121,20 @@
 <div id="modal-galeria" class="modal-foto">
   <div class="modal-content-premium">
     <span class="fechar-modal" onclick="fecharGaleria()">&times;</span>
-    <img src="" id="foto-grande-modal" class="foto-principal-modal">
-    <div class="miniaturas-row" id="miniaturas-container"></div>
-    <h3 id="modal-titulo-produto"></h3>
-    <div id="modal-descricao"></div>
-    <button id="modal-link-compra" class="gold-button modal-cta">Comprar Agora</button>
+    
+    <div class="modal-esquerda">
+      <div id="zoom-container" style="position: relative; display: flex; justify-content: center;">
+        <img src="" id="foto-grande-modal" class="foto-principal-modal">
+        <div id="lens" class="zoom-lens"></div>
+      </div>
+      <div class="miniaturas-row" id="miniaturas-container"></div>
+    </div>
+
+    <div class="modal-direita">
+      <h3 id="modal-titulo-produto"></h3>
+      <div id="modal-descricao"></div>
+      <button id="modal-link-compra" class="gold-button modal-cta">Comprar Agora</button>
+    </div>
   </div>
 </div>
 
