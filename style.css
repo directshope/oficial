@@ -279,7 +279,7 @@ body.premium-dark {
   max-height: 60vh;
   object-fit: contain;
   cursor: zoom-in;
-  transition: transform 0.1s ease-out;
+  transition: transform 0.18s ease-out;
   transform-origin: center;
   border-radius: 18px;
   display: block;
@@ -289,7 +289,7 @@ body.premium-dark {
 }
 
 .foto-principal-modal.zoom-ativo {
-  transform: scale(2); /* Aumenta a imagem para ver detalhes */
+  transform: scale(1.18); /* Aumenta a imagem para ver detalhes */
   cursor: zoom-out;
   z-index: 10;
 }
