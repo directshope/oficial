@@ -73,8 +73,13 @@ function renderizar(lista) {
     let estrelas = "";
     const nota = parseFloat(p.nota) || 0;
     for (let i = 1; i <= 5; i++) {
-      if (i <= Math.floor(nota)) estrelas += '<span class="star filled">★</span>';
-      else estrelas += '<span class="star">★</span>';
+      let fill = 0;
+      if (nota >= i) {
+        fill = 100; 
+      } else if (nota > i - 1) {
+        fill = (nota - (i - 1)) * 100; 
+      }
+      estrelas += `<span class="star filled" style="--fill: ${fill}%">★</span>`;
     }
 
     const card = `
