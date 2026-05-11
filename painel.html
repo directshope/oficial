@@ -55,7 +55,23 @@
         .data-list { margin-top: 20px; border: 1px solid var(--border); border-radius: 15px; overflow: hidden; }
         .data-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #16161a; border-bottom: 1px solid var(--border); }
 
-        #status { margin-top: 20px; text-align: center; font-weight: bold; padding: 15px; border-radius: 12px; display: none; }
+        #status { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 10000; 
+            background: var(--success); 
+            color: #000; 
+            padding: 16px 40px; 
+            border-radius: 50px; 
+            font-weight: 900; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8); 
+            display: none; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid rgba(0,0,0,0.1);
+        }
         .logout-btn { background: none; color: #444; border: none; font-size: 11px; cursor: pointer; text-decoration: underline; margin-top: 40px; display: block; width: 100%; text-align: center; }
         
         #login-screen { display: flex; flex-direction: column; gap: 15px; }
