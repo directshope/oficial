@@ -199,6 +199,14 @@ body.premium-dark {
     font-weight: 700;
 }
 
+/* Destaque numérico da nota */
+.rating-val {
+    color: #ffca28;
+    font-weight: 800;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
 /* BOTÕES DOURADOS PREMIUM COM GLOW */
 .card button, .gold-button {
   width: 100%; padding: 16px; border: none; 
