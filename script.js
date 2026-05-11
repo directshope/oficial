@@ -199,6 +199,39 @@ async function carregarBanners() {
 // Executa a função imediatamente ao carregar o script
 carregarBanners();
 
+// CARREGAR MARCAS DINAMICAMENTE (COM ROLAGEM INFINITA BLINDADA)
+async function carregarMarcas() {
+  try {
+    const res = await fetch("marcas.json?t=" + new Date().getTime());
+    if(res.ok) {
+      const marcasArray = await res.json();
+      const track = document.getElementById("marcas-track");
+      if(!track || marcasArray.length === 0) return;
+      
+      track.innerHTML = ""; // Limpa a faixa
+      
+      // Função interna para renderizar a lista uma vez
+      const renderizarLista = () => {
+        marcasArray.forEach(marca => {
+          const span = document.createElement("span");
+          span.className = "marca-item";
+          span.textContent = marca;
+          track.appendChild(span);
+        });
+      };
+
+      // Injetamos a lista 3 vezes seguidas (clonagem) 
+      // Isso imita exatamente o que você fez no HTML manual para a animação do CSS funcionar em loop!
+      renderizarLista();
+      renderizarLista();
+      renderizarLista();
+    }
+  } catch(e) { 
+    console.log("Aviso: Não foi possível carregar marcas.json"); 
+  }
+}
+carregarMarcas();
+
 // LÓGICA DE ZOOM TIPO "LUPA"
 const fotoModal = document.getElementById('foto-grande-modal');
 const lens = document.getElementById('lens');
