@@ -82,8 +82,10 @@ function renderizar(lista) {
         ${p.tag ? `<div class="badge">${p.tag}</div>` : ''}
         <img src="${p.imagens[0]}" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
+        <span class="card-subtitle">${p.subtitulo || ""}</span>
         <div class="stars-row">${estrelas} <span class="rev-text">(${p.avaliacoes || '0'})</span></div>
-        <span class="card-category">${p.categoria || ""} ${p.estoque ? `• Estoque: ${p.estoque}` : ''}</span>
+        <div class="card-category" style="margin-bottom: 5px;">${p.categoria || ""}</div>
+        <div class="stock-row">Disponível: <span class="stock-qty">${p.estoque || "0"}</span> unidades</div>
         <div class="card-footer">
           <p class="price">R$ ${p.preco}</p>
           <button onclick="window.open('${p.link}', '_blank')">Comprar Agora</button>
