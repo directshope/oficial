@@ -83,7 +83,7 @@ function renderizar(lista) {
         <img src="${p.imagens[0]}" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
         <div class="stars-row">${estrelas} <span class="rev-text">(${p.avaliacoes || '0'})</span></div>
-        <span class="card-category">${p.categoria || ""}</span>
+        <span class="card-category">${p.categoria || ""} ${p.estoque ? `• Estoque: ${p.estoque}` : ''}</span>
         <div class="card-footer">
           <p class="price">R$ ${p.preco}</p>
           <button onclick="window.open('${p.link}', '_blank')">Comprar Agora</button>
