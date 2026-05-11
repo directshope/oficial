@@ -83,7 +83,11 @@ function renderizar(lista) {
         <img src="${p.imagens[0]}" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
         <span class="card-subtitle">${p.subtitulo || ""}</span>
-        <div class="stars-row">${estrelas} <span class="rev-text">(${p.avaliacoes || '0'})</span></div>
+        <div class="stars-row">
+    <span class="rating-val">${p.nota || "0.0"}</span>
+    ${estrelas} 
+    <span class="rev-text">(${p.avaliacoes || '0'})</span>
+</div>
         <div class="card-category" style="margin-bottom: 5px;">${p.categoria || ""}</div>
         <div class="stock-row">Disponível: <span class="stock-qty">${p.estoque || "0"}</span> unidades</div>
         <div class="card-footer">
