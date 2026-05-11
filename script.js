@@ -134,37 +134,38 @@ if (slidesContainer) {
   }, 4000); 
 }
 
-// ZOOM CORRIGIDO - CARREGA UMA VEZ SÓ NO FINAL DO ARQUIVO
+// LÓGICA DE ZOOM TIPO "LUPA"
 const fotoModal = document.getElementById('foto-grande-modal');
+const lens = document.getElementById('lens');
 
-if (fotoModal) {
-  fotoModal.onclick = function() {
-    this.classList.toggle('zoom-ativo');
-    if (!this.classList.contains('zoom-ativo')) {
-      this.style.transform = "scale(1)";
-      this.style.transformOrigin = "center";
-    }
-  };
+if (fotoModal && lens) {
+  fotoModal.addEventListener('mousemove', moveLens);
+  fotoModal.addEventListener('mouseenter', () => lens.style.visibility = 'visible');
+  fotoModal.addEventListener('mouseleave', () => lens.style.visibility = 'hidden');
 
-  fotoModal.addEventListener('mousemove', (e) => {
-  if (fotoModal.classList.contains('zoom-ativo')) {
-    const { left, top, width, height } = fotoModal.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
-    
-    // transform-origin não altera o tamanho real do elemento, por isso é ultra-leve
-    fotoModal.style.transformOrigin = `${x}% ${y}%`;
-    fotoModal.style.transform = "scale(1.18)"; 
+  function moveLens(e) {
+    const rect = fotoModal.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Tamanho da lente (150x150 definido no CSS)
+    let lensX = x - 75;
+    let lensY = y - 75;
+
+    // Limites para a lente não sair da imagem
+    if (lensX > rect.width - 150) lensX = rect.width - 150;
+    if (lensX < 0) lensX = 0;
+    if (lensY > rect.height - 150) lensY = rect.height - 150;
+    if (lensY < 0) lensY = 0;
+
+    lens.style.left = lensX + "px";
+    lens.style.top = lensY + "px";
+
+    // Calcula o zoom de 2.5x
+    const ratio = 2.5;
+    lens.style.backgroundImage = `url('${fotoModal.src}')`;
+    lens.style.backgroundSize = (rect.width * ratio) + "px " + (rect.height * ratio) + "px";
+    lens.style.backgroundPosition = "-" + (lensX * ratio) + "px -" + (lensY * ratio) + "px";
   }
-});
-
-// RESET AUTOMÁTICO: A imagem volta ao normal quando o mouse sai dela
-fotoModal.addEventListener('mouseleave', () => {
-  fotoModal.classList.remove('zoom-ativo');
-  fotoModal.style.transform = "scale(1)";
-  fotoModal.style.transformOrigin = "center";
-});
 }
-
-// Inicia o sistema
 carregarProdutos();
