@@ -432,3 +432,25 @@ body.premium-dark {
     100% { opacity: 1; }
 }
 
+/* --- NOVOS SELOS: CAMPEÃO E TENDÊNCIA --- */
+
+/* 6. CAMPEÃO DE VENDAS (Pulso de Fogo) */
+.card:hover .badge-campeao {
+    animation: pulseIntense 1s infinite;
+    background: linear-gradient(135deg, #ff4b2b, #ff416c) !important;
+    box-shadow: 0 0 20px rgba(255, 75, 43, 0.6);
+}
+
+/* 7. TENDÊNCIA (Brilho Cyan Fluido) */
+.card:hover .badge-tendencia {
+    background: #00d2ff !important;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+    animation: glow 1.5s alternate infinite;
+}
+
+/* MOTOR DE ANIMAÇÃO DO CAMPEÃO */
+@keyframes pulseIntense {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.1); filter: brightness(1.3); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
