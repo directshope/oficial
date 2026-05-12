@@ -85,12 +85,14 @@ function renderizar(lista) {
     const card = `
       <div class="card">
         ${p.tag ? `<div class="badge ${
-    p.tag === 'Mais Vendido' ? 'badge-mais-vendido' : 
-    p.tag === 'O Queridinho do Mês' ? 'badge-queridinho' : 
-    p.tag === 'Quem Viu, Comprou' ? 'badge-quem-viu' : 
-    p.tag === 'Viralizado do TikTok' ? 'badge-tiktok' : 
-    p.tag === 'Oportunidade Única' ? 'badge-oportunidade' : ''
-}">${p.tag}</div>` : ''}`
+            p.tag === 'Mais Vendido' ? 'badge-mais-vendido' : 
+            p.tag === 'O Queridinho do Mês' ? 'badge-queridinho' : 
+            p.tag === 'Quem Viu, Comprou' ? 'badge-quem-viu' : 
+            p.tag === 'Viralizado do TikTok' ? 'badge-tiktok' : 
+            p.tag === 'Oportunidade Única' ? 'badge-oportunidade' :
+            p.tag === 'Tendência Global' ? 'badge-tendencia' :
+            p.tag === 'Para Presentear' ? 'badge-presente' : ''
+        }">${p.tag}</div>` : ''}
         <img src="${p.imagens[0]}" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
         <span class="card-subtitle">${p.subtitulo || ""}</span>
