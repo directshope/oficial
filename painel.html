@@ -76,6 +76,62 @@
         
         #login-screen { display: flex; flex-direction: column; gap: 15px; }
         #admin-panel { display: none; width: 100%; }
+
+        #resultado-ml{
+    margin-top:15px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.ml-item{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:#16161a;
+    border:1px solid var(--border);
+    padding:12px;
+    border-radius:14px;
+    transition:0.3s;
+}
+
+.ml-item:hover{
+    border-color:var(--gold);
+}
+
+.ml-item img{
+    width:75px;
+    height:75px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.ml-info{
+    flex:1;
+}
+
+.ml-titulo{
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:5px;
+}
+
+.ml-preco{
+    color:var(--gold);
+    font-weight:900;
+    font-size:18px;
+}
+
+.ml-btn{
+    background:var(--gold);
+    color:#000;
+    border:none;
+    padding:10px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+}
+        
     </style>
 </head>
 <body>
@@ -113,6 +169,20 @@
             <input type="text" id="busca-editar" placeholder="Buscar produto nesta loja..." oninput="buscarNoJson()">
             <div id="lista-busca"></div>
         </div>
+
+        <div class="section-title">🛒 Buscar Produto Mercado Livre</div>
+
+<div class="input-group">
+    
+    <input 
+        type="text" 
+        id="busca-ml" 
+        placeholder="Digite o nome do produto e aperte ENTER"
+    >
+
+    <div id="resultado-ml"></div>
+
+</div>
 
         <div class="section-title">📦 Dados do Produto</div>
         <div class="grid">
@@ -427,6 +497,71 @@
         editandoIndex = null;
         document.getElementById('btn-save').innerText = "Publicar no Site";
     }
+
+    document.getElementById('busca-ml').addEventListener('keypress', async function(e){
+
+    if(e.key !== 'Enter') return;
+
+    const termo = this.value.trim();
+
+    if(!termo) return;
+
+    const resultado = document.getElementById('resultado-ml');
+
+    resultado.innerHTML = `<div style="color:var(--gold)">Buscando produtos...</div>`;
+
+    try{
+
+        const resposta = await fetch(
+            `https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(termo)}`
+        );
+
+        const data = await resposta.json();
+
+        resultado.innerHTML = "";
+
+        data.results.slice(0,8).forEach(produto => {
+
+            resultado.innerHTML += `
+            
+                <div class="ml-item">
+
+                    <img src="${produto.thumbnail}" />
+
+                    <div class="ml-info">
+
+                        <div class="ml-titulo">
+                            ${produto.title}
+                        </div>
+
+                        <div class="ml-preco">
+                            R$ ${produto.price}
+                        </div>
+
+                    </div>
+
+                    <button class="ml-btn">
+                        IMPORTAR
+                    </button>
+
+                </div>
+
+            `;
+
+        });
+
+    }catch(erro){
+
+        resultado.innerHTML = `
+            <div style="color:red">
+                Erro ao buscar produtos.
+            </div>
+        `;
+
+    }
+
+});
+    
 </script>
 </body>
 </html>
