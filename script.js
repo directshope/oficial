@@ -24,8 +24,26 @@ async function carregarCategorias() {
 // Executa a função imediatamente ao carregar o script
 carregarCategorias();
 
+function mostrarSkeletons() {
+  const container = document.getElementById("produtos");
+  if (!container) return;
+  container.innerHTML = "";
+  for (let i = 0; i < 8; i++) { // Desenha 8 blocos fantasmas piscando
+    container.innerHTML += `
+      <div class="skeleton-card">
+        <div class="skeleton-box skeleton-img"></div>
+        <div class="skeleton-box skeleton-title"></div>
+        <div class="skeleton-box skeleton-title" style="width: 60%"></div>
+        <div class="skeleton-box skeleton-price"></div>
+      </div>
+    `;
+  }
+}
+
 async function carregarProdutos() {
   try {
+    // Dispara a animação premium antes de baixar os JSONs
+    mostrarSkeletons();
     // 1. Cria gavetas vazias para cada loja
     let ml = [], shopee = [], tiktok = [];
     
