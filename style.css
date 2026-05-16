@@ -148,7 +148,33 @@ body.premium-dark {
   box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 30px rgba(241, 196, 15, 0.15); 
 }
 
-.badge { position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; padding: 6px 14px; font-size: 11px; font-weight: 800; border-radius: 20px; z-index: 10; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3); }
+/* BASE DA TAG (Sempre visível, texto branco e fundo premium) */
+.badge { 
+    position: absolute; top: 15px; left: 15px; 
+    padding: 6px 14px; font-size: 11px; font-weight: 800; 
+    border-radius: 20px; color: #ffffff; z-index: 10;
+    background: rgba(20, 20, 25, 0.85); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    overflow: hidden;
+}
+
+/* Feixe de luz de scanner passando continuamente em TODAS as tags */
+.badge::before {
+    content: "";
+    position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: skewX(-20deg);
+    animation: shinePremium 2.5s infinite;
+    z-index: -1;
+}
+
+@keyframes shinePremium {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
 
 .card img {
   width: 100%;
