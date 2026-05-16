@@ -27,21 +27,27 @@ body.premium-dark {
 
 /* --- ATMOSFERA DINÂMICA PREMIUM (AMBIENT GLOW) --- */
 
-/* Quando a Shopee está ativa: Névoa Laranja Quente da Marca */
-body:has(.tab-link.active[data-loja="shopee"]) .bg-glow {
-    background: radial-gradient(circle at 50% 50%, rgba(238, 77, 45, 0.04) 0%, transparent 60%),
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.01) 0%, transparent 30%);
+/* Quando a Shopee está ativa: Névoa Laranja Quente visível */
+body[data-ambiente="shopee"] .bg-glow {
+    background: radial-gradient(circle at 50% 50%, rgba(238, 77, 45, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 30%);
 }
 
-/* Quando o TikTok está ativo: Fusão Autêntica de Ciano e Magenta Neon */
-body:has(.tab-link.active[data-loja="tiktok"]) .bg-glow {
-    background: radial-gradient(circle at 30% 40%, rgba(0, 242, 234, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(255, 0, 80, 0.04) 0%, transparent 50%);
+/* Quando o TikTok está ativo: Iluminação Real de Estúdio (Ciano + Magenta Neon) */
+body[data-ambiente="tiktok"] .bg-glow {
+    background: radial-gradient(circle at 30% 40%, rgba(0, 242, 234, 0.15) 0%, transparent 5rem),
+                radial-gradient(circle at 70% 60%, rgba(255, 0, 80, 0.12) 0%, transparent 50%);
 }
 
-/* Quando o Mercado Livre está ativo: Foco no Amarelo Ouro Realçado */
-body:has(.tab-link.active[data-loja="ml"]) .bg-glow {
-    background: radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.04) 0%, transparent 60%),
+/* Quando o Mercado Livre está ativo: Ouro Realçado */
+body[data-ambiente="ml"] .bg-glow {
+    background: radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 30%);
+}
+
+/* Quando a aba Todos está ativa: Volta ao Ouro Padrão Luxuoso da Direct Shop */
+body[data-ambiente="all"] .bg-glow {
+    background: radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.03) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 30%);
 }
 /* HEADER MINIMALISTA (Efeito Vidro) */
