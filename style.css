@@ -258,7 +258,8 @@ body[data-ambiente="all"] .bg-glow {
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 12px;
-    color: rgba(255, 255, 255, 0.35); /* Cinza uniforme e bem suave */
+    color: #2ed573; /* Verde clarinho premium com excelente leitura no dark */
+    font-weight: 700;
 }
 
 .stock-qty {
