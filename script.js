@@ -156,6 +156,7 @@ async function carregarLojas() {
           btn.classList.add("active");
 
           const categoriaLoja = btn.getAttribute("data-loja");
+          document.body.setAttribute("data-ambiente", categoriaLoja);
 
           if (categoriaLoja === "all") {
             produtosFiltrados = [...produtos];
