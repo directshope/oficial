@@ -121,7 +121,7 @@ function renderizar(lista) {
     <span class="rev-text">(${p.avaliacoes || '0'})</span>
 </div>
         <div class="card-category" style="margin-bottom: 5px;">${p.categoria || ""}</div>
-        <div class="stock-row">Disponível: <span class="stock-qty">${p.estoque || "0"}</span> unidades</div>
+        <div class="stock-row">Estoque Disponível</div>
         <div class="card-footer">
           <p class="price">R$ ${p.preco}</p>
           <button onclick="window.open('${p.link}', '_blank')">Comprar Agora</button>
