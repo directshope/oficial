@@ -151,11 +151,8 @@
         </div>
 
         <div class="input-group">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <label style="margin-bottom: 0;">Descrição Completa do Produto:</label>
-                <button type="button" onclick="abrirEditorModal()" style="background: rgba(241, 196, 15, 0.15); color: var(--gold); border: 1px solid var(--gold); border-radius: 8px; padding: 6px 15px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s;">⛶ Expandir Tela</button>
-            </div>
-            <textarea id="p-descricao" rows="4" placeholder="Cole a descrição ou clique em Expandir Tela..."></textarea>
+            <label>Descrição Completa do Produto (Clique para expandir):</label>
+            <textarea id="p-descricao" rows="4" placeholder="Clique aqui dentro para expandir a tela e colar sua descrição..." onclick="abrirEditorModal()" readonly style="cursor: pointer;"></textarea>
         </div>
         
         <div class="section-title">🖼️ Imagens (Links)</div>
@@ -215,11 +212,10 @@
 <div id="modal-descricao-painel" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(8px);">
     <div style="background: var(--card-bg); width: 95%; max-width: 900px; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; height: 85vh;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="color: var(--gold); margin: 0; font-size: 18px; text-transform: uppercase; font-weight: 900;">✍️ Editor de Descrição</h3>
-            <button type="button" onclick="fecharEditorModal()" style="background: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); padding: 8px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s;">Fechar (X)</button>
+            <h3 style="color: var(--gold); margin: 0; font-size: 18px; text-transform: uppercase; font-weight: 900;">✍️ Descrição do Produto</h3>
+            <button type="button" onclick="salvarEditorModal()" style="background: var(--success); color: #000; border: none; padding: 10px 25px; border-radius: 10px; font-weight: 900; cursor: pointer; transition: 0.3s; text-transform: uppercase;">Pronto (Fechar)</button>
         </div>
         <textarea id="p-descricao-modal" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 20px; border-radius: 12px; font-size: 15px; font-family: inherit; resize: none; outline: none; line-height: 1.6;" placeholder="Cole ou digite sua descrição completa aqui..."></textarea>
-        <button type="button" class="btn-main" style="margin-top: 20px;" onclick="salvarEditorModal()">💾 Confirmar e Enviar para o Painel</button>
     </div>
 </div>
 
