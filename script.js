@@ -76,8 +76,18 @@ async function carregarProdutos() {
     produtos = produtosOriginais;
     produtosFiltrados = [...produtos];
     renderizar(produtosFiltrados);
+
+    // VERIFICAR SE HÁ PRODUTO VIA URL PARA ABRIR AUTOMATICAMENTE
+    const urlParams = new URLSearchParams(window.location.search);
+    const produtoUrl = urlParams.get('p');
+    if (produtoUrl) {
+      const idxProd = produtosFiltrados.findIndex(p => p.titulo === decodeURIComponent(produtoUrl));
+      if (idxProd !== -1) {
+        setTimeout(() => { abrirGaleria(idxProd); }, 300);
+      }
+    }
     
-  } catch (e) { 
+  } catch (e) {
     console.log("Erro crítico ao montar a vitrine central."); 
   }
 }
@@ -189,7 +199,6 @@ function abrirGaleria(idx) {
   const fotoModal = document.getElementById('foto-grande-modal');
   
   fotoModal.src = p.imagens[0];
-  // Escudo da foto principal do Modal
   fotoModal.onerror = function() { this.onerror=null; this.src='images/atualizando.png'; };
 
   document.getElementById('modal-titulo-produto').innerText = p.titulo;
@@ -199,24 +208,62 @@ function abrirGaleria(idx) {
     window.open(p.link, '_blank');
   };
 
+  // BOTÃO DE COMPARTILHAR INTELIGENTE (Injeta dinamicamente abaixo do botão de compra)
+  const btnCompAntigo = document.getElementById('modal-btn-compartilhar');
+  if (btnCompAntigo) btnCompAntigo.remove();
+  
+  const btnCompartilhar = document.createElement('button');
+  btnCompartilhar.id = 'modal-btn-compartilhar';
+  btnCompartilhar.className = 'share-button';
+  btnCompartilhar.innerHTML = '🔗 Copiar Link do Produto';
+  btnCompartilhar.onclick = function() {
+    const url = window.location.origin + window.location.pathname + '?p=' + encodeURIComponent(p.titulo);
+    navigator.clipboard.writeText(url).then(() => {
+      btnCompartilhar.innerHTML = 'Link Copiado! ✓';
+      btnCompartilhar.style.background = 'rgba(46, 213, 115, 0.2)';
+      btnCompartilhar.style.borderColor = '#2ed573';
+      btnCompartilhar.style.color = '#2ed573';
+      setTimeout(() => { 
+        btnCompartilhar.innerHTML = '🔗 Copiar Link do Produto';
+        btnCompartilhar.style.background = '';
+        btnCompartilhar.style.borderColor = '';
+        btnCompartilhar.style.color = '';
+      }, 2000);
+    });
+  };
+  document.getElementById('modal-link-compra').parentNode.insertBefore(btnCompartilhar, document.getElementById('modal-link-compra').nextSibling);
+
   const containerMinis = document.getElementById('miniaturas-container');
   containerMinis.innerHTML = "";
   
   if (p.imagens && p.imagens.length > 0) {
     p.imagens.forEach((imgUrl, i) => {
+      // FILTRO: Se a imagem não existir ou for inválida, não exibe nada
+      if (!imgUrl || imgUrl.trim() === "" || imgUrl.includes("undefined")) return;
+
       const imgEl = document.createElement('img');
       imgEl.src = imgUrl;
-      // Escudo invisível para todas as 8 miniaturas
       imgEl.onerror = function() { this.onerror=null; this.src='images/atualizando.png'; };
       imgEl.className = 'miniatura';
-      if (i === 0) imgEl.classList.add('active'); // Destaca a primeira
+      if (i === 0) imgEl.classList.add('active');
       
-      imgEl.onclick = function() {
+      // SELEÇÃO POR HOVER (onmouseenter) E CLICK (Suporte para celular)
+      const transicionarImagem = function() {
         fotoModal.src = imgUrl;
         fotoModal.onerror = function() { this.onerror=null; this.src='images/atualizando.png'; };
         document.querySelectorAll('.miniatura').forEach(m => m.classList.remove('active'));
         imgEl.classList.add('active');
+        
+        // Atualiza o fundo do painel de zoom caso o mouse já esteja em cima da foto principal
+        const zoomResult = document.getElementById('modal-zoom-result');
+        if (zoomResult) {
+          zoomResult.style.backgroundImage = `url('${imgUrl}')`;
+        }
       };
+
+      imgEl.onmouseenter = transicionarImagem;
+      imgEl.onclick = transicionarImagem;
+      
       containerMinis.appendChild(imgEl);
     });
   }
@@ -329,38 +376,62 @@ async function carregarMarcas() {
 }
 carregarMarcas();
 
-// LÓGICA DE ZOOM TIPO "LUPA"
+// LÓGICA DE ZOOM PREMIUM (PAINEL LATERAL EM CIMA DOS TEXTOS)
 const fotoModal = document.getElementById('foto-grande-modal');
 const lens = document.getElementById('lens');
 
-if (fotoModal && lens) {
+if (fotoModal) {
+  let zoomResult = document.getElementById('modal-zoom-result');
+  if (!zoomResult) {
+    zoomResult = document.createElement('div');
+    zoomResult.id = 'modal-zoom-result';
+    const modalContent = document.querySelector('.modal-content-premium');
+    if (modalContent) {
+      modalContent.appendChild(zoomResult);
+    }
+  }
+
   fotoModal.addEventListener('mousemove', moveLens);
-  fotoModal.addEventListener('mouseenter', () => lens.style.visibility = 'visible');
-  fotoModal.addEventListener('mouseleave', () => lens.style.visibility = 'hidden');
+  fotoModal.addEventListener('mouseenter', () => {
+    if (lens) lens.style.visibility = 'visible';
+    if (zoomResult && window.innerWidth > 768) {
+      zoomResult.style.display = 'block';
+      zoomResult.style.backgroundImage = `url('${fotoModal.src}')`;
+    }
+  });
+  fotoModal.addEventListener('mouseleave', () => {
+    if (lens) lens.style.visibility = 'hidden';
+    if (zoomResult) zoomResult.style.display = 'none';
+  });
 
   function moveLens(e) {
     const rect = fotoModal.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    // Tamanho da lente (150x150 definido no CSS)
-    let lensX = x - 75;
-    let lensY = y - 75;
+    let lensW = lens ? lens.offsetWidth : 120;
+    let lensH = lens ? lens.offsetHeight : 120;
+    
+    let lensX = x - (lensW / 2);
+    let lensY = y - (lensH / 2);
 
-    // Limites para a lente não sair da imagem
-    if (lensX > rect.width - 150) lensX = rect.width - 150;
+    if (lensX > rect.width - lensW) lensX = rect.width - lensW;
     if (lensX < 0) lensX = 0;
-    if (lensY > rect.height - 150) lensY = rect.height - 150;
+    if (lensY > rect.height - lensH) lensY = rect.height - lensH;
     if (lensY < 0) lensY = 0;
 
-    lens.style.left = lensX + "px";
-    lens.style.top = lensY + "px";
+    if (lens) {
+      lens.style.left = lensX + "px";
+      lens.style.top = lensY + "px";
+    }
 
-    // Calcula o zoom de 2.5x
-    const ratio = 2.5;
-    lens.style.backgroundImage = `url('${fotoModal.src}')`;
-    lens.style.backgroundSize = (rect.width * ratio) + "px " + (rect.height * ratio) + "px";
-    lens.style.backgroundPosition = "-" + (lensX * ratio) + "px -" + (lensY * ratio) + "px";
+    if (zoomResult) {
+      const ratioX = zoomResult.offsetWidth / lensW;
+      const ratioY = zoomResult.offsetHeight / lensH;
+      
+      zoomResult.style.backgroundSize = (rect.width * ratioX) + "px " + (rect.height * ratioY) + "px";
+      zoomResult.style.backgroundPosition = "-" + (lensX * ratioX) + "px -" + (lensY * ratioY) + "px";
+    }
   }
 }
 carregarProdutos();
