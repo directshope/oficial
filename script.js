@@ -112,7 +112,7 @@ function renderizar(lista) {
             p.tag === 'Tendência' ? 'badge-tendencia' :
             p.tag === 'Para Presentear' ? 'badge-presente' : ''
         }">${p.tag}</div>` : ''}
-        <img src="${p.imagens[0]}" onclick="abrirGaleria(${index})" alt="${p.titulo}">
+        <img src="${p.imagens[0]}" onerror="this.onerror=null; this.src='images/atualizando.png';" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
         <span class="card-subtitle">${p.subtitulo || ""}</span>
         <div class="stars-row">
