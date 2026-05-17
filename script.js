@@ -1,5 +1,6 @@
 let produtos = [];
 let produtosFiltrados = [];
+let limiteExibicao = 8; // Define o bloco inicial de renderização da vitrina
 
 // CARREGAR CATEGORIAS DINAMICAMENTE
 async function carregarCategorias() {
@@ -92,12 +93,21 @@ async function carregarProdutos() {
   }
 }
 
-function renderizar(lista) {
+function renderizar(lista, recomecar = true) {
   const container = document.getElementById("produtos");
   if (!container) return;
+  
+  // Se for uma nova pesquisa, nova categoria ou mudança de aba, reseta o limite para 8
+  if (recomecar) {
+    limiteExibicao = 8;
+  }
+  
   container.innerHTML = "";
 
-  lista.forEach((p, index) => {
+  // Fuga cirúrgica: Pega apenas os produtos autorizados pelo limite de rolagem atual
+  const produtosParaExibir = lista.slice(0, limiteExibicao);
+
+  produtosParaExibir.forEach((p, index) => {
     let estrelas = "";
     const nota = parseFloat(p.nota) || 0;
     for (let i = 1; i <= 5; i++) {
@@ -140,6 +150,26 @@ function renderizar(lista) {
     `;
     container.innerHTML += card;
   });
+
+  // ENGENHARIA DE ROLAGEM INFINITA - CRIAÇÃO DA SENTINELA DE MONITORIZAÇÃO
+  if (lista.length > limiteExibicao) {
+    const sentinela = document.createElement("div");
+    sentinela.id = "sentinela-rolagem";
+    sentinela.style.width = "100%";
+    sentinela.style.height = "10px";
+    sentinela.style.clear = "both";
+    container.appendChild(sentinela);
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        observer.disconnect(); // Desconecta o gatilho atual para evitar duplicados na leitura
+        limiteExibicao += 8; // Expande o limite para carregar mais 8 produtos
+        renderizar(lista, false); // Re-executa a renderização mantendo o fluxo contínuo
+      }
+    }, { rootMargin: "300px" }); // Ativa o carregamento automático 300px antes de o cliente atingir o fundo
+
+    observer.observe(sentinela);
+  }
 }
 
 // CARREGAR LOJAS DINAMICAMENTE E RECRIAR ABAS FLUTUANTES
