@@ -278,14 +278,15 @@ body[data-ambiente="all"] .bg-glow {
 /* BOTÕES DOURADOS PREMIUM COM GLOW */
 .card button, .gold-button {
   width: 100%; padding: 16px; border: none; 
-  background: linear-gradient(135deg, #f1c40f, #d4ac0d); 
-  color: #000; font-weight: 800; border-radius: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+  background: linear-gradient(135deg, #00b894, #009473); 
+  color: #ffffff; font-weight: 800; border-radius: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 184, 148, 0.2);
 }
 .card button:hover, .gold-button:hover {
-  background: linear-gradient(135deg, #fff, #f4f4f4);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, #05c46b, #00b894);
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(5, 196, 107, 0.4);
   transform: translateY(-2px);
 }
 
@@ -360,9 +361,9 @@ body[data-ambiente="all"] .bg-glow {
 }
 .modal-direita {
   flex: 1;
-  padding: 35px 30px 15px 30px; /* Reduzido o padding inferior de 40px para 15px para empurrar os botões para baixo */
+  padding: 40px 30px 20px 30px; /* Reduzido o espaço de baixo para os botões assentarem na base */
   text-align: left;
-  overflow-y: hidden; 
+  overflow-y: hidden; /* Trava a coluna para os botões ficarem fixos e não dançarem */
   display: flex;
   flex-direction: column;
 }
@@ -406,10 +407,10 @@ body[data-ambiente="all"] .bg-glow {
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding-top: 20px;
   white-space: pre-wrap;
-  max-height: 160px; /* Limita a altura do texto caso a descrição seja gigante */
-  overflow-y: auto; /* Cria a rolagem elegante exclusiva para o texto da descrição */
-  margin-bottom: 25px; /* Margem de segurança para nunca colar nos botões abaixo */
-  padding-right: 5px; /* Espaço para a barra de rolagem não cortar o texto */
+  flex: 1; /* Força o limite a descer e ocupar todo o espaço vazio até os botões */
+  overflow-y: auto; /* Ativa a rolagem elegante apenas se o texto for absurdamente gigante */
+  margin-bottom: 15px; /* Deixa o texto bem próximo do botão de compra, mantendo o respiro ideal */
+  padding-right: 5px;
 }
 
 .modal-cta { 
