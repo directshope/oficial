@@ -186,7 +186,12 @@ carregarLojas();
 // MODAL E BUSCA
 function abrirGaleria(idx) {
   const p = produtosFiltrados[idx];
-  document.getElementById('foto-grande-modal').src = p.imagens[0];
+  const fotoModal = document.getElementById('foto-grande-modal');
+  
+  fotoModal.src = p.imagens[0];
+  // Escudo da foto principal do Modal
+  fotoModal.onerror = function() { this.onerror=null; this.src='images/atualizando.png'; };
+
   document.getElementById('modal-titulo-produto').innerText = p.titulo;
   document.getElementById('modal-descricao').innerText = p.descricao || "";
   
@@ -194,7 +199,6 @@ function abrirGaleria(idx) {
     window.open(p.link, '_blank');
   };
 
-  // Restaura a lógica das 4 miniaturas sem quebrar sua ferramenta
   const containerMinis = document.getElementById('miniaturas-container');
   containerMinis.innerHTML = "";
   
@@ -202,11 +206,14 @@ function abrirGaleria(idx) {
     p.imagens.forEach((imgUrl, i) => {
       const imgEl = document.createElement('img');
       imgEl.src = imgUrl;
+      // Escudo invisível para todas as 8 miniaturas
+      imgEl.onerror = function() { this.onerror=null; this.src='images/atualizando.png'; };
       imgEl.className = 'miniatura';
       if (i === 0) imgEl.classList.add('active'); // Destaca a primeira
       
       imgEl.onclick = function() {
-        document.getElementById('foto-grande-modal').src = imgUrl;
+        fotoModal.src = imgUrl;
+        fotoModal.onerror = function() { this.onerror=null; this.src='images/atualizando.png'; };
         document.querySelectorAll('.miniatura').forEach(m => m.classList.remove('active'));
         imgEl.classList.add('active');
       };
@@ -214,8 +221,7 @@ function abrirGaleria(idx) {
     });
   }
   
- document.getElementById('modal-galeria').style.display = 'flex';
-
+  document.getElementById('modal-galeria').style.display = 'flex';
 }
 
 
