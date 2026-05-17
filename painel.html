@@ -76,16 +76,7 @@
         
         #login-screen { display: flex; flex-direction: column; gap: 15px; }
         #admin-panel { display: none; width: 100%; }
-
-        /* MODAL DA DESCRIÇÃO */
-        #modal-descricao-painel {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
-        }
-        .modal-box-desc {
-            background: var(--card-bg); width: 90%; max-width: 800px; padding: 30px; border-radius: 20px; border: 1px solid var(--gold); box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-        }
-    </style>
+    </style>
 </head>
 <body>
 
@@ -111,10 +102,10 @@
         <div class="input-group" style="background: #16161a; padding: 20px; border-radius: 15px; border: 1px solid var(--border);">
             <label style="color: var(--gold);">🛒 Loja Ativa:</label>
             <select id="loja-ativa" onchange="carregarDadosLoja()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">
-    <option value="ml">Mercado Livre</option>
-    <option value="shopee">Shopee</option>
-    <option value="tiktok">TikTok</option>
-</select>
+                <option value="ml">Mercado Livre</option>
+                <option value="shopee">Shopee</option>
+                <option value="tiktok">TikTok</option>
+            </select>
         </div>
 
         <div class="section-title">🔍 Localizar e Alterar Produtos</div>
@@ -134,49 +125,52 @@
             <div class="input-group">
                 <label>Selo:</label>
                <select id="p-tag">
-    <option value="">Nenhum Selo</option>
-    
-    <optgroup label="✨ Efeitos Premium (Hover Ativo)">
-        <option value="Mais Vendido">📈 Mais Vendido</option>
-        <option value="O Queridinho do Mês">🏆 O Queridinho do Mês</option>
-        <option value="Quem Viu, Comprou">👀 Quem Viu, Comprou</option>
-        <option value="Viralizado do TikTok">📱 Viralizado do TikTok</option>
-        <option value="Oportunidade Única">⚡ Oportunidade Única</option>
-        <option value="Tendência Global">🌍 Tendência</option>
-        <option value="Para Presentear">🎁 Para Presentear</option>
-    </optgroup>
-
-    <optgroup label="✅ Informativos (Sóbrios)">
-        <option value="Testado e Aprovado">✅ Testado e Aprovado</option>
-        <option value="Frete Grátis">🚚 Frete Grátis</option>
-        <option value="Últimas Unidades">⚠️ Últimas Unidades</option>
-        <option value="Custo-Benefício">💰 Melhor Custo-Benefício</option>
-    </optgroup>
-</select>
+                    <option value="">Nenhum Selo</option>
+                    <optgroup label="✨ Efeitos Premium (Hover Ativo)">
+                        <option value="Mais Vendido">📈 Mais Vendido</option>
+                        <option value="O Queridinho do Mês">🏆 O Queridinho do Mês</option>
+                        <option value="Quem Viu, Comprou">👀 Quem Viu, Comprou</option>
+                        <option value="Viralizado do TikTok">📱 Viralizado do TikTok</option>
+                        <option value="Oportunidade Única">⚡ Oportunidade Única</option>
+                        <option value="Tendência Global">🌍 Tendência</option>
+                        <option value="Para Presentear">🎁 Para Presentear</option>
+                    </optgroup>
+                    <optgroup label="✅ Informativos (Sóbrios)">
+                        <option value="Testado e Aprovado">✅ Testado e Aprovado</option>
+                        <option value="Frete Grátis">🚚 Frete Grátis</option>
+                        <option value="Últimas Unidades">⚠️ Últimas Unidades</option>
+                        <option value="Custo-Benefício">💰 Melhor Custo-Benefício</option>
+                    </optgroup>
+                </select>
             </div>
         </div>
+        
         <div class="grid">
-            <div class="input-group"><label>Nota Produtos:</label><input type="text" id="p-nota" placeholder="Ex: 4.8"></div>
-            <div class="input-group"><label>Nº Avaliações:</label><input type="text" id="p-avaliacoes" placeholder="Ex: 150"></div>
-        </div>
-        <div class="input-group">
-            <label>Descrição Completa do Produto:</label>
-            <button type="button" class="btn-main" style="background: transparent; border: 1px dashed var(--gold); color: var(--gold);" onclick="document.getElementById('modal-descricao-painel').style.display='flex'">✍️ Abrir Editor de Descrição</button>
-        </div>
+            <div class="input-group"><label>Nota Produtos:</label><input type="text" id="p-nota" placeholder="Ex: 4.8"></div>
+            <div class="input-group"><label>Nº Avaliações:</label><input type="text" id="p-avaliacoes" placeholder="Ex: 150"></div>
+        </div>
+
+        <div class="input-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label style="margin-bottom: 0;">Descrição Completa do Produto:</label>
+                <button type="button" onclick="abrirEditorModal()" style="background: rgba(241, 196, 15, 0.15); color: var(--gold); border: 1px solid var(--gold); border-radius: 8px; padding: 6px 15px; font-size: 11px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s;">⛶ Expandir Tela</button>
+            </div>
+            <textarea id="p-descricao" rows="4" placeholder="Cole a descrição ou clique em Expandir Tela..."></textarea>
+        </div>
         
         <div class="section-title">🖼️ Imagens (Links)</div>
-        <div class="grid">
-            <input type="text" id="img1" placeholder="Link Foto 1 (Principal)">
-            <input type="text" id="img2" placeholder="Link Foto 2">
-            <input type="text" id="img3" placeholder="Link Foto 3">
-            <input type="text" id="img4" placeholder="Link Foto 4">
-        </div>
-        <div class="grid" style="margin-top: 15px;">
-            <input type="text" id="img5" placeholder="Link Foto 5">
-            <input type="text" id="img6" placeholder="Link Foto 6">
-            <input type="text" id="img7" placeholder="Link Foto 7">
-            <input type="text" id="img8" placeholder="Link Foto 8">
-        </div>
+        <div class="grid">
+            <input type="text" id="img1" placeholder="Link Foto 1 (Principal)">
+            <input type="text" id="img2" placeholder="Link Foto 2">
+            <input type="text" id="img3" placeholder="Link Foto 3">
+            <input type="text" id="img4" placeholder="Link Foto 4">
+        </div>
+        <div class="grid" style="margin-top: 20px;">
+            <input type="text" id="img5" placeholder="Link Foto 5">
+            <input type="text" id="img6" placeholder="Link Foto 6">
+            <input type="text" id="img7" placeholder="Link Foto 7">
+            <input type="text" id="img8" placeholder="Link Foto 8">
+        </div>
 
         <div class="section-title">🔗 Link de Compra</div>
         <input type="text" id="p-link" style="margin-bottom:20px">
@@ -215,16 +209,18 @@
     </div>
 
     <div id="status"></div>
-    
-        <div id="modal-descricao-painel">
-        <div class="modal-box-desc">
-            <h3 style="color: var(--gold); margin-top:0; text-transform:uppercase; font-size:16px;">✍️ Editor Avançado de Descrição</h3>
-            <textarea id="p-descricao" placeholder="Cole sua descrição completa aqui..." style="height: 350px; resize: vertical; border-radius: 12px; margin-bottom: 15px;"></textarea>
-            <button class="btn-main" onclick="document.getElementById('modal-descricao-painel').style.display='none'">💾 Salvar e Fechar Editor</button>
-        </div>
-    </div>
+    <button class="logout-btn" onclick="logout()">Desconectar</button>
+</div>
 
-    <button class="logout-btn" onclick="logout()">Desconectar</button>
+<div id="modal-descricao-painel" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(8px);">
+    <div style="background: var(--card-bg); width: 95%; max-width: 900px; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; height: 85vh;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="color: var(--gold); margin: 0; font-size: 18px; text-transform: uppercase; font-weight: 900;">✍️ Editor de Descrição</h3>
+            <button type="button" onclick="fecharEditorModal()" style="background: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); padding: 8px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s;">Fechar (X)</button>
+        </div>
+        <textarea id="p-descricao-modal" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 20px; border-radius: 12px; font-size: 15px; font-family: inherit; resize: none; outline: none; line-height: 1.6;" placeholder="Cole ou digite sua descrição completa aqui..."></textarea>
+        <button type="button" class="btn-main" style="margin-top: 20px;" onclick="salvarEditorModal()">💾 Confirmar e Enviar para o Painel</button>
+    </div>
 </div>
 
 <script>
@@ -311,6 +307,19 @@
         if(save.ok) showStatus("✅ SINCRONIZADO COM SUCESSO!");
     }
 
+    // LÓGICA DO EDITOR DE DESCRIÇÃO EXPANDIDO
+    function abrirEditorModal() {
+        document.getElementById('p-descricao-modal').value = document.getElementById('p-descricao').value;
+        document.getElementById('modal-descricao-painel').style.display = 'flex';
+    }
+    function fecharEditorModal() {
+        document.getElementById('modal-descricao-painel').style.display = 'none';
+    }
+    function salvarEditorModal() {
+        document.getElementById('p-descricao').value = document.getElementById('p-descricao-modal').value;
+        fecharEditorModal();
+    }
+
     // GESTÃO DE PRODUTOS
     function buscarNoJson() {
         const termo = document.getElementById('busca-editar').value.toLowerCase();
@@ -344,23 +353,23 @@
         document.getElementById('p-descricao').value = p.descricao || "";
         document.getElementById('p-link').value = p.link;
         document.getElementById('p-nota').value = p.nota || "";
-        document.getElementById('p-avaliacoes').value = p.avaliacoes || "";
-        for(let i=1;i<=8;i++) document.getElementById(`img${i}`).value = p.imagens[i-1] || "";
+        document.getElementById('p-avaliacoes').value = p.avaliacoes || "";
+        for(let i=1;i<=8;i++) document.getElementById(`img${i}`).value = p.imagens && p.imagens[i-1] ? p.imagens[i-1] : "";
         document.getElementById('btn-save').innerText = "ATUALIZAR ITEM";
         window.scrollTo({top:0, behavior:'smooth'});
     }
 
     async function salvarProduto() {
-        const loja = document.getElementById('loja-ativa').value;
-        const imgs = [1,2,3,4,5,6,7,8].map(i => document.getElementById(`img${i}`).value).filter(v => v !== "");
-        const p = {
-            titulo: document.getElementById('p-titulo').value,
-            subtitulo: document.getElementById('p-subtitulo').value,
-            preco: document.getElementById('p-preco').value,
-            tag: document.getElementById('p-tag').value,
-            nota: document.getElementById('p-nota').value,
-            avaliacoes: document.getElementById('p-avaliacoes').value,
-            link: document.getElementById('p-link').value,
+        const loja = document.getElementById('loja-ativa').value;
+        const imgs = [1,2,3,4,5,6,7,8].map(i => document.getElementById(`img${i}`).value).filter(v => v !== "");
+        const p = {
+            titulo: document.getElementById('p-titulo').value,
+            subtitulo: document.getElementById('p-subtitulo').value,
+            preco: document.getElementById('p-preco').value,
+            tag: document.getElementById('p-tag').value,
+            nota: document.getElementById('p-nota').value,
+            avaliacoes: document.getElementById('p-avaliacoes').value,
+            link: document.getElementById('p-link').value,
             loja: loja,
             categoria: document.getElementById('p-categoria').options[document.getElementById('p-categoria').selectedIndex].text,
             descricao: document.getElementById('p-descricao').value,
@@ -448,6 +457,7 @@
 
     function limparCampos() {
         document.querySelectorAll('#tab-produtos input, #tab-produtos textarea').forEach(i => i.value = "");
+        document.getElementById('p-descricao-modal').value = "";
         editandoIndex = null;
         document.getElementById('btn-save').innerText = "Publicar no Site";
     }
