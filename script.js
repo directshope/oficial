@@ -314,27 +314,118 @@ async function carregarBanners() {
   try {
     const res = await fetch("banners.json?t=" + new Date().getTime());
     if (res.ok) {
-      const banners = await res.json();
+      let banners = await res.json();
+      
+      // OPÇÃO A: EMBARALHAR OS BANNERS NA ENTRADA DO SITE
+      banners.sort(() => Math.random() - 0.5);
+      
       const slidesContainer = document.getElementById("slides");
       if (!slidesContainer || banners.length === 0) return;
       
-      slidesContainer.innerHTML = ""; // Limpa a área
+      slidesContainer.innerHTML = ""; // Limpa a área antiga
       
-      // Cria as imagens no HTML
+      // Cria as imagens no HTML aplicando a classe ativa no primeiro item
       banners.forEach((imgSrc, index) => {
         const img = document.createElement("img");
         img.src = imgSrc;
         img.alt = "Banner " + (index + 1);
+        if (index === 0) img.classList.add("active");
         slidesContainer.appendChild(img);
       });
 
-      // Lógica do carrossel inteligente (sem limite fixo)
+      // CRIAR SETAS SELETORAS OCULTAS DE CONTROLADORES
+      const bannerParent = slidesContainer.parentNode;
+      
+      // Limpeza de segurança para evitar duplicatas em carregamentos simultâneos
+      const antigasSetas = bannerParent.querySelectorAll('.banner-arrow, .banner-indicators');
+      antigasSetas.forEach(el => el.remove());
+
+      const btnPrev = document.createElement("button");
+      btnPrev.className = "banner-arrow prev";
+      btnPrev.innerHTML = "&#10094;";
+      
+      const btnNext = document.createElement("button");
+      btnNext.className = "banner-arrow next";
+      btnNext.innerHTML = "&#10095;";
+      
+      // CRIAR AS BARRINHAS HORIZONTAIS DE PROGRESSO (ESTILO STORIES)
+      const indicatorsContainer = document.createElement("div");
+      indicatorsContainer.className = "banner-indicators";
+      
+      banners.forEach((_, index) => {
+        const dash = document.createElement("div");
+        dash.className = "banner-dash";
+        
+        const progressFill = document.createElement("div");
+        progressFill.className = "banner-progress-fill";
+        dash.appendChild(progressFill);
+        
+        dash.onclick = () => mudarSlide(index);
+        indicatorsContainer.appendChild(dash);
+      });
+      
+      bannerParent.appendChild(btnPrev);
+      bannerParent.appendChild(btnNext);
+      bannerParent.appendChild(indicatorsContainer);
+
       let slideIndex = 0;
-      setInterval(() => {
-        slideIndex++;
-        if (slideIndex >= banners.length) slideIndex = 0; 
-        slidesContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
-      }, 4000); 
+      let timer = null;
+      const tempoSlide = 5000; // 5 segundos cronometrados por banner
+
+      function atualizarVisualCarrossel() {
+        const imgs = slidesContainer.querySelectorAll("img");
+        const dashes = indicatorsContainer.querySelectorAll(".banner-dash");
+        
+        imgs.forEach((img, i) => {
+          if (i === slideIndex) img.classList.add("active");
+          else img.classList.remove("active");
+        });
+
+        dashes.forEach((dash, i) => {
+          const fill = dash.querySelector(".banner-progress-fill");
+          fill.style.transition = "none";
+          fill.style.width = "0%";
+          
+          if (i === slideIndex) {
+            dash.classList.add("active");
+            void fill.offsetWidth; // Dispara o reflow do navegador para resetar a transição com sucesso
+            fill.style.transition = `width ${tempoSlide}ms linear`;
+            fill.style.width = "100%";
+          } else {
+            dash.classList.remove("active");
+          }
+        });
+      }
+
+      function proximoSlide() {
+        slideIndex = (slideIndex + 1) % banners.length;
+        atualizarVisualCarrossel();
+        reiniciarTemporizador();
+      }
+
+      function slideAnterior() {
+        slideIndex = (slideIndex - 1 + banners.length) % banners.length;
+        atualizarVisualCarrossel();
+        reiniciarTemporizador();
+      }
+
+      function mudarSlide(index) {
+        slideIndex = index;
+        atualizarVisualCarrossel();
+        reiniciarTemporizador();
+      }
+
+      function reiniciarTemporizador() {
+        clearInterval(timer);
+        timer = setInterval(proximoSlide, tempoSlide);
+      }
+
+      btnNext.onclick = proximoSlide;
+      btnPrev.onclick = slideAnterior;
+
+      // Inicializa o primeiro ciclo ativo do carrossel
+      atualizarVisualCarrossel();
+      reiniciarTemporizador();
     }
   } catch(e) { 
     console.log("Aviso: Não foi possível carregar banners.json"); 
