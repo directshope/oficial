@@ -464,3 +464,49 @@ body[data-ambiente="all"] .bg-glow {
 @keyframes shimmer {
     100% { transform: translateX(100%); }
 }
+
+/* --- DESIGN DO NOVO PAINEL DE ZOOM LATERAL --- */
+#modal-zoom-result {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45.4%; /* Encaixa cirurgicamente cobrindo a largura da sua .modal-direita */
+  height: 100%;
+  background-color: #0f0f12;
+  background-repeat: no-repeat;
+  display: none;
+  z-index: 99; /* Fica acima dos textos, mas respeita o botão de fechar */
+  border-left: 1px solid rgba(241, 196, 15, 0.2);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.9);
+}
+
+/* --- DESIGN DO BOTÃO DE COPIAR LINK PREMIUM --- */
+.share-button {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(241, 196, 15, 0.3);
+  background: rgba(241, 196, 15, 0.03);
+  color: #f1c40f;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.share-button:hover {
+  background: linear-gradient(135deg, #f1c40f, #d4ac0d);
+  color: #000;
+  box-shadow: 0 10px 20px rgba(241, 196, 15, 0.2);
+  transform: translateY(-1px);
+}
+
+/* DESABILITA O ZOOM EM DISPOSITIVOS MÓVEIS PARA PRESERVAR O LAYOUT COMPACTO */
+@media (max-width: 768px) {
+  #modal-zoom-result { display: none !important; }
+}
+
+}
