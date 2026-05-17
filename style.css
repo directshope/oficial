@@ -318,9 +318,9 @@ body[data-ambiente="all"] .bg-glow {
 .modal-content-premium {
   background: rgba(15, 15, 18, 0.95);
   border-radius: 24px;
-  width: 100%;
-  max-width: 1000px;
-  max-height: 85vh; /* Limita a altura para não cortar */
+  width: 95%; /* Garante aproveitamento máximo das laterais em telas menores */
+  max-width: 1180px; /* Expandido de 1000px para 1180px para dar mais amplitude horizontal */
+  max-height: 92vh; /* Expandido de 85vh para 92vh para ganhar espaço superior e inferior */
   position: relative;
   border: 1px solid rgba(241, 196, 15, 0.3);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
@@ -350,11 +350,19 @@ body[data-ambiente="all"] .bg-glow {
 }
 
 /* Lado Direito: Informações */
+.modal-textos-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding-right: 5px;
+}
 .modal-direita {
   flex: 1;
-  padding: 40px 30px;
+  padding: 35px 30px 15px 30px; /* Reduzido o padding inferior de 40px para 15px para empurrar os botões para baixo */
   text-align: left;
-  overflow-y: hidden; /* Trava a coluna para os botões de compra ficarem fixos e visíveis */
+  overflow-y: hidden; 
   display: flex;
   flex-direction: column;
 }
@@ -404,7 +412,29 @@ body[data-ambiente="all"] .bg-glow {
   padding-right: 5px; /* Espaço para a barra de rolagem não cortar o texto */
 }
 
-.modal-cta { margin-top: auto; padding-top: 20px; width: 100%; }
+.modal-cta { 
+  margin-top: auto; 
+  padding-top: 10px; 
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Deixa os dois botões elegantemente próximos */
+}
+
+/* Reduz o tamanho do botão de compra dentro do modal */
+.modal-cta button, .modal-cta .gold-button {
+  padding: 11px 16px !important; /* Diminuído de 16px para 11px para ficar mais discreto e elegante */
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+/* Reduz o tamanho do botão de copiar link dentro do modal */
+.modal-cta .share-button {
+  padding: 11px 16px !important; /* Sincronizado em 11px para manter o padrão visual harmônico */
+  font-size: 13px;
+  margin-bottom: 0px; /* Remove o espaço excessivo de baixo */
+  border-radius: 8px;
+}
 
 /* MINIATURAS PREMIUM DO MODAL */
 .miniaturas-row {
