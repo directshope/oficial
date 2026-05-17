@@ -327,14 +327,46 @@
         if(res.length > 0) {
             lista.style.display="block";
             res.forEach(p => {
+                const indexReal = produtosLoja.indexOf(p);
                 const div = document.createElement('div');
-                div.className="item-busca";
-                div.innerText = `✏️ EDITAR: ${p.titulo}`;
-                div.onclick = () => {
-                    editandoIndex = produtosLoja.indexOf(p);
+                div.className = "item-busca";
+                div.style.display = "flex";
+                div.style.justifyContent = "space-between";
+                div.style.alignItems = "center";
+                
+                const spanNome = document.createElement('span');
+                spanNome.innerText = `✏️ EDITAR: ${p.titulo}`;
+                spanNome.style.flex = "1";
+                spanNome.onclick = () => {
+                    editandoIndex = indexReal;
                     preencherForm(p);
-                    lista.style.display="none";
+                    lista.style.display = "none";
                 };
+
+                const btnExcluir = document.createElement('button');
+                btnExcluir.innerText = "❌ EXCLUIR";
+                btnExcluir.style.background = "var(--danger)";
+                btnExcluir.style.color = "#fff";
+                btnExcluir.style.border = "none";
+                btnExcluir.style.padding = "5px 12px";
+                btnExcluir.style.borderRadius = "6px";
+                btnExcluir.style.cursor = "pointer";
+                btnExcluir.style.fontWeight = "900";
+                btnExcluir.style.fontSize = "11px";
+                btnExcluir.onclick = async (e) => {
+                    e.stopPropagation(); // Impede de abrir a edição ao clicar em excluir
+                    if(confirm(`🚨 ATENÇÃO!\nTem certeza que deseja EXCLUIR definitivamente o produto:\n\n"${p.titulo}"?`)) {
+                        produtosLoja.splice(indexReal, 1);
+                        const loja = document.getElementById('loja-ativa').value;
+                        await saveGitHub(`${loja}.json`, produtosLoja, `Exclusão de produto via Painel`);
+                        document.getElementById('busca-editar').value = ""; // Limpa a busca
+                        lista.style.display = "none";
+                        limparCampos();
+                    }
+                };
+
+                div.appendChild(spanNome);
+                div.appendChild(btnExcluir);
                 lista.appendChild(div);
             });
         }
