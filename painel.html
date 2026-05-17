@@ -76,7 +76,16 @@
         
         #login-screen { display: flex; flex-direction: column; gap: 15px; }
         #admin-panel { display: none; width: 100%; }
-    </style>
+
+        /* MODAL DA DESCRIÇÃO */
+        #modal-descricao-painel {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
+        }
+        .modal-box-desc {
+            background: var(--card-bg); width: 90%; max-width: 800px; padding: 30px; border-radius: 20px; border: 1px solid var(--gold); box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+        }
+    </style>
 </head>
 <body>
 
@@ -147,19 +156,27 @@
             </div>
         </div>
         <div class="grid">
-            <div class="input-group"><label>Nota Produtos:</label><input type="text" id="p-nota" placeholder="Ex: 4.8"></div>
-            <div class="input-group"><label>Nº Avaliações:</label><input type="text" id="p-avaliacoes" placeholder="Ex: 150"></div>
-            <div class="input-group"><label>Estoque:</label><input type="text" id="p-estoque" placeholder="Ex: 12"></div>
-        </div>
-        <div class="input-group"><label>Descrição:</label><textarea id="p-descricao" rows="3"></textarea></div>
+            <div class="input-group"><label>Nota Produtos:</label><input type="text" id="p-nota" placeholder="Ex: 4.8"></div>
+            <div class="input-group"><label>Nº Avaliações:</label><input type="text" id="p-avaliacoes" placeholder="Ex: 150"></div>
+        </div>
+        <div class="input-group">
+            <label>Descrição Completa do Produto:</label>
+            <button type="button" class="btn-main" style="background: transparent; border: 1px dashed var(--gold); color: var(--gold);" onclick="document.getElementById('modal-descricao-painel').style.display='flex'">✍️ Abrir Editor de Descrição</button>
+        </div>
         
         <div class="section-title">🖼️ Imagens (Links)</div>
-        <div class="grid">
-            <input type="text" id="img1" placeholder="Link Foto 1">
-            <input type="text" id="img2" placeholder="Link Foto 2">
-            <input type="text" id="img3" placeholder="Link Foto 3">
-            <input type="text" id="img4" placeholder="Link Foto 4">
-        </div>
+        <div class="grid">
+            <input type="text" id="img1" placeholder="Link Foto 1 (Principal)">
+            <input type="text" id="img2" placeholder="Link Foto 2">
+            <input type="text" id="img3" placeholder="Link Foto 3">
+            <input type="text" id="img4" placeholder="Link Foto 4">
+        </div>
+        <div class="grid" style="margin-top: 15px;">
+            <input type="text" id="img5" placeholder="Link Foto 5">
+            <input type="text" id="img6" placeholder="Link Foto 6">
+            <input type="text" id="img7" placeholder="Link Foto 7">
+            <input type="text" id="img8" placeholder="Link Foto 8">
+        </div>
 
         <div class="section-title">🔗 Link de Compra</div>
         <input type="text" id="p-link" style="margin-bottom:20px">
@@ -198,7 +215,16 @@
     </div>
 
     <div id="status"></div>
-    <button class="logout-btn" onclick="logout()">Desconectar</button>
+    
+        <div id="modal-descricao-painel">
+        <div class="modal-box-desc">
+            <h3 style="color: var(--gold); margin-top:0; text-transform:uppercase; font-size:16px;">✍️ Editor Avançado de Descrição</h3>
+            <textarea id="p-descricao" placeholder="Cole sua descrição completa aqui..." style="height: 350px; resize: vertical; border-radius: 12px; margin-bottom: 15px;"></textarea>
+            <button class="btn-main" onclick="document.getElementById('modal-descricao-painel').style.display='none'">💾 Salvar e Fechar Editor</button>
+        </div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Desconectar</button>
 </div>
 
 <script>
@@ -318,25 +344,23 @@
         document.getElementById('p-descricao').value = p.descricao || "";
         document.getElementById('p-link').value = p.link;
         document.getElementById('p-nota').value = p.nota || "";
-        document.getElementById('p-avaliacoes').value = p.avaliacoes || "";
-        document.getElementById('p-estoque').value = p.estoque || "";
-        for(let i=1;i<=4;i++) document.getElementById(`img${i}`).value = p.imagens[i-1] || "";
+        document.getElementById('p-avaliacoes').value = p.avaliacoes || "";
+        for(let i=1;i<=8;i++) document.getElementById(`img${i}`).value = p.imagens[i-1] || "";
         document.getElementById('btn-save').innerText = "ATUALIZAR ITEM";
         window.scrollTo({top:0, behavior:'smooth'});
     }
 
     async function salvarProduto() {
-        const loja = document.getElementById('loja-ativa').value;
-        const imgs = [1,2,3,4].map(i => document.getElementById(`img${i}`).value).filter(v => v !== "");
-        const p = {
-            titulo: document.getElementById('p-titulo').value,
-            subtitulo: document.getElementById('p-subtitulo').value,
-            preco: document.getElementById('p-preco').value,
-            tag: document.getElementById('p-tag').value,
-            nota: document.getElementById('p-nota').value,
-            avaliacoes: document.getElementById('p-avaliacoes').value,
-            estoque: document.getElementById('p-estoque').value,
-            link: document.getElementById('p-link').value,
+        const loja = document.getElementById('loja-ativa').value;
+        const imgs = [1,2,3,4,5,6,7,8].map(i => document.getElementById(`img${i}`).value).filter(v => v !== "");
+        const p = {
+            titulo: document.getElementById('p-titulo').value,
+            subtitulo: document.getElementById('p-subtitulo').value,
+            preco: document.getElementById('p-preco').value,
+            tag: document.getElementById('p-tag').value,
+            nota: document.getElementById('p-nota').value,
+            avaliacoes: document.getElementById('p-avaliacoes').value,
+            link: document.getElementById('p-link').value,
             loja: loja,
             categoria: document.getElementById('p-categoria').options[document.getElementById('p-categoria').selectedIndex].text,
             descricao: document.getElementById('p-descricao').value,
