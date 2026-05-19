@@ -2,20 +2,69 @@ let produtos = [];
 let produtosFiltrados = [];
 let limiteExibicao = 8; // Define o bloco inicial de renderização da vitrina
 
-// CARREGAR CATEGORIAS DINAMICAMENTE
+// CARREGAR CATEGORIAS DINAMICAMENTE (COM SUPORTE A FAMÍLIAS/OPTGROUP)
 async function carregarCategorias() {
   try {
     const res = await fetch("categorias.json?t=" + new Date().getTime());
     if(res.ok) {
       const categoriasArray = await res.json();
-      const selectCategoria = document.getElementById("categoria");
-      selectCategoria.innerHTML = ""; // Garante que o select esteja limpo
+      const containerOpcoes = document.getElementById("categoria-options");
+      const trigger = document.getElementById("categoria-trigger");
       
+      if (!containerOpcoes || !trigger) return;
+      containerOpcoes.innerHTML = ""; 
+
+      // Fecha o menu se clicar fora dele
+      document.addEventListener("click", function(e) {
+        if (!e.target.closest(".custom-select-container")) {
+          containerOpcoes.classList.remove("open");
+        }
+      });
+
+      // Abre/Fecha ao clicar no botão
+      trigger.onclick = function() {
+        containerOpcoes.classList.toggle("open");
+      };
+
+      let gruposAtivos = {};
+
       categoriasArray.forEach(cat => {
-        const option = document.createElement("option");
-        option.value = cat.valor;
-        option.textContent = cat.nome;
-        selectCategoria.appendChild(option);
+        const item = document.createElement("div");
+        item.className = "custom-option";
+        item.textContent = cat.nome;
+
+        item.onclick = function() {
+          trigger.textContent = cat.nome;
+          containerOpcoes.classList.remove("open");
+          
+          // Executa a filtragem nativa do seu site
+          if (typeof filtrarProdutos === "function") {
+            filtrarProdutos({ target: { id: "categoria", value: cat.valor } });
+          } else if (typeof renderizarProdutos === "function") {
+            renderizarProdutos();
+          }
+        };
+
+        if (cat.valor === "todos" || !cat.grupo) {
+          containerOpcoes.appendChild(item);
+          return;
+        }
+
+        if (!gruposAtivos[cat.grupo]) {
+          const grupoTitulo = document.createElement("div");
+          grupoTitulo.className = "custom-group-title";
+          grupoTitulo.textContent = cat.grupo;
+          
+          const grupoContainer = document.createElement("div");
+          grupoContainer.className = "custom-group-container";
+          
+          containerOpcoes.appendChild(grupoTitulo);
+          containerOpcoes.appendChild(grupoContainer);
+          
+          gruposAtivos[cat.grupo] = grupoContainer;
+        }
+
+        gruposAtivos[cat.grupo].appendChild(item);
       });
     }
   } catch(e) { 
@@ -136,14 +185,18 @@ function renderizar(lista, recomecar = true) {
         <h3>${p.titulo}</h3>
         <span class="card-subtitle">${p.subtitulo || ""}</span>
         <div class="stars-row">
-    <span class="rating-val">${p.nota || "0.0"}</span>
-    ${estrelas} 
-    <span class="rev-text">(${p.avaliacoes || '0'})</span>
-</div>
-        <div class="card-category" style="margin-bottom: 5px;">${p.categoria || ""}</div>
-        <div class="stock-row">Estoque Disponível</div>
-        <div class="card-footer">
-          <p class="price">R$ ${p.preco}</p>
+          <span class="rating-val">${p.nota || "0.0"}</span>
+          ${estrelas} 
+          <span class="rev-text">(${p.avaliacoes || '0'})</span>
+        </div>
+        
+        <div class="card-category" style="font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-bottom: 12px; text-transform: uppercase;">${p.categoria || ""}</div>
+        
+        <hr class="card-divider">
+        
+        <div class="card-footer" style="display: flex; flex-direction: column; gap: 0;">
+          <p class="price" style="margin-bottom: 0;"><span class="currency">R$</span> <span class="amount">${p.preco}</span></p>
+          <div class="stock-row" style="margin-top: 2px; margin-bottom: 15px;"><span class="stock-dot"></span>Em estoque</div>
           <button onclick="window.open('${p.link}', '_blank')">Comprar Agora</button>
         </div>
       </div>
@@ -216,6 +269,11 @@ async function carregarLojas() {
         
         abasContainer.appendChild(btn);
       });
+      // Move o container das lojas para a faixa de cima (header)
+      const headerFaixa = document.querySelector(".header");
+      if (headerFaixa) {
+        headerFaixa.insertBefore(abasContainer, document.getElementById("search"));
+      }
     }
   } catch(e) { 
     console.log("Aviso: Não foi possível carregar lojas.json"); 
@@ -313,8 +371,9 @@ document.getElementById("search").addEventListener("input", e => {
 });
 
 // FILTRO DE CATEGORIAS INTELIGENTE (Trabalha junto com a Loja ativa)
-document.getElementById("categoria").addEventListener("change", (e) => {
-  const catSelecionada = e.target.value;
+function filtrarProdutos(e) {
+  // Garante compatibilidade caso receba o evento simulado ou o valor direto
+  const catSelecionada = e.target ? e.target.value : e;
   
   // 1. Descobre qual loja está ativa no momento (para não misturar produtos)
   const lojaAtiva = document.querySelector(".tab-link.active").getAttribute("data-loja");
@@ -331,13 +390,15 @@ document.getElementById("categoria").addEventListener("change", (e) => {
   
   // 4. Renderiza com o mesmo efeito suave premium das abas
   const container = document.getElementById("produtos");
-  container.style.opacity = 0;
-  setTimeout(() => {
-    renderizar(produtosFiltrados);
-    container.style.transition = "opacity 0.4s ease";
-    container.style.opacity = 1;
-  }, 200);
-});
+  if (container) {
+    container.style.opacity = 0;
+    setTimeout(() => {
+      renderizar(produtosFiltrados);
+      container.style.transition = "opacity 0.4s ease";
+      container.style.opacity = 1;
+    }, 200);
+  }
+}
 
 // BANNER SLIDER AUTOMÁTICO DINÂMICO
 async function carregarBanners() {
@@ -464,6 +525,7 @@ async function carregarBanners() {
 // Executa a função imediatamente ao carregar o script
 carregarBanners();
 
+
 // CARREGAR MARCAS DINAMICAMENTE (COM ROLAGEM INFINITA BLINDADA)
 async function carregarMarcas() {
   try {
@@ -556,3 +618,28 @@ if (fotoModal) {
   }
 }
 carregarProdutos();
+
+// Injeta com segurança as frases institucionais sem afetar a estrutura das lojas
+const cardPremium = document.querySelector(".nav-premium-card");
+if (cardPremium) {
+  // Limpa o label antigo de testes
+  const labelAntigo = cardPremium.querySelector(".nav-label");
+  if (labelAntigo) labelAntigo.remove();
+
+  // Insere as frases limpas sem emojis se elas já não existirem
+  if (!cardPremium.querySelector(".card-frases-container")) {
+    const containerFrases = document.createElement("div");
+    containerFrases.className = "card-frases-container";
+    containerFrases.innerHTML = `
+      <div class="card-frase-premium">OS ACHADOS MAIS VIRAIS DAS REDES</div>
+      <div class="card-vantagens-premium">
+        <span>Produtos Originais e Verificados</span>
+        <span class="divisor">|</span>
+        <span>Compra 100% Segura</span>
+        <span class="divisor">|</span>
+        <span>Links Oficiais Diretos</span>
+      </div>
+    `;
+    cardPremium.prepend(containerFrases);
+  }
+}
