@@ -89,7 +89,7 @@
 </div>
 
 <div class="container" id="admin-panel">
-    <h2>Direct Shop Management</h2>
+    <h2>Direct Shop Admin</h2>
 
     <div class="dashboard-tabs">
         <button class="tab-btn active" onclick="switchTab('tab-produtos')">📦 Produtos</button>
@@ -177,8 +177,15 @@
     <div id="tab-categorias" class="tab-content">
         <div class="section-title">📁 Adicionar Categoria</div>
         <div class="grid">
-            <input type="text" id="nova-cat-nome" placeholder="Nome (Ex: Games)">
-            <input type="text" id="nova-cat-id" placeholder="ID (Ex: games)">
+            <input type="text" id="nova-cat-nome" placeholder="Nome (Ex: Fones de ouvido)">
+            <input type="text" id="nova-cat-id" placeholder="ID/Valor (Ex: Fones de ouvido)">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <select id="nova-cat-grupo-select" onchange="checarNovoGrupo(this.value)">
+                    <option value="">Selecione um Grupo</option>
+                    <option value="NOVO">➕ Criar Novo Grupo</option>
+                </select>
+                <input type="text" id="nova-cat-grupo-manual" placeholder="Nome do Novo Grupo" style="display: none; margin-top: 5px;">
+            </div>
             <button class="btn-main" style="margin-top:0" onclick="gerenciarItem('categorias', 'add')">Adicionar</button>
         </div>
         <div class="data-list" id="lista-categorias-admin"></div>
@@ -268,7 +275,46 @@
         if(tipo === 'categorias') {
             categorias = dados;
             const select = document.getElementById('p-categoria');
-            select.innerHTML = categorias.map(c => `<option value="${c.valor}">${c.nome}</option>`).join('');
+            if (select) {
+                select.innerHTML = "";
+                let htmlOptions = "";
+                let grupos = {};
+
+                // Separa as opções da raiz e mapeia os grupos ativos
+                categorias.forEach(c => {
+                    if (c.valor === "todos" || !c.grupo) {
+                        htmlOptions += `<option value="${c.valor}">${c.nome}</option>`;
+                    } else {
+                        if (!grupos[c.grupo]) grupos[c.grupo] = [];
+                        grupos[c.grupo].push(c);
+                    }
+                });
+
+                // Injeta as famílias estruturadas com optgroup
+                for (let g in grupos) {
+                    htmlOptions += `<optgroup label="${g}">`;
+                    grupos[g].forEach(c => {
+                        htmlOptions += `<option value="${c.valor}">${c.nome}</option>`;
+                    });
+                    htmlOptions += `</optgroup>`;
+                }
+                select.innerHTML = htmlOptions;
+            }
+            
+            // Mapeia e popula dinamicamente o seletor de grupos na aba de categorias
+            const selectGrupoAdmin = document.getElementById('nova-cat-grupo-select');
+            if (selectGrupoAdmin) {
+                let uniqueGroups = [...new Set(categorias.map(c => c.grupo).filter(g => g))];
+                let grupoHtml = `<option value="">Sem Grupo (Raiz)</option>`;
+                uniqueGroups.forEach(g => {
+                    grupoHtml += `<option value="${g}">${g}</option>`;
+                });
+                grupoHtml += `<option value="NOVO_GRUPO">➕ Criar Novo Grupo...</option>`;
+                selectGrupoAdmin.innerHTML = grupoHtml;
+                
+                const inputManual = document.getElementById('nova-cat-grupo-manual');
+                if(inputManual) inputManual.style.display = "none";
+            }
             renderLista('categorias', 'lista-categorias-admin');
         }
         if(tipo === 'marcas') { marcas = dados; renderLista('marcas', 'lista-marcas-admin'); }
@@ -415,11 +461,13 @@
     // GESTÃO DE CONFIGURAÇÕES (Categorias, Marcas, Banners)
     function renderLista(tipo, elementId) {
         const container = document.getElementById(elementId);
+        if (!container) return;
         container.innerHTML = "";
         let lista = (tipo === 'categorias') ? categorias : (tipo === 'marcas' ? marcas : banners);
         
         lista.forEach((item, index) => {
-            const nome = tipo === 'categorias' ? item.nome : item;
+            // Se for categoria, exibe o nome acompanhado do grupo correspondente
+            const nome = tipo === 'categorias' ? (item.grupo ? `${item.nome} [Grupo: ${item.grupo}]` : item.nome) : item;
             const div = document.createElement('div');
             div.className = "data-item";
             div.innerHTML = `<span>${nome}</span> <button class="btn-danger" onclick="gerenciarItem('${tipo}', 'del', ${index})">Remover</button>`;
@@ -432,7 +480,35 @@
         
         if(acao === 'add') {
             if(tipo === 'categorias') {
-                lista.push({ nome: document.getElementById('nova-cat-nome').value, valor: document.getElementById('nova-cat-id').value });
+                const nomeIn = document.getElementById('nova-cat-nome');
+                const valorIn = document.getElementById('nova-cat-id');
+                const selectGrupo = document.getElementById('nova-cat-grupo-select');
+                const inputManual = document.getElementById('nova-cat-grupo-manual');
+                
+                if(!nomeIn.value || !valorIn.value) return alert("Preencha Nome e ID!");
+                
+                const novaCat = { nome: nomeIn.value, valor: valorIn.value };
+                
+                let grupoFinal = "";
+                if (selectGrupo && selectGrupo.value === "NOVO_GRUPO") {
+                    grupoFinal = inputManual ? inputManual.value.trim() : "";
+                } else if (selectGrupo) {
+                    grupoFinal = selectGrupo.value.trim();
+                }
+                
+                if(grupoFinal !== "") {
+                    novaCat.grupo = grupoFinal.toUpperCase();
+                }
+                
+                lista.push(novaCat);
+                
+                nomeIn.value = "";
+                valorIn.value = "";
+                if(selectGrupo) selectGrupo.value = "";
+                if(inputManual) {
+                    inputManual.value = "";
+                    inputManual.style.display = "none";
+                }
             } else if(tipo === 'marcas') {
                 lista.push(document.getElementById('nova-marca').value.toUpperCase());
             }
@@ -488,6 +564,18 @@
         document.getElementById('p-descricao-modal').value = "";
         editandoIndex = null;
         document.getElementById('btn-save').innerText = "Publicar no Site";
+    }
+
+    function checarNovoGrupo(val) {
+        const inputManual = document.getElementById('nova-cat-grupo-manual');
+        if (!inputManual) return;
+        if (val === "NOVO_GRUPO") {
+            inputManual.style.display = "block";
+            inputManual.focus();
+        } else {
+            inputManual.style.display = "none";
+            inputManual.value = "";
+        }
     }
 </script>
 </body>
