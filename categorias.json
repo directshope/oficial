@@ -5,62 +5,77 @@
   },
   {
     "valor": "perfumes",
-    "nome": "Perfumes"
+    "nome": "Perfumes",
+    "grupo": "BELEZA E SAÚDE"
   },
   {
     "valor": "tecnologia",
-    "nome": "Tecnologia"
+    "nome": "Tecnologia",
+    "grupo": "TECNOLOGIA E ELETRÔNICOS"
   },
   {
     "valor": "beleza",
-    "nome": "Beleza e Cuidados"
+    "nome": "Beleza e Cuidados",
+    "grupo": "BELEZA E SAÚDE"
   },
   {
     "valor": "ferramentas",
-    "nome": "Ferramentas"
+    "nome": "Ferramentas",
+    "grupo": "FERRAMENTAS E OUTROS"
   },
   {
     "valor": "casa",
-    "nome": "Casa e Móveis"
+    "nome": "Casa e Móveis",
+    "grupo": "CASA E DECORAÇÃO"
   },
   {
     "valor": "esportes",
-    "nome": "Esportes e Fitness"
+    "nome": "Esportes e Fitness",
+    "grupo": "MODA E ESPORTES"
   },
   {
     "valor": "saude",
-    "nome": "Saúde"
+    "nome": "Saúde",
+    "grupo": "BELEZA E SAÚDE"
   },
   {
     "valor": "moda",
-    "nome": "Moda"
+    "nome": "Moda",
+    "grupo": "MODA E ESPORTES"
   },
   {
     "nome": "Fones de ouvido",
-    "valor": "Fones de ouvido"
+    "valor": "Fones de ouvido",
+    "grupo": "TECNOLOGIA E ELETRÔNICOS"
   },
   {
     "nome": "Ambiente e Luz",
-    "valor": "Ambiente e Luz"
+    "valor": "Ambiente e Luz",
+    "grupo": "CASA E DECORAÇÃO"
   },
   {
     "nome": "Eletrodomésticos",
-    "valor": "Eletrodomésticos"
+    "valor": "Eletrodomésticos",
+    "grupo": "CASA E DECORAÇÃO"
   },
   {
     "nome": "Decoração",
-    "valor": "Decoração"
+    "valor": "Decoração",
+    "grupo": "CASA E DECORAÇÃO"
   },
   {
     "nome": "Acessórios para Celulares",
-    "valor": "Acessórios para Celulares"
+    "valor": "Acessórios para Celulares",
+    "grupo": "TECNOLOGIA E ELETRÔNICOS"
   },
   {
     "nome": "Copos",
-    "valor": "Copos"
+    "valor": "Copos",
+    "grupo": "CASA E DECORAÇÃO"
   },
   {
     "nome": "Cozinha",
-    "valor": "Cozinha"
+    "valor": "Cozinha",
+    "grupo": "CASA E DECORAÇÃO"
   }
 ]
