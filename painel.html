@@ -233,6 +233,7 @@
     let marcas = [];
     let banners = [];
     let editandoIndex = null;
+    let rascunhosDisco = JSON.parse(localStorage.getItem('rascunhos_painel')) || {};
 
     window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
 
@@ -265,11 +266,19 @@
 
     // FUNÇÕES DE CARREGAMENTO
     async function carregarDadosLoja() {
-        const loja = document.getElementById('loja-ativa').value;
+    const loja = document.getElementById('loja-ativa').value;
+    
+    // Verifica se existe rascunho salvo no disco para esta loja
+    if (rascunhosDisco[loja] && rascunhosDisco[loja].length > 0) {
+        produtosLoja = rascunhosDisco[loja];
+    } else {
+        // Se a gaveta do disco estiver vazia, baixa os dados consolidados do GitHub
         produtosLoja = await fetchGitHub(`${loja}.json`);
-        editandoIndex = null;
-        document.getElementById('btn-save').innerText = "Salvar na Lista Local";
     }
+    
+    editandoIndex = null;
+    document.getElementById('btn-save').innerText = "Salvar na Lista Local";
+}
 
     async function carregarConfig(tipo) {
         const dados = await fetchGitHub(`${tipo}.json`);
@@ -435,35 +444,57 @@
     }
 
     async function salvarProduto() {
-        const loja = document.getElementById('loja-ativa').value;
-        const imgs = [1,2,3,4,5,6,7,8].map(i => document.getElementById(`img${i}`).value).filter(v => v !== "");
-        const p = {
-            titulo: document.getElementById('p-titulo').value,
-            subtitulo: document.getElementById('p-subtitulo').value,
-            preco: document.getElementById('p-preco').value,
-            tag: document.getElementById('p-tag').value,
-            nota: document.getElementById('p-nota').value,
-            avaliacoes: document.getElementById('p-avaliacoes').value,
-            link: document.getElementById('p-link').value,
-            loja: loja,
-            categoria: document.getElementById('p-categoria').options[document.getElementById('p-categoria').selectedIndex].text,
-            descricao: document.getElementById('p-descricao').value,
-            imagens: imgs,
-            data: new Date().toLocaleDateString('pt-BR')
-        };
+        const loja = document.getElementById('loja-ativa').value;
+        const imgs = [1,2,3,4,5,6,7,8].map(i => document.getElementById(`img${i}`).value).filter(v => v !== "");
+        const p = {
+            titulo: document.getElementById('p-titulo').value,
+            subtitulo: document.getElementById('p-subtitulo').value,
+            preco: document.getElementById('p-preco').value,
+            tag: document.getElementById('p-tag').value,
+            nota: document.getElementById('p-nota').value,
+            avaliacoes: document.getElementById('p-avaliacoes').value,
+            link: document.getElementById('p-link').value,
+            loja: loja,
+            categoria: document.getElementById('p-categoria').options[document.getElementById('p-categoria').selectedIndex].text,
+            descricao: document.getElementById('p-descricao').value,
+            imagens: imgs,
+            data: new Date().toLocaleDateString('pt-BR')
+        };
 
-        if(editandoIndex !== null) produtosLoja[editandoIndex] = p;
+        if(editandoIndex !== null) produtosLoja[editandoIndex] = p;
         else produtosLoja.unshift(p);
 
-        showStatus("✅ ADICIONADO NA LISTA LOCAL!");
+        // Atualiza a memória geral e grava uma cópia de segurança invisível no disco
+        rascunhosDisco[loja] = produtosLoja;
+        localStorage.setItem('rascunhos_painel', JSON.stringify(rascunhosDisco));
+
+        showStatus("✅ ADICIONADO NA LISTA LOCAL E SALVO NO DISCO!");
         limparCampos();
-    }
+    }
 
     async function sincronizarComGitHub() {
-        const loja = document.getElementById('loja-ativa').value;
-        document.getElementById('btn-sync-all').innerText = "⏳ PUBLICANDO...";
-        await saveGitHub(`${loja}.json`, produtosLoja, `Atualização em massa via Painel`);
-        document.getElementById('btn-sync-all').innerText = "🚀 PUBLICAR TUDO NO GITHUB";
+        const btn = document.getElementById('btn-sync-all');
+        btn.innerText = "⏳ PUBLICANDO TODAS AS LOJAS...";
+        
+        // Se não houver rascunhos no disco (clique direto), envia apenas o que estiver na tela atual
+        if (Object.keys(rascunhosDisco).length === 0) {
+            const lojaAtual = document.getElementById('loja-ativa').value;
+            await saveGitHub(`${lojaAtual}.json`, produtosLoja, `Atualização direta via Painel: ${lojaAtual}`);
+        } else {
+            // Varre o disco: se tiver pendência no TikTok, ML ou Shopee, envia um por um
+            for (const loja in rascunhosDisco) {
+                if (rascunhosDisco[loja].length > 0) {
+                    await saveGitHub(`${loja}.json`, rascunhosDisco[loja], `Atualização híbrida via Painel: ${loja}`);
+                }
+            }
+        }
+
+        // A Vassoura: Aniquila os dados do disco e da memória para deixar o PC limpo
+        localStorage.removeItem('rascunhos_painel');
+        rascunhosDisco = {};
+        
+        btn.innerText = "🚀 PUBLICAR TUDO NO GITHUB";
+        showStatus("✅ TODAS AS LOJAS PUBLICADAS E DISCO LIMPO!");
     }
 
     // GESTÃO DE CONFIGURAÇÕES (Categorias, Marcas, Banners)
