@@ -171,7 +171,8 @@
 
         <div class="section-title">🔗 Link de Compra</div>
         <input type="text" id="p-link" style="margin-bottom:20px">
-        <button class="btn-main" id="btn-save" onclick="salvarProduto()">Publicar Produto</button>
+        <button class="btn-main" id="btn-save" onclick="salvarProduto()" style="margin-bottom: 15px;">Salvar na Lista Local</button>
+        <button class="btn-main" id="btn-sync-all" onclick="sincronizarComGitHub()" style="background: var(--success); color: #000; box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);">🚀 PUBLICAR TUDO NO GITHUB</button>
     </div>
 
     <div id="tab-categorias" class="tab-content">
@@ -267,7 +268,7 @@
         const loja = document.getElementById('loja-ativa').value;
         produtosLoja = await fetchGitHub(`${loja}.json`);
         editandoIndex = null;
-        document.getElementById('btn-save').innerText = "Publicar no Site";
+        document.getElementById('btn-save').innerText = "Salvar na Lista Local";
     }
 
     async function carregarConfig(tipo) {
@@ -452,11 +453,18 @@
         };
 
         if(editandoIndex !== null) produtosLoja[editandoIndex] = p;
-        else produtosLoja.unshift(p);
+        else produtosLoja.unshift(p);
 
-        await saveGitHub(`${loja}.json`, produtosLoja, `Update ${loja} via Painel`);
-        limparCampos();
+        showStatus("✅ ADICIONADO NA LISTA LOCAL!");
+        limparCampos();
     }
+
+    async function sincronizarComGitHub() {
+        const loja = document.getElementById('loja-ativa').value;
+        document.getElementById('btn-sync-all').innerText = "⏳ PUBLICANDO...";
+        await saveGitHub(`${loja}.json`, produtosLoja, `Atualização em massa via Painel`);
+        document.getElementById('btn-sync-all').innerText = "🚀 PUBLICAR TUDO NO GITHUB";
+    }
 
     // GESTÃO DE CONFIGURAÇÕES (Categorias, Marcas, Banners)
     function renderLista(tipo, elementId) {
@@ -563,7 +571,7 @@
         document.querySelectorAll('#tab-produtos input, #tab-produtos textarea').forEach(i => i.value = "");
         document.getElementById('p-descricao-modal').value = "";
         editandoIndex = null;
-        document.getElementById('btn-save').innerText = "Publicar no Site";
+        document.getElementById('btn-save').innerText = "Salvar na Lista Local";
     }
 
     function checarNovoGrupo(val) {
