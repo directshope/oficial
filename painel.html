@@ -76,6 +76,8 @@
         
         #login-screen { display: flex; flex-direction: column; gap: 15px; }
         #admin-panel { display: none; width: 100%; }
+        .title-bar-container { height: 4px; background: #222; margin-top: 8px; border-radius: 2px; overflow: hidden; }
+    .title-bar-fill { height: 100%; width: 0%; transition: 0.3s; }
     </style>
 </head>
 <body>
@@ -116,7 +118,14 @@
 
         <div class="section-title">📦 Dados do Produto</div>
         <div class="grid">
-            <div class="input-group"><label>Título:</label><input type="text" id="p-titulo"></div>
+            <div class="input-group">
+                <label style="display: flex; justify-content: space-between;">
+                    <span>Título:</span>
+                    <span id="char-count" style="color: var(--text-muted); font-size: 10px;">0/60</span>
+                </label>
+                <input type="text" id="p-titulo" oninput="atualizarContador()" maxlength="60">
+                <div class="title-bar-container"><div id="title-bar-fill" class="title-bar-fill"></div></div>
+            </div>
             <div class="input-group"><label>Marca, Volume ou Detalhe (Destaque):</label><input type="text" id="p-subtitulo" placeholder="Ex: 200ml ou Logitech"></div>
         </div>
         <div class="grid">
@@ -441,6 +450,7 @@
         for(let i=1;i<=8;i++) document.getElementById(`img${i}`).value = p.imagens && p.imagens[i-1] ? p.imagens[i-1] : "";
         document.getElementById('btn-save').innerText = "ATUALIZAR ITEM";
         window.scrollTo({top:0, behavior:'smooth'});
+        atualizarContador();
     }
 
     async function salvarProduto() {
@@ -603,6 +613,7 @@
         document.getElementById('p-descricao-modal').value = "";
         editandoIndex = null;
         document.getElementById('btn-save').innerText = "Salvar na Lista Local";
+        atualizarContador();
     }
 
     function checarNovoGrupo(val) {
@@ -615,6 +626,20 @@
             inputManual.style.display = "none";
             inputManual.value = "";
         }
+    }
+
+    function atualizarContador() {
+        const input = document.getElementById('p-titulo');
+        const count = input.value.length;
+        const display = document.getElementById('char-count');
+        const bar = document.getElementById('title-bar-fill');
+        
+        display.innerText = `${count}/60`;
+        bar.style.width = `${(count / 60) * 100}%`;
+        
+        if (count < 50) { bar.style.background = 'var(--success)'; display.style.color = 'var(--text-muted)'; }
+        else if (count < 60) { bar.style.background = 'var(--gold)'; display.style.color = 'var(--gold)'; }
+        else { bar.style.background = 'var(--danger)'; display.style.color = 'var(--danger)'; }
     }
 </script>
 </body>
