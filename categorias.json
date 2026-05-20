@@ -92,5 +92,10 @@
     "nome": "Cama, Mesa e Banho",
     "valor": "Cama, Mesa e Banho",
     "grupo": "CASA E DECORAÇÃO"
+  },
+  {
+    "nome": "Cozinha e Churrasco",
+    "valor": "Cozinha e Churrasco",
+    "grupo": "CASA E DECORAÇÃO"
   }
 ]
