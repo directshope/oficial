@@ -182,7 +182,7 @@ function renderizar(lista, recomecar = true) {
             p.tag === 'Para Presentear' ? 'badge-presente' : ''
         }">${p.tag}</div>` : ''}
         <img src="${p.imagens[0]}" onerror="this.onerror=null; this.src='images/atualizando.png';" onclick="abrirGaleria(${index})" alt="${p.titulo}">
-        <h3 title="${p.titulo}">${p.titulo}</h3>
+        <h3>${p.titulo}</h3>
         <span class="card-subtitle">${p.subtitulo || ""}</span>
         <div class="stars-row">
           <span class="rating-val">${p.nota || "0.0"}</span>
