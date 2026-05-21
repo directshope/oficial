@@ -126,7 +126,16 @@
                 <input type="text" id="p-titulo" oninput="atualizarContador()" maxlength="60">
                 <div class="title-bar-container"><div id="title-bar-fill" class="title-bar-fill"></div></div>
             </div>
-            <div class="input-group"><label>Marca, Volume ou Detalhe (Destaque):</label><input type="text" id="p-subtitulo" placeholder="Ex: 200ml ou Logitech"></div>
+            <div class="input-group">
+                <label>Marca, Volume ou Detalhe (Destaque):</label>
+                <input type="text" id="p-subtitulo" placeholder="Ex: 200ml ou Logitech">
+                <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button type="button" style="background: #000; color: #00f2fe; border: 1px solid #00f2fe; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase;" onclick="inserirEmblema('[TIKTOK]')">TikTok</button>
+                    <button type="button" style="background: #ee4d2d; color: #fff; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase;" onclick="inserirEmblema('[SHOPEE]')">Shopee</button>
+                    <button type="button" style="background: #ffe600; color: #000; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase;" onclick="inserirEmblema('[ML]')">Mercado Livre</button>
+                    <button type="button" style="background: #ff9900; color: #000; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase;" onclick="inserirEmblema('[AMAZON]')">Amazon</button>
+                </div>
+            </div>
         </div>
         <div class="grid">
             <div class="input-group"><label>Preço:</label><input type="text" id="p-preco"></div>
@@ -626,6 +635,10 @@
         editandoIndex = null;
         document.getElementById('btn-save').innerText = "Salvar na Lista Local";
         atualizarContador();
+    }
+
+    function inserirEmblema(codigo) {
+        document.getElementById('p-subtitulo').value = codigo;
     }
 
     function checarNovoGrupo(val) {
