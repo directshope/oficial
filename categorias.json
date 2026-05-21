@@ -97,5 +97,10 @@
     "nome": "Cozinha e Churrasco",
     "valor": "Cozinha e Churrasco",
     "grupo": "CASA E DECORAÇÃO"
+  },
+  {
+    "nome": "Decoração de Paredes",
+    "valor": "Decoração de Paredes",
+    "grupo": "CASA E DECORAÇÃO"
   }
 ]
