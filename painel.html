@@ -161,7 +161,7 @@
 
         <div class="input-group">
             <label>Descrição Completa do Produto (Clique para expandir):</label>
-            <textarea id="p-descricao" rows="4" placeholder="Clique aqui dentro para expandir a tela e colar sua descrição..." onclick="abrirEditorModal()" readonly style="cursor: pointer;"></textarea>
+            <textarea id="p-descricao" rows="4" placeholder="Clique aqui dentro para expandir a tela e colar sua descrição..." onclick="abrirEditorModal()" readonly style="cursor: pointer;"><b>DESCRIÇÃO DO PRODUTO</b>&#10;&#10;</textarea>
         </div>
         
         <div class="section-title">🖼️ Imagens (Links)</div>
@@ -232,7 +232,7 @@
             <h3 style="color: var(--gold); margin: 0; font-size: 18px; text-transform: uppercase; font-weight: 900;">✍️ Descrição do Produto</h3>
             <button type="button" onclick="salvarEditorModal()" style="background: var(--success); color: #000; border: none; padding: 10px 25px; border-radius: 10px; font-weight: 900; cursor: pointer; transition: 0.3s; text-transform: uppercase;">Fexar</button>
         </div>
-        <textarea id="p-descricao-modal" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 20px; border-radius: 12px; font-size: 15px; font-family: inherit; resize: none; outline: none; line-height: 1.6;" placeholder="Cole ou digite sua descrição completa aqui..."></textarea>
+        <textarea id="p-descricao-modal" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 20px; border-radius: 12px; font-size: 15px; font-family: inherit; resize: none; outline: none; line-height: 1.6;" placeholder="Cole ou digite sua descrição completa aqui..."><b>DESCRIÇÃO DO PRODUTO</b>&#10;&#10;</textarea>
     </div>
 </div>
 
@@ -610,7 +610,8 @@
 
     function limparCampos() {
         document.querySelectorAll('#tab-produtos input, #tab-produtos textarea').forEach(i => i.value = "");
-        document.getElementById('p-descricao-modal').value = "";
+        document.getElementById('p-descricao').value = "<b>DESCRIÇÃO DO PRODUTO</b>\n\n";
+        document.getElementById('p-descricao-modal').value = "<b>DESCRIÇÃO DO PRODUTO</b>\n\n";
         editandoIndex = null;
         document.getElementById('btn-save').innerText = "Salvar na Lista Local";
         atualizarContador();
