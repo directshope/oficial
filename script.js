@@ -184,10 +184,10 @@ function renderizar(lista, recomecar = true) {
         <img src="${p.imagens[0]}" onerror="this.onerror=null; this.src='images/atualizando.png';" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
         <div class="card-badge-container">
-            ${p.subtitulo === '[SHOPEE]' ? '<span class="emblema-premium shopee-badge">SHOPEE</span>' : 
-              p.subtitulo === '[ML]' ? '<span class="emblema-premium ml-badge" title="Mercado Livre"><svg viewBox="0 0 24 24" width="22" height="22" fill="#2D3277"><path d="M12.46 8.22l-2.58-2.58c-1.12-1.12-2.7-1.44-3.96-.24l-3 3c-.72.72-1.28 2.16-.04 3.4L6.11 15 3.99 17.12c-.78.78-.78 2.05 0 2.83l.88.88c.78.78 2.05.78 2.83 0L9.82 18.7l3.88 3.88c.72.72 2.16 1.28 3.4.04l3-3c1.17-1.17.85-2.75-.4-4L18.46 13l1.55-1.55c.78-.78.78-2.05 0-2.83l-.88-.88c-.78-.78-2.05-.78-2.83 0L14.74 9.3l-2.28-1.08zM7.22 12.59l-3-3c-.38-.38-.2-.84.04-1.08l3-3c.43-.43 1.14-.15 1.54.24l3 3c.38.38.2.84-.04 1.08l-3 3c-.43-.43-1.14-.15-1.54-.24zm8.47 5.88l-3 3c-.24.24-.7.06-1.08-.32l-3-3c-.39-.39-.67-1.11-.24-1.54l3-3c.24-.24.7-.06 1.08.32l3 3c.39.39.67 1.11.24 1.54z"/></svg></span>' : 
+            ${p.subtitulo === '[SHOPEE]' ? '<span class="emblema-premium shopee-badge">Shopee</span>' : 
+              p.subtitulo === '[ML]' ? '<span class="emblema-premium ml-badge">mercado livre</span>' : 
               p.subtitulo === '[TIKTOK]' ? '<span class="emblema-premium tiktok-badge">TikTok Shop</span>' : 
-              p.subtitulo === '[AMAZON]' ? '<span class="emblema-premium amazon-badge" title="Amazon"><svg viewBox="0 0 100 30" width="35" height="15"><path d="M5,10 Q50,30 95,10" fill="none" stroke="#FF9900" stroke-width="8" stroke-linecap="round"/><polygon points="90,0 100,20 75,15" fill="#FF9900"/></svg></span>' : 
+              p.subtitulo === '[AMAZON]' ? '<span class="emblema-premium amazon-badge">amazon</span>' : 
               `<span class="card-subtitle">${p.subtitulo || ""}</span>`}
         </div>
         <div class="stars-row">
