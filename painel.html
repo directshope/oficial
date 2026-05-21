@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Direct Shop | Dashboard Sênior</title>
+    <title>Direct Shop | Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -130,10 +130,14 @@
                 <label>Marca, Volume ou Detalhe (Destaque):</label>
                 <input type="text" id="p-subtitulo" placeholder="Ex: 200ml ou Logitech">
                 <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" style="background: #000000; color: #FFFFFF; border: 1px solid #333; border-left: 2px solid #00F2FE; border-right: 2px solid #FE2C55; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: none;" onclick="inserirEmblema('[TIKTOK]')">TikTok Shop</button>
-                    <button type="button" style="background: #EE4D2D; color: #FFFFFF; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase;" onclick="inserirEmblema('[SHOPEE]')">Shopee</button>
-                    <button type="button" style="background: #FFE600; color: #2D3277; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase;" onclick="inserirEmblema('[ML]')">Mercado Livre</button>
-                    <button type="button" style="background: #232F3E; color: #FFFFFF; border: none; border-bottom: 2px solid #FF9900; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase;" onclick="inserirEmblema('[AMAZON]')">Amazon</button>
+                    <button type="button" style="background: #000000; color: #FFFFFF; border: 1px solid #333; border-left: 2px solid #00F2FE; border-right: 2px solid #FE2C55; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: none; display: flex; align-items: center;" onclick="inserirEmblema('[TIKTOK]')">TikTok Shop</button>
+                    <button type="button" style="background: #EE4D2D; color: #FFFFFF; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase; display: flex; align-items: center;" onclick="inserirEmblema('[SHOPEE]')">Shopee</button>
+                    <button type="button" style="background: #FFE600; border: none; padding: 3px 15px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="inserirEmblema('[ML]')">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="#2D3277"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.73 13.92l-.12.12c-.41.41-1.08.41-1.49 0l-2.4-2.4c-.41-.41-.41-1.08 0-1.49l.12-.12c.41-.41 1.08-.41 1.49 0l2.4 2.4c.41.41.41 1.08 0 1.49zm3.42-3.42l-2.4-2.4c-.41-.41-1.08-.41-1.49 0l-.12.12c-.41.41-.41 1.08 0 1.49l2.4 2.4c.41.41 1.08.41 1.49 0l.12-.12c.41-.41.41-1.08 0-1.49z"/></svg>
+                    </button>
+                    <button type="button" style="background: #232F3E; border: none; border-bottom: 2px solid #FF9900; padding: 3px 15px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="inserirEmblema('[AMAZON]')">
+                        <svg viewBox="0 0 100 30" width="30" height="14"><path d="M5,10 Q50,30 95,10" fill="none" stroke="#FF9900" stroke-width="8" stroke-linecap="round"/><polygon points="90,0 100,20 75,15" fill="#FF9900"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
