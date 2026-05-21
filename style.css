@@ -882,25 +882,8 @@ body[data-ambiente="all"] .bg-glow {
     height: 24px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.shopee-badge {
-    background: #EE4D2D;
-    color: #FFFFFF;
-}
-.tiktok-badge {
-    background: #000000;
-    color: #FFFFFF;
-    border-left: 2px solid #00F2FE;
-    border-right: 2px solid #FE2C55;
-    text-transform: none; /* Mantém a grafia TikTok Shop intacta */
-    font-weight: 700;
-}
-.ml-badge {
-    background: #FFE600;
-    padding: 2px 15px; /* Mais largo para o ícone respirar */
-}
-.amazon-badge {
-    background: #232F3E;
-    padding: 2px 15px;
-    border-bottom: 2px solid #FF9900;
-    border-radius: 6px 6px 4px 4px; /* Ajuste suave para a base reta da Amazon */
-}
+/* Cores Oficiais das Marcas - Estilo Ghost */
+.shopee-badge { background: transparent; color: #FFFFFF; border: 1px solid #EE4D2D; text-transform: none; }
+.ml-badge { background: transparent; color: #FFFFFF; border: 1px solid #FFE600; text-transform: lowercase; letter-spacing: -0.5px; }
+.tiktok-badge { background: transparent; color: #FFFFFF; border: 1px solid #333; border-left: 1px solid #00F2FE; border-right: 1px solid #FE2C55; text-transform: none; }
+.amazon-badge { background: transparent; color: #FFFFFF; border: 1px solid #FF9900; text-transform: lowercase; letter-spacing: -0.5px; }
