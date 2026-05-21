@@ -1,671 +1,1272 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Direct Shop | Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --gold: #f1c40f;
-            --dark-bg: #060608;
-            --card-bg: #0f0f12;
-            --input-bg: #000;
-            --border: #1f1f23;
-            --text: #ffffff;
-            --text-muted: #888;
-            --success: #2ecc71;
-            --danger: #e74c3c;
+      :root {
+        --gold: #f1c40f;
+        --dark-bg: #060608;
+        --card-bg: #0f0f12;
+        --input-bg: #000;
+        --border: #1f1f23;
+        --text: #ffffff;
+        --text-muted: #888;
+        --success: #2ecc71;
+        --danger: #e74c3c;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: var(--dark-bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        background: var(--card-bg);
+        width: 100%;
+        max-width: 1000px;
+        padding: 40px;
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+      }
+
+      h2 {
+        color: var(--gold);
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 30px;
+        letter-spacing: 4px;
+        font-weight: 900;
+        font-size: 22px;
+      }
+
+      /* NAVEGAÇÃO */
+      .dashboard-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 15px;
+        overflow-x: auto;
+      }
+      .tab-btn {
+        background: #16161a;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 12px 20px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        transition: 0.3s;
+        white-space: nowrap;
+      }
+      .tab-btn.active {
+        background: var(--gold);
+        color: #000;
+        border-color: var(--gold);
+        box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2);
+      }
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.4s ease;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
-
-        body { 
-            margin: 0; font-family: 'Poppins', sans-serif; background: var(--dark-bg); color: var(--text); 
-            min-height: 100vh; padding: 20px; display: flex; justify-content: center;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
+      }
 
-        .container { background: var(--card-bg); width: 100%; max-width: 1000px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
+      /* FORMULÁRIOS */
+      .section-title {
+        font-size: 12px;
+        color: var(--gold);
+        border-left: 3px solid var(--gold);
+        padding-left: 10px;
+        margin: 30px 0 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      .input-group {
+        margin-bottom: 20px;
+        position: relative;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-muted);
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 14px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-radius: 12px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--gold);
+        outline: none;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
 
-        h2 { color: var(--gold); text-transform: uppercase; text-align: center; margin-bottom: 30px; letter-spacing: 4px; font-weight: 900; font-size: 22px; }
+      /* BOTÕES */
+      .btn-main {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #f1c40f, #d4ac0d);
+        color: #000;
+        border: none;
+        border-radius: 15px;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: 0.3s;
+      }
+      .btn-main:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3);
+      }
+      .btn-danger {
+        background: #e74c3c22;
+        color: #e74c3c;
+        border: 1px solid #e74c3c;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 11px;
+      }
 
-        /* NAVEGAÇÃO */
-        .dashboard-tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; overflow-x: auto; }
-        .tab-btn { background: #16161a; border: 1px solid var(--border); color: var(--text-muted); padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 13px; text-transform: uppercase; transition: 0.3s; white-space: nowrap; }
-        .tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2); }
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      /* LISTAS */
+      #lista-busca {
+        background: #0f0f12;
+        border: 1px solid var(--gold);
+        position: absolute;
+        width: 100%;
+        z-index: 100;
+        max-height: 250px;
+        overflow-y: auto;
+        display: none;
+        border-radius: 12px;
+        margin-top: 5px;
+      }
+      .item-busca {
+        padding: 15px;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .item-busca:hover {
+        background: #1a1a1f;
+        color: var(--gold);
+      }
+      .data-list {
+        margin-top: 20px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        overflow: hidden;
+      }
+      .data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: #16161a;
+        border-bottom: 1px solid var(--border);
+      }
 
-        /* FORMULÁRIOS */
-        .section-title { font-size: 12px; color: var(--gold); border-left: 3px solid var(--gold); padding-left: 10px; margin: 30px 0 20px; text-transform: uppercase; font-weight: bold; }
-        .input-group { margin-bottom: 20px; position: relative; }
-        label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); border-radius: 12px; font-size: 14px; box-sizing: border-box; }
-        input:focus, select:focus, textarea:focus { border-color: var(--gold); outline: none; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+      #status {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10000;
+        background: var(--success);
+        color: #000;
+        padding: 16px 40px;
+        border-radius: 50px;
+        font-weight: 900;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+        display: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+      }
+      .logout-btn {
+        background: none;
+        color: #444;
+        border: none;
+        font-size: 11px;
+        cursor: pointer;
+        text-decoration: underline;
+        margin-top: 40px;
+        display: block;
+        width: 100%;
+        text-align: center;
+      }
 
-        /* BOTÕES */
-        .btn-main { width: 100%; padding: 18px; background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; border: none; border-radius: 15px; font-size: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3); }
-        .btn-danger { background: #e74c3c22; color: #e74c3c; border: 1px solid #e74c3c; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 11px; }
-
-        /* LISTAS */
-        #lista-busca { background: #0f0f12; border: 1px solid var(--gold); position: absolute; width: 100%; z-index: 100; max-height: 250px; overflow-y: auto; display: none; border-radius: 12px; margin-top: 5px; }
-        .item-busca { padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 13px; }
-        .item-busca:hover { background: #1a1a1f; color: var(--gold); }
-        .data-list { margin-top: 20px; border: 1px solid var(--border); border-radius: 15px; overflow: hidden; }
-        .data-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #16161a; border-bottom: 1px solid var(--border); }
-
-        #status { 
-            position: fixed; 
-            top: 20px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            z-index: 10000; 
-            background: var(--success); 
-            color: #000; 
-            padding: 16px 40px; 
-            border-radius: 50px; 
-            font-weight: 900; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8); 
-            display: none; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 2px solid rgba(0,0,0,0.1);
-        }
-        .logout-btn { background: none; color: #444; border: none; font-size: 11px; cursor: pointer; text-decoration: underline; margin-top: 40px; display: block; width: 100%; text-align: center; }
-        
-        #login-screen { display: flex; flex-direction: column; gap: 15px; }
-        #admin-panel { display: none; width: 100%; }
-        .title-bar-container { height: 4px; background: #222; margin-top: 8px; border-radius: 2px; overflow: hidden; }
-    .title-bar-fill { height: 100%; width: 0%; transition: 0.3s; }
+      #login-screen {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      #admin-panel {
+        display: none;
+        width: 100%;
+      }
+      .title-bar-container {
+        height: 4px;
+        background: #222;
+        margin-top: 8px;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .title-bar-fill {
+        height: 100%;
+        width: 0%;
+        transition: 0.3s;
+      }
     </style>
-</head>
-<body>
-
-<div class="container" id="login-screen">
-    <h2>Acesso Admin Premium</h2>
-    <div class="input-group"><label>Usuário GitHub:</label><input type="text" id="gh-user"></div>
-    <div class="input-group"><label>Repositório:</label><input type="text" id="gh-repo"></div>
-    <div class="input-group"><label>Token GitHub:</label><input type="password" id="gh-token"></div>
-    <button class="btn-main" onclick="fazerLogin()">Entrar no Dashboard</button>
-</div>
-
-<div class="container" id="admin-panel">
-    <h2>Direct Shop Admin</h2>
-
-    <div class="dashboard-tabs">
-        <button class="tab-btn active" onclick="switchTab('tab-produtos')">📦 Produtos</button>
-        <button class="tab-btn" onclick="switchTab('tab-categorias')">📁 Categorias</button>
-        <button class="tab-btn" onclick="switchTab('tab-marcas')">🏷️ Marcas</button>
-        <button class="tab-btn" onclick="switchTab('tab-banners')">🖼️ Banners</button>
+  </head>
+  <body>
+    <div class="container" id="login-screen">
+      <h2>Acesso Admin Premium</h2>
+      <div class="input-group">
+        <label>Usuário GitHub:</label><input type="text" id="gh-user" />
+      </div>
+      <div class="input-group">
+        <label>Repositório:</label><input type="text" id="gh-repo" />
+      </div>
+      <div class="input-group">
+        <label>Token GitHub:</label><input type="password" id="gh-token" />
+      </div>
+      <button class="btn-main" onclick="fazerLogin()">
+        Entrar no Dashboard
+      </button>
     </div>
 
-    <div id="tab-produtos" class="tab-content active">
-        <div class="input-group" style="background: #16161a; padding: 20px; border-radius: 15px; border: 1px solid var(--border);">
-            <label style="color: var(--gold);">🛒 Loja Ativa:</label>
-            <select id="loja-ativa" onchange="carregarDadosLoja()" style="color: var(--gold); border-color: var(--gold); font-weight: bold;">
-                <option value="ml">Mercado Livre</option>
-                <option value="shopee">Shopee</option>
-                <option value="tiktok">TikTok</option>
-            </select>
+    <div class="container" id="admin-panel">
+      <h2>Direct Shop Admin</h2>
+
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-produtos')">
+          📦 Produtos
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-categorias')">
+          📁 Categorias
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-marcas')">
+          🏷️ Marcas
+        </button>
+        <button class="tab-btn" onclick="switchTab('tab-banners')">
+          🖼️ Banners
+        </button>
+      </div>
+
+      <div id="tab-produtos" class="tab-content active">
+        <div
+          class="input-group"
+          style="
+            background: #16161a;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+          "
+        >
+          <label style="color: var(--gold)">🛒 Loja Ativa:</label>
+          <select
+            id="loja-ativa"
+            onchange="carregarDadosLoja()"
+            style="
+              color: var(--gold);
+              border-color: var(--gold);
+              font-weight: bold;
+            "
+          >
+            <option value="ml">Mercado Livre</option>
+            <option value="shopee">Shopee</option>
+            <option value="tiktok">TikTok</option>
+          </select>
         </div>
 
         <div class="section-title">🔍 Localizar e Alterar Produtos</div>
         <div class="input-group">
-            <input type="text" id="busca-editar" placeholder="Buscar produto nesta loja..." oninput="buscarNoJson()">
-            <div id="lista-busca"></div>
+          <input
+            type="text"
+            id="busca-editar"
+            placeholder="Buscar produto nesta loja..."
+            oninput="buscarNoJson()"
+          />
+          <div id="lista-busca"></div>
         </div>
 
         <div class="section-title">📦 Dados do Produto</div>
         <div class="grid">
-            <div class="input-group">
-                <label style="display: flex; justify-content: space-between;">
-                    <span>Título:</span>
-                    <span id="char-count" style="color: var(--text-muted); font-size: 10px;">0/60</span>
-                </label>
-                <input type="text" id="p-titulo" oninput="atualizarContador()" maxlength="60">
-                <div class="title-bar-container"><div id="title-bar-fill" class="title-bar-fill"></div></div>
+          <div class="input-group">
+            <label>Título:</label>
+            <input type="text" id="p-titulo" />
+          </div>
+          <div class="input-group">
+            <label>Marca, Volume ou Detalhe (Destaque):</label>
+            <input
+              type="text"
+              id="p-subtitulo"
+              placeholder="Ex: 200ml ou Logitech"
+            />
+            <div
+              style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap"
+            >
+              <button
+                type="button"
+                style="
+                  background: transparent;
+                  color: #ffffff;
+                  border: 1px solid #333;
+                  border-left: 1px solid #00f2fe;
+                  border-right: 1px solid #fe2c55;
+                  padding: 5px 10px;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  font-size: 11px;
+                  font-weight: bold;
+                  text-transform: none;
+                "
+                onclick="inserirEmblema('[TIKTOK]')"
+              >
+                TikTok Shop
+              </button>
+              <button
+                type="button"
+                style="
+                  background: transparent;
+                  color: #ffffff;
+                  border: 1px solid #ee4d2d;
+                  padding: 5px 10px;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  font-size: 11px;
+                  font-weight: bold;
+                  text-transform: none;
+                "
+                onclick="inserirEmblema('[SHOPEE]')"
+              >
+                Shopee
+              </button>
+              <button
+                type="button"
+                style="
+                  background: transparent;
+                  color: #ffffff;
+                  border: 1px solid #ffe600;
+                  padding: 5px 10px;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  font-size: 12px;
+                  font-weight: 900;
+                  text-transform: lowercase;
+                  letter-spacing: -0.5px;
+                "
+                onclick="inserirEmblema('[ML]')"
+              >
+                mercado livre
+              </button>
+              <button
+                type="button"
+                style="
+                  background: transparent;
+                  color: #ffffff;
+                  border: 1px solid #ff9900;
+                  padding: 5px 10px;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  font-size: 13px;
+                  font-weight: 900;
+                  text-transform: lowercase;
+                  letter-spacing: -0.5px;
+                "
+                onclick="inserirEmblema('[AMAZON]')"
+              >
+                amazon
+              </button>
             </div>
-            <div class="input-group">
-                <label>Marca, Volume ou Detalhe (Destaque):</label>
-                <input type="text" id="p-subtitulo" placeholder="Ex: 200ml ou Logitech">
-                <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button type="button" style="background: transparent; color: #FFFFFF; border: 1px solid #333; border-left: 1px solid #00F2FE; border-right: 1px solid #FE2C55; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: none;" onclick="inserirEmblema('[TIKTOK]')">TikTok Shop</button>
-                    <button type="button" style="background: transparent; color: #FFFFFF; border: 1px solid #EE4D2D; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; text-transform: none;" onclick="inserirEmblema('[SHOPEE]')">Shopee</button>
-                    <button type="button" style="background: transparent; color: #FFFFFF; border: 1px solid #FFE600; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 900; text-transform: lowercase; letter-spacing: -0.5px;" onclick="inserirEmblema('[ML]')">mercado livre</button>
-                    <button type="button" style="background: transparent; color: #FFFFFF; border: 1px solid #FF9900; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 900; text-transform: lowercase; letter-spacing: -0.5px;" onclick="inserirEmblema('[AMAZON]')">amazon</button>
-                </div>
-            </div>
+          </div>
         </div>
         <div class="grid">
-            <div class="input-group"><label>Preço:</label><input type="text" id="p-preco"></div>
-            <div class="input-group"><label>Categoria:</label><select id="p-categoria"></select></div>
-            <div class="input-group">
-                <label>Selo:</label>
-               <select id="p-tag">
-                    <option value="">Nenhum Selo</option>
-                    <optgroup label="✨ Efeitos Premium (Hover Ativo)">
-                        <option value="Mais Vendido">📈 Mais Vendido</option>
-                        <option value="O Queridinho do Mês">🏆 O Queridinho do Mês</option>
-                        <option value="Quem Viu, Comprou">👀 Quem Viu, Comprou</option>
-                        <option value="Viralizado do TikTok">📱 Viralizado do TikTok</option>
-                        <option value="Oportunidade Única">⚡ Oportunidade Única</option>
-                        <option value="Tendência">🌍 Tendência</option>
-                        <option value="Para Presentear">🎁 Para Presentear</option>
-                    </optgroup>
-                    <optgroup label="✅ Informativos (Sóbrios)">
-                        <option value="Testado e Aprovado">✅ Testado e Aprovado</option>
-                        <option value="Frete Grátis">🚚 Frete Grátis</option>
-                        <option value="Últimas Unidades">⚠️ Últimas Unidades</option>
-                        <option value="Custo-Benefício">💰 Melhor Custo-Benefício</option>
-                    </optgroup>
-                </select>
-            </div>
+          <div class="input-group">
+            <label>Preço:</label><input type="text" id="p-preco" />
+          </div>
+          <div class="input-group">
+            <label>Categoria:</label
+            ><select id="p-categoria"></select>
+          </div>
+          <div class="input-group">
+            <label>Selo:</label>
+            <select id="p-tag">
+              <option value="">Nenhum Selo</option>
+              <optgroup label="✨ Efeitos Premium (Hover Ativo)">
+                <option value="Mais Vendido">📈 Mais Vendido</option>
+                <option value="O Queridinho do Mês">
+                  🏆 O Queridinho do Mês
+                </option>
+                <option value="Quem Viu, Comprou">👀 Quem Viu, Comprou</option>
+                <option value="Viralizado do TikTok">
+                  📱 Viralizado do TikTok
+                </option>
+                <option value="Oportunidade Única">
+                  ⚡ Oportunidade Única
+                </option>
+                <option value="Tendência">🌍 Tendência</option>
+                <option value="Para Presentear">🎁 Para Presentear</option>
+              </optgroup>
+              <optgroup label="✅ Informativos (Sóbrios)">
+                <option value="Testado e Aprovado">
+                  ✅ Testado e Aprovado
+                </option>
+                <option value="Frete Grátis">🚚 Frete Grátis</option>
+                <option value="Últimas Unidades">⚠️ Últimas Unidades</option>
+                <option value="Custo-Benefício">
+                  💰 Melhor Custo-Benefício
+                </option>
+              </optgroup>
+            </select>
+          </div>
         </div>
-        
+
         <div class="grid">
-            <div class="input-group"><label>Nota Produtos:</label><input type="text" id="p-nota" placeholder="Ex: 4.8"></div>
-            <div class="input-group"><label>Nº Avaliações:</label><input type="text" id="p-avaliacoes" placeholder="Ex: 150"></div>
+          <div class="input-group">
+            <label>Nota Produtos:</label
+            ><input type="text" id="p-nota" placeholder="Ex: 4.8" />
+          </div>
+          <div class="input-group">
+            <label>Nº Avaliações:</label
+            ><input type="text" id="p-avaliacoes" placeholder="Ex: 150" />
+          </div>
         </div>
 
         <div class="input-group">
-            <label>Descrição Completa do Produto (Clique para expandir):</label>
-            <textarea id="p-descricao" rows="4" placeholder="Clique aqui dentro para expandir a tela e colar sua descrição..." onclick="abrirEditorModal()" readonly style="cursor: pointer;">DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea>
+          <label>Descrição Completa do Produto (Clique para expandir):</label>
+          <textarea
+            id="p-descricao"
+            rows="4"
+            placeholder="Clique aqui dentro para expandir a tela e colar sua descrição..."
+            onclick="abrirEditorModal()"
+            readonly
+            style="cursor: pointer"
+          >
+DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
+          >
         </div>
-        
+
         <div class="section-title">🖼️ Imagens (Links)</div>
         <div class="grid">
-            <input type="text" id="img1" placeholder="Link Foto 1 (Principal)">
-            <input type="text" id="img2" placeholder="Link Foto 2">
-            <input type="text" id="img3" placeholder="Link Foto 3">
-            <input type="text" id="img4" placeholder="Link Foto 4">
+          <input type="text" id="img1" placeholder="Link Foto 1 (Principal)" />
+          <input type="text" id="img2" placeholder="Link Foto 2" />
+          <input type="text" id="img3" placeholder="Link Foto 3" />
+          <input type="text" id="img4" placeholder="Link Foto 4" />
         </div>
-        <div class="grid" style="margin-top: 20px;">
-            <input type="text" id="img5" placeholder="Link Foto 5">
-            <input type="text" id="img6" placeholder="Link Foto 6">
-            <input type="text" id="img7" placeholder="Link Foto 7">
-            <input type="text" id="img8" placeholder="Link Foto 8">
+        <div class="grid" style="margin-top: 20px">
+          <input type="text" id="img5" placeholder="Link Foto 5" />
+          <input type="text" id="img6" placeholder="Link Foto 6" />
+          <input type="text" id="img7" placeholder="Link Foto 7" />
+          <input type="text" id="img8" placeholder="Link Foto 8" />
         </div>
 
         <div class="section-title">🔗 Link de Compra</div>
-        <input type="text" id="p-link" style="margin-bottom:20px">
-        <button class="btn-main" id="btn-save" onclick="salvarProduto()" style="margin-bottom: 15px;">Salvar na Lista Local</button>
-        <div id="contador-sessao" style="text-align: center; color: var(--gold); font-size: 12px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase;">📦 0 itens salvos nesta sessão</div>
-        <button class="btn-main" id="btn-sync-all" onclick="sincronizarComGitHub()" style="background: var(--success); color: #000; box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);">🚀 PUBLICAR TUDO NO GITHUB</button>
-    </div>
+        <input type="text" id="p-link" style="margin-bottom: 20px" />
+        <button
+          class="btn-main"
+          id="btn-save"
+          onclick="salvarProduto()"
+          style="margin-bottom: 15px"
+        >
+          Salvar na Lista Local
+        </button>
+        <div
+          id="contador-sessao"
+          style="
+            text-align: center;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+          "
+        >
+          📦 0 itens salvos nesta sessão
+        </div>
+               
+        <button
+          class="btn-main"
+          id="btn-sync-all"
+          onclick="sincronizarComGitHub()"
+          style="
+            background: var(--success);
+            color: #000;
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+          "
+        >
+          🚀 PUBLICAR TUDO NO GITHUB
+        </button>
+      </div>
 
-    <div id="tab-categorias" class="tab-content">
+      <div id="tab-categorias" class="tab-content">
         <div class="section-title">📁 Adicionar Categoria</div>
         <div class="grid">
-            <input type="text" id="nova-cat-nome" placeholder="Nome (Ex: Fones de ouvido)">
-            <input type="text" id="nova-cat-id" placeholder="ID/Valor (Ex: Fones de ouvido)">
-            <div style="display: flex; flex-direction: column; gap: 5px;">
-                <select id="nova-cat-grupo-select" onchange="checarNovoGrupo(this.value)">
-                    <option value="">Selecione um Grupo</option>
-                    <option value="NOVO">➕ Criar Novo Grupo</option>
-                </select>
-                <input type="text" id="nova-cat-grupo-manual" placeholder="Nome do Novo Grupo" style="display: none; margin-top: 5px;">
-            </div>
-            <button class="btn-main" style="margin-top:0" onclick="gerenciarItem('categorias', 'add')">Adicionar</button>
+          <input
+            type="text"
+            id="nova-cat-nome"
+            placeholder="Nome (Ex: Fones de ouvido)"
+          />
+          <input
+            type="text"
+            id="nova-cat-id"
+            placeholder="ID/Valor (Ex: Fones de ouvido)"
+          />
+          <div style="display: flex; flex-direction: column; gap: 5px">
+            <select
+              id="nova-cat-grupo-select"
+              onchange="checarNovoGrupo(this.value)"
+            >
+              <option value="">Selecione um Grupo</option>
+              <option value="NOVO">➕ Criar Novo Grupo</option>
+            </select>
+            <input
+              type="text"
+              id="nova-cat-grupo-manual"
+              placeholder="Nome do Novo Grupo"
+              style="display: none; margin-top: 5px"
+            />
+          </div>
+          <button
+            class="btn-main"
+            style="margin-top: 0"
+            onclick="gerenciarItem('categorias', 'add')"
+          >
+            Adicionar
+          </button>
         </div>
         <div class="data-list" id="lista-categorias-admin"></div>
-    </div>
+      </div>
 
-    <div id="tab-marcas" class="tab-content">
+      <div id="tab-marcas" class="tab-content">
         <div class="section-title">🏷️ Gestão de Marcas</div>
         <div class="grid">
-            <input type="text" id="nova-marca" placeholder="Nome da Marca (Ex: SONY)">
-            <button class="btn-main" style="margin-top:0" onclick="gerenciarItem('marcas', 'add')">Adicionar</button>
+          <input
+            type="text"
+            id="nova-marca"
+            placeholder="Nome da Marca (Ex: SONY)"
+          />
+          <button
+            class="btn-main"
+            style="margin-top: 0"
+            onclick="gerenciarItem('marcas', 'add')"
+          >
+            Adicionar
+          </button>
         </div>
         <div class="data-list" id="lista-marcas-admin"></div>
-    </div>
+      </div>
 
-    <div id="tab-banners" class="tab-content">
+      <div id="tab-banners" class="tab-content">
         <div class="section-title">🖼️ Enviar Novo Banner (PC -> GitHub)</div>
-        <div style="background:#16161a; padding:20px; border-radius:15px; border:1px dashed var(--gold); text-align:center;">
-            <input type="file" id="file-banner" accept="image/*" style="display:none">
-            <button class="btn-main" style="width:auto; padding:15px 30px" onclick="document.getElementById('file-banner').click()">Selecionar Imagem do PC</button>
-            <p id="file-name-display" style="font-size:12px; margin-top:10px; color:var(--gold)"></p>
-            <button class="btn-main" onclick="fazerUploadBanner()" style="background:var(--success); color:#000; margin-top:10px">Enviar para Pasta /Images</button>
+        <div
+          style="
+            background: #16161a;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px dashed var(--gold);
+            text-align: center;
+          "
+        >
+          <input
+            type="file"
+            id="file-banner"
+            accept="image/*"
+            style="display: none"
+          />
+          <button
+            class="btn-main"
+            style="width: auto; padding: 15px 30px"
+            onclick="document.getElementById('file-banner').click()"
+          >
+            Selecionar Imagem do PC
+          </button>
+          <p
+            id="file-name-display"
+            style="font-size: 12px; margin-top: 10px; color: var(--gold)"
+          ></p>
+          <button
+            class="btn-main"
+            onclick="fazerUploadBanner()"
+            style="background: var(--success); color: #000; margin-top: 10px"
+          >
+            Enviar para Pasta /Images
+          </button>
         </div>
         <div class="section-title">📋 Banners Ativos</div>
         <div class="data-list" id="lista-banners-admin"></div>
+      </div>
+
+      <div id="status"></div>
+      <button class="logout-btn" onclick="logout()">Desconectar</button>
     </div>
 
-    <div id="status"></div>
-    <button class="logout-btn" onclick="logout()">Desconectar</button>
-</div>
-
-<div id="modal-descricao-painel" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999999; justify-content: center; align-items: center; backdrop-filter: blur(8px);">
-    <div style="background: var(--card-bg); width: 95%; max-width: 900px; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); box-shadow: 0 20px 50px rgba(0,0,0,0.9); display: flex; flex-direction: column; height: 85vh;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="color: var(--gold); margin: 0; font-size: 18px; text-transform: uppercase; font-weight: 900;">✍️ Descrição do Produto</h3>
-            <button type="button" onclick="salvarEditorModal()" style="background: var(--success); color: #000; border: none; padding: 10px 25px; border-radius: 10px; font-weight: 900; cursor: pointer; transition: 0.3s; text-transform: uppercase;">Fexar</button>
+    <div
+      id="modal-descricao-painel"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 999999;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(8px);
+      "
+    >
+      <div
+        style="
+          background: var(--card-bg);
+          width: 95%;
+          max-width: 900px;
+          padding: 25px;
+          border-radius: 20px;
+          border: 1px solid var(--gold);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+          display: flex;
+          flex-direction: column;
+          height: 85vh;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+          "
+        >
+          <h3
+            style="
+              color: var(--gold);
+              margin: 0;
+              font-size: 18px;
+              text-transform: uppercase;
+              font-weight: 900;
+            "
+          >
+            ✍️ Descrição do Produto
+          </h3>
+          <button
+            type="button"
+            onclick="salvarEditorModal()"
+            style="
+              background: var(--success);
+              color: #000;
+              border: none;
+              padding: 10px 25px;
+              border-radius: 10px;
+              font-weight: 900;
+              cursor: pointer;
+              transition: 0.3s;
+              text-transform: uppercase;
+            "
+          >
+            Fexar
+          </button>
         </div>
-        <textarea id="p-descricao-modal" style="flex: 1; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 20px; border-radius: 12px; font-size: 15px; font-family: inherit; resize: none; outline: none; line-height: 1.6;" placeholder="Cole ou digite sua descrição completa aqui...">DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea>
+        <textarea
+          id="p-descricao-modal"
+          style="
+            flex: 1;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            line-height: 1.6;
+          "
+          placeholder="Cole ou digite sua descrição completa aqui..."
+        >
+DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
+        >
+      </div>
     </div>
-</div>
 
-<script>
-    let produtosLoja = [];
-    let categorias = [];
-    let marcas = [];
-    let banners = [];
-    let editandoIndex = null;
-    let rascunhosDisco = JSON.parse(localStorage.getItem('rascunhos_painel')) || {};
-    let produtosNestaSessao = 0;
+    <script>
+      let produtosLoja = [];
+      let categorias = [];
+      let marcas = [];
+      let banners = [];
+      let editandoIndex = null;
+      let rascunhosDisco =
+        JSON.parse(localStorage.getItem("rascunhos_painel")) || {};
+      let produtosNestaSessao = 0;
 
-    window.onload = () => { if(localStorage.getItem('gh_token')) mostrarPainel(); };
+      window.onload = () => {
+        if (localStorage.getItem("gh_token")) mostrarPainel();
+      };
 
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
-        if(tabId === 'tab-categorias') carregarConfig('categorias');
-        if(tabId === 'tab-marcas') carregarConfig('marcas');
-        if(tabId === 'tab-banners') carregarConfig('banners');
-    }
+      function switchTab(tabId) {
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((t) => t.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById(tabId).classList.add("active");
+        event.currentTarget.classList.add("active");
+        if (tabId === "tab-categorias") carregarConfig("categorias");
+        if (tabId === "tab-marcas") carregarConfig("marcas");
+        if (tabId === "tab-banners") carregarConfig("banners");
+      }
 
-    function fazerLogin() {
-        const u = document.getElementById('gh-user').value, r = document.getElementById('gh-repo').value, t = document.getElementById('gh-token').value;
-        if(!u || !r || !t) return alert("Preencha tudo!");
-        localStorage.setItem('gh_user', u); localStorage.setItem('gh_repo', r); localStorage.setItem('gh_token', t);
+      function fazerLogin() {
+        const u = document.getElementById("gh-user").value,
+          r = document.getElementById("gh-repo").value,
+          t = document.getElementById("gh-token").value;
+        if (!u || !r || !t) return alert("Preencha tudo!");
+        localStorage.setItem("gh_user", u);
+        localStorage.setItem("gh_repo", r);
+        localStorage.setItem("gh_token", t);
         mostrarPainel();
-    }
+      }
 
-    function mostrarPainel() {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('admin-panel').style.display = 'block';
-        document.querySelectorAll('input').forEach(i => i.autocomplete = 'off');
+      function mostrarPainel() {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("admin-panel").style.display = "block";
+        document
+          .querySelectorAll("input")
+          .forEach((i) => (i.autocomplete = "off"));
         carregarDadosLoja();
-        carregarConfig('categorias');
-    }
+        carregarConfig("categorias");
+      }
 
-    function logout() { localStorage.clear(); location.reload(); }
+      function logout() {
+        localStorage.clear();
+        location.reload();
+      }
 
-    // FUNÇÕES DE CARREGAMENTO
-    async function carregarDadosLoja() {
-    const loja = document.getElementById('loja-ativa').value;
-    
-    // Verifica se existe rascunho salvo no disco para esta loja
-    if (rascunhosDisco[loja] && rascunhosDisco[loja].length > 0) {
-        produtosLoja = rascunhosDisco[loja];
-    } else {
-        // Se a gaveta do disco estiver vazia, baixa os dados consolidados do GitHub
-        produtosLoja = await fetchGitHub(`${loja}.json`);
-    }
-    
-    editandoIndex = null;
-    document.getElementById('btn-save').innerText = "Salvar na Lista Local";
-}
+      // FUNÇÕES DE CARREGAMENTO
+      async function carregarDadosLoja() {
+        const loja = document.getElementById("loja-ativa").value;
 
-    async function carregarConfig(tipo) {
-        const dados = await fetchGitHub(`${tipo}.json`);
-        if(tipo === 'categorias') {
-            categorias = dados;
-            const select = document.getElementById('p-categoria');
-            if (select) {
-                select.innerHTML = "";
-                let htmlOptions = "";
-                let grupos = {};
-
-                // Separa as opções da raiz e mapeia os grupos ativos
-                categorias.forEach(c => {
-                    if (c.valor === "todos" || !c.grupo) {
-                        htmlOptions += `<option value="${c.valor}">${c.nome}</option>`;
-                    } else {
-                        if (!grupos[c.grupo]) grupos[c.grupo] = [];
-                        grupos[c.grupo].push(c);
-                    }
-                });
-
-                // Injeta as famílias estruturadas com optgroup
-                for (let g in grupos) {
-                    htmlOptions += `<optgroup label="${g}">`;
-                    grupos[g].forEach(c => {
-                        htmlOptions += `<option value="${c.valor}">${c.nome}</option>`;
-                    });
-                    htmlOptions += `</optgroup>`;
-                }
-                select.innerHTML = htmlOptions;
-            }
-            
-            // Mapeia e popula dinamicamente o seletor de grupos na aba de categorias
-            const selectGrupoAdmin = document.getElementById('nova-cat-grupo-select');
-            if (selectGrupoAdmin) {
-                let uniqueGroups = [...new Set(categorias.map(c => c.grupo).filter(g => g))];
-                let grupoHtml = `<option value="">Sem Grupo (Raiz)</option>`;
-                uniqueGroups.forEach(g => {
-                    grupoHtml += `<option value="${g}">${g}</option>`;
-                });
-                grupoHtml += `<option value="NOVO_GRUPO">➕ Criar Novo Grupo...</option>`;
-                selectGrupoAdmin.innerHTML = grupoHtml;
-                
-                const inputManual = document.getElementById('nova-cat-grupo-manual');
-                if(inputManual) inputManual.style.display = "none";
-            }
-            renderLista('categorias', 'lista-categorias-admin');
+        // Verifica se existe rascunho salvo no disco para esta loja
+        if (rascunhosDisco[loja] && rascunhosDisco[loja].length > 0) {
+          produtosLoja = rascunhosDisco[loja];
+        } else {
+          // Se a gaveta do disco estiver vazia, baixa os dados consolidados do GitHub
+          produtosLoja = await fetchGitHub(`${loja}.json`);
         }
-        if(tipo === 'marcas') { marcas = dados; renderLista('marcas', 'lista-marcas-admin'); }
-        if(tipo === 'banners') { banners = dados; renderLista('banners', 'lista-banners-admin'); }
-    }
 
-    // COMUNICAÇÃO GITHUB
-    async function fetchGitHub(file) {
-        const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
-        try {
-            const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/${file}?t=${Date.now()}`, {
-                headers: { 'Authorization': `token ${t}` }
+        editandoIndex = null;
+        document.getElementById("btn-save").innerText = "Salvar na Lista Local";
+      }
+
+      async function carregarConfig(tipo) {
+        const dados = await fetchGitHub(`${tipo}.json`);
+        if (tipo === "categorias") {
+          categorias = dados;
+          const select = document.getElementById("p-categoria");
+          if (select) {
+            select.innerHTML = "";
+            let htmlOptions = "";
+            let grupos = {};
+
+            // Separa as opções da raiz e mapeia os grupos ativos
+            categorias.forEach((c) => {
+              if (c.valor === "todos" || !c.grupo) {
+                htmlOptions += `<option value="${c.valor}">${c.nome}</option>`;
+              } else {
+                if (!grupos[c.grupo]) grupos[c.grupo] = [];
+                grupos[c.grupo].push(c);
+              }
             });
-            const data = await res.json();
-            return JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\s/g, '')))));
-        } catch(e) { return []; }
-    }
 
-    async function saveGitHub(file, content, msg) {
-        const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
+            // Injeta as famílias estruturadas com optgroup
+            for (let g in grupos) {
+              htmlOptions += `<optgroup label="${g}">`;
+              grupos[g].forEach((c) => {
+                htmlOptions += `<option value="${c.valor}">${c.nome}</option>`;
+              });
+              htmlOptions += `</optgroup>`;
+            }
+            select.innerHTML = htmlOptions;
+          }
+
+          // Mapeia e popula dinamicamente o seletor de grupos na aba de categorias
+          const selectGrupoAdmin = document.getElementById(
+            "nova-cat-grupo-select",
+          );
+          if (selectGrupoAdmin) {
+            let uniqueGroups = [
+              ...new Set(categorias.map((c) => c.grupo).filter((g) => g)),
+            ];
+            let grupoHtml = `<option value="">Sem Grupo (Raiz)</option>`;
+            uniqueGroups.forEach((g) => {
+              grupoHtml += `<option value="${g}">${g}</option>`;
+            });
+            grupoHtml += `<option value="NOVO_GRUPO">➕ Criar Novo Grupo...</option>`;
+            selectGrupoAdmin.innerHTML = grupoHtml;
+
+            const inputManual = document.getElementById(
+              "nova-cat-grupo-manual",
+            );
+            if (inputManual) inputManual.style.display = "none";
+          }
+          renderLista("categorias", "lista-categorias-admin");
+        }
+        if (tipo === "marcas") {
+          marcas = dados;
+          renderLista("marcas", "lista-marcas-admin");
+        }
+        if (tipo === "banners") {
+          banners = dados;
+          renderLista("banners", "lista-banners-admin");
+        }
+      }
+
+      // COMUNICAÇÃO GITHUB
+      async function fetchGitHub(file) {
+        const u = localStorage.getItem("gh_user"),
+          r = localStorage.getItem("gh_repo"),
+          t = localStorage.getItem("gh_token");
+        try {
+          const res = await fetch(
+            `https://api.github.com/repos/${u}/${r}/contents/${file}?t=${Date.now()}`,
+            {
+              headers: { Authorization: `token ${t}` },
+            },
+          );
+          const data = await res.json();
+          return JSON.parse(
+            decodeURIComponent(escape(atob(data.content.replace(/\s/g, "")))),
+          );
+        } catch (e) {
+          return [];
+        }
+      }
+
+      async function saveGitHub(file, content, msg) {
+        const u = localStorage.getItem("gh_user"),
+          r = localStorage.getItem("gh_repo"),
+          t = localStorage.getItem("gh_token");
         const url = `https://api.github.com/repos/${u}/${r}/contents/${file}`;
-        const res = await fetch(url, { headers: { 'Authorization': `token ${t}` } });
+        const res = await fetch(url, {
+          headers: { Authorization: `token ${t}` },
+        });
         const fileData = await res.json();
-        
+
         const body = JSON.stringify({
-            message: msg,
-            content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
-            sha: fileData.sha
+          message: msg,
+          content: btoa(
+            unescape(encodeURIComponent(JSON.stringify(content, null, 2))),
+          ),
+          sha: fileData.sha,
         });
 
-        const save = await fetch(url, { method: 'PUT', headers: { 'Authorization': `token ${t}` }, body });
-        if(save.ok) showStatus("✅ SINCRONIZADO COM SUCESSO!");
-    }
+        const save = await fetch(url, {
+          method: "PUT",
+          headers: { Authorization: `token ${t}` },
+          body,
+        });
+        if (save.ok) showStatus("✅ SINCRONIZADO COM SUCESSO!");
+      }
 
-    // LÓGICA DO EDITOR DE DESCRIÇÃO EXPANDIDO
-    function abrirEditorModal() {
-        document.getElementById('p-descricao-modal').value = document.getElementById('p-descricao').value;
-        document.getElementById('modal-descricao-painel').style.display = 'flex';
-    }
-    function fecharEditorModal() {
-        document.getElementById('modal-descricao-painel').style.display = 'none';
-    }
-    function salvarEditorModal() {
-        document.getElementById('p-descricao').value = document.getElementById('p-descricao-modal').value;
+      // LÓGICA DO EDITOR DE DESCRIÇÃO EXPANDIDO
+      function abrirEditorModal() {
+        document.getElementById("p-descricao-modal").value =
+          document.getElementById("p-descricao").value;
+        document.getElementById("modal-descricao-painel").style.display =
+          "flex";
+      }
+      function fecharEditorModal() {
+        document.getElementById("modal-descricao-painel").style.display =
+          "none";
+      }
+      function salvarEditorModal() {
+        document.getElementById("p-descricao").value =
+          document.getElementById("p-descricao-modal").value;
         fecharEditorModal();
-    }
+      }
 
-    // GESTÃO DE PRODUTOS
-    function buscarNoJson() {
-        const termo = document.getElementById('busca-editar').value.toLowerCase();
-        const lista = document.getElementById('lista-busca');
+      // GESTÃO DE PRODUTOS
+      function buscarNoJson() {
+        const termo = document
+          .getElementById("busca-editar")
+          .value.toLowerCase();
+        const lista = document.getElementById("lista-busca");
         lista.innerHTML = "";
-        if(termo.length < 2) { lista.style.display="none"; return; }
-        
-        const res = produtosLoja.filter(p => p.titulo.toLowerCase().includes(termo));
-        if(res.length > 0) {
-            lista.style.display="block";
-            res.forEach(p => {
-                const indexReal = produtosLoja.indexOf(p);
-                const div = document.createElement('div');
-                div.className = "item-busca";
-                div.style.display = "flex";
-                div.style.justifyContent = "space-between";
-                div.style.alignItems = "center";
-                
-                const spanNome = document.createElement('span');
-                spanNome.innerText = `✏️ EDITAR: ${p.titulo}`;
-                spanNome.style.flex = "1";
-                spanNome.onclick = () => {
-                    editandoIndex = indexReal;
-                    preencherForm(p);
-                    lista.style.display = "none";
-                };
-
-                const btnExcluir = document.createElement('button');
-                btnExcluir.innerText = "❌ EXCLUIR";
-                btnExcluir.style.background = "var(--danger)";
-                btnExcluir.style.color = "#fff";
-                btnExcluir.style.border = "none";
-                btnExcluir.style.padding = "5px 12px";
-                btnExcluir.style.borderRadius = "6px";
-                btnExcluir.style.cursor = "pointer";
-                btnExcluir.style.fontWeight = "900";
-                btnExcluir.style.fontSize = "11px";
-                btnExcluir.onclick = async (e) => {
-                    e.stopPropagation(); // Impede de abrir a edição ao clicar em excluir
-                    if(confirm(`🚨 ATENÇÃO!\nTem certeza que deseja EXCLUIR definitivamente o produto:\n\n"${p.titulo}"?`)) {
-                        produtosLoja.splice(indexReal, 1);
-                        const loja = document.getElementById('loja-ativa').value;
-                        await saveGitHub(`${loja}.json`, produtosLoja, `Exclusão de produto via Painel`);
-                        document.getElementById('busca-editar').value = ""; // Limpa a busca
-                        lista.style.display = "none";
-                        limparCampos();
-                    }
-                };
-
-                div.appendChild(spanNome);
-                div.appendChild(btnExcluir);
-                lista.appendChild(div);
-            });
+        if (termo.length < 2) {
+          lista.style.display = "none";
+          return;
         }
-    }
 
-    function preencherForm(p) {
-        document.getElementById('p-titulo').value = p.titulo;
-        document.getElementById('p-subtitulo').value = p.subtitulo;
-        document.getElementById('p-preco').value = p.preco;
-        document.getElementById('p-categoria').value = p.categoria;
-        document.getElementById('p-tag').value = p.tag || "";
-        document.getElementById('p-descricao').value = p.descricao || "";
-        document.getElementById('p-link').value = p.link;
-        document.getElementById('p-nota').value = p.nota || "";
-        document.getElementById('p-avaliacoes').value = p.avaliacoes || "";
-        for(let i=1;i<=8;i++) document.getElementById(`img${i}`).value = p.imagens && p.imagens[i-1] ? p.imagens[i-1] : "";
-        document.getElementById('btn-save').innerText = "ATUALIZAR ITEM";
-        window.scrollTo({top:0, behavior:'smooth'});
+        const res = produtosLoja.filter((p) =>
+          p.titulo.toLowerCase().includes(termo),
+        );
+        if (res.length > 0) {
+          lista.style.display = "block";
+          res.forEach((p) => {
+            const indexReal = produtosLoja.indexOf(p);
+            const div = document.createElement("div");
+            div.className = "item-busca";
+            div.style.display = "flex";
+            div.style.justifyContent = "space-between";
+            div.style.alignItems = "center";
+
+            const spanNome = document.createElement("span");
+            spanNome.innerText = `✏️ EDITAR: ${p.titulo}`;
+            spanNome.style.flex = "1";
+            spanNome.onclick = () => {
+              editandoIndex = indexReal;
+              preencherForm(p);
+              lista.style.display = "none";
+            };
+
+            const btnExcluir = document.createElement("button");
+            btnExcluir.innerText = "❌ EXCLUIR";
+            btnExcluir.style.background = "var(--danger)";
+            btnExcluir.style.color = "#fff";
+            btnExcluir.style.border = "none";
+            btnExcluir.style.padding = "5px 12px";
+            btnExcluir.style.borderRadius = "6px";
+            btnExcluir.style.cursor = "pointer";
+            btnExcluir.style.fontWeight = "900";
+            btnExcluir.style.fontSize = "11px";
+            btnExcluir.onclick = async (e) => {
+              e.stopPropagation(); // Impede de abrir a edição ao clicar em excluir
+              if (
+                confirm(
+                  `🚨 ATENÇÃO!\nTem certeza que deseja EXCLUIR definitivamente o produto:\n\n"${p.titulo}"?`,
+                )
+              ) {
+                produtosLoja.splice(indexReal, 1);
+                const loja = document.getElementById("loja-ativa").value;
+                await saveGitHub(
+                  `${loja}.json`,
+                  produtosLoja,
+                  `Exclusão de produto via Painel`,
+                );
+                document.getElementById("busca-editar").value = ""; // Limpa a busca
+                lista.style.display = "none";
+                limparCampos();
+              }
+            };
+
+            div.appendChild(spanNome);
+            div.appendChild(btnExcluir);
+            lista.appendChild(div);
+          });
+        }
+      }
+
+      function preencherForm(p) {
+        document.getElementById("p-titulo").value = p.titulo;
+        document.getElementById("p-subtitulo").value = p.subtitulo;
+        document.getElementById("p-preco").value = p.preco;
+        document.getElementById("p-categoria").value = p.categoria;
+        document.getElementById("p-tag").value = p.tag || "";
+        document.getElementById("p-descricao").value = p.descricao || "";
+        document.getElementById("p-link").value = p.link;
+        document.getElementById("p-nota").value = p.nota || "";
+        document.getElementById("p-avaliacoes").value = p.avaliacoes || "";
+        for (let i = 1; i <= 8; i++)
+          document.getElementById(`img${i}`).value =
+            p.imagens && p.imagens[i - 1] ? p.imagens[i - 1] : "";
+        document.getElementById("btn-save").innerText = "ATUALIZAR ITEM";
+        window.scrollTo({ top: 0, behavior: "smooth" });
         atualizarContador();
-    }
+      }
 
-    async function salvarProduto() {
-        const loja = document.getElementById('loja-ativa').value;
-        const imgs = [1,2,3,4,5,6,7,8].map(i => document.getElementById(`img${i}`).value).filter(v => v !== "");
-        const p = {
-            titulo: document.getElementById('p-titulo').value,
-            subtitulo: document.getElementById('p-subtitulo').value,
-            preco: document.getElementById('p-preco').value,
-            tag: document.getElementById('p-tag').value,
-            nota: document.getElementById('p-nota').value,
-            avaliacoes: document.getElementById('p-avaliacoes').value,
-            link: document.getElementById('p-link').value,
-            loja: loja,
-            categoria: document.getElementById('p-categoria').options[document.getElementById('p-categoria').selectedIndex].text,
-            descricao: document.getElementById('p-descricao').value,
-            imagens: imgs,
-            data: new Date().toLocaleDateString('pt-BR')
-        };
+      async function salvarProduto() {
+        const loja = document.getElementById("loja-ativa").value;
+        const imgs = [1, 2, 3, 4, 5, 6, 7, 8]
+          .map((i) => document.getElementById(`img${i}`).value)
+          .filter((v) => v !== "");
+        const p = {
+          titulo: document.getElementById("p-titulo").value,
+          subtitulo: document.getElementById("p-subtitulo").value,
+          preco: document.getElementById("p-preco").value,
+          tag: document.getElementById("p-tag").value,
+          nota: document.getElementById("p-nota").value,
+          avaliacoes: document.getElementById("p-avaliacoes").value,
+          link: document.getElementById("p-link").value,
+          loja: loja,
+          categoria:
+            document.getElementById("p-categoria").options[
+              document.getElementById("p-categoria").selectedIndex
+            ].text,
+          descricao: document.getElementById("p-descricao").value,
+          imagens: imgs,
+          data: new Date().toLocaleDateString("pt-BR"),
+        };
 
-        if(editandoIndex !== null) produtosLoja[editandoIndex] = p;
-        else produtosLoja.unshift(p);
+        if (editandoIndex !== null) produtosLoja[editandoIndex] = p;
+        else produtosLoja.unshift(p);
 
         // Atualiza a memória geral e grava uma cópia de segurança invisível no disco
         rascunhosDisco[loja] = produtosLoja;
-        localStorage.setItem('rascunhos_painel', JSON.stringify(rascunhosDisco));
+        localStorage.setItem(
+          "rascunhos_painel",
+          JSON.stringify(rascunhosDisco),
+        );
 
         produtosNestaSessao++;
-        document.getElementById('contador-sessao').innerText = `📦 ${produtosNestaSessao} itens salvos nesta sessão`;
+        document.getElementById("contador-sessao").innerText =
+          `📦 ${produtosNestaSessao} itens salvos nesta sessão`;
 
-        showStatus("✅ ADICIONADO NA LISTA LOCAL E SALVO NO DISCO!");
-        limparCampos();
-    }
+        showStatus("✅ ADICIONADO NA LISTA LOCAL E SALVO NO DISCO!");
+        limparCampos();
+      }
 
-    async function sincronizarComGitHub() {
-        const btn = document.getElementById('btn-sync-all');
-        btn.innerText = "⏳ PUBLICANDO TODAS AS LOJAS...";
-        
+      async function sincronizarComGitHub() {
+        const btn = document.getElementById("btn-sync-all");
+        btn.innerText = "⏳ PUBLICANDO TODAS AS LOJAS...";
         // Se não houver rascunhos no disco (clique direto), envia apenas o que estiver na tela atual
         if (Object.keys(rascunhosDisco).length === 0) {
-            const lojaAtual = document.getElementById('loja-ativa').value;
-            await saveGitHub(`${lojaAtual}.json`, produtosLoja, `Atualização direta via Painel: ${lojaAtual}`);
+          const lojaAtual = document.getElementById("loja-ativa").value;
+          await saveGitHub(
+            `${lojaAtual}.json`,
+            produtosLoja,
+            `Atualização direta via Painel: ${lojaAtual}`,
+          );
         } else {
-            // Varre o disco: se tiver pendência no TikTok, ML ou Shopee, envia um por um
-            for (const loja in rascunhosDisco) {
-                if (rascunhosDisco[loja].length > 0) {
-                    await saveGitHub(`${loja}.json`, rascunhosDisco[loja], `Atualização híbrida via Painel: ${loja}`);
-                }
+          // Varre o disco: se tiver pendência no TikTok, ML ou Shopee, envia um por um
+          for (const loja in rascunhosDisco) {
+            if (rascunhosDisco[loja].length > 0) {
+              await saveGitHub(
+                `${loja}.json`,
+                rascunhosDisco[loja],
+                `Atualização híbrida via Painel: ${loja}`,
+              );
             }
+          }
         }
 
         // A Vassoura: Aniquila os dados do disco e da memória para deixar o PC limpo
-        localStorage.removeItem('rascunhos_painel');
+        localStorage.removeItem("rascunhos_painel");
         rascunhosDisco = {};
-        
-        btn.innerText = "🚀 PUBLICAR TUDO NO GITHUB";
+
+        btn.innerText = "🚀 PUBLICAR TUDO NO GITHUB";
         if (produtosNestaSessao > 0) {
-            showStatus(`✅ TODOS OS ${produtosNestaSessao} PRODUTOS PUBLICADOS COM SUCESSO!`);
+          showStatus(
+            `✅ TODOS OS ${produtosNestaSessao} PRODUTOS PUBLICADOS COM SUCESSO!`,
+          );
         } else {
-            showStatus("✅ TODAS AS LOJAS PUBLICADAS E DISCO LIMPO!");
+          showStatus("✅ TODAS AS LOJAS PUBLICADAS E DISCO LIMPO!");
         }
         produtosNestaSessao = 0;
-        document.getElementById('contador-sessao').innerText = `📦 0 itens salvos nesta sessão`;
-    }
+        document.getElementById("contador-sessao").innerText =
+          `📦 0 itens salvos nesta sessão`;
+      }
 
-    // GESTÃO DE CONFIGURAÇÕES (Categorias, Marcas, Banners)
-    function renderLista(tipo, elementId) {
+      // GESTÃO DE CONFIGURAÇÕES (Categorias, Marcas, Banners)
+      function renderLista(tipo, elementId) {
         const container = document.getElementById(elementId);
         if (!container) return;
         container.innerHTML = "";
-        let lista = (tipo === 'categorias') ? categorias : (tipo === 'marcas' ? marcas : banners);
-        
-        lista.forEach((item, index) => {
-            // Se for categoria, exibe o nome acompanhado do grupo correspondente
-            const nome = tipo === 'categorias' ? (item.grupo ? `${item.nome} [Grupo: ${item.grupo}]` : item.nome) : item;
-            const div = document.createElement('div');
-            div.className = "data-item";
-            div.innerHTML = `<span>${nome}</span> <button class="btn-danger" onclick="gerenciarItem('${tipo}', 'del', ${index})">Remover</button>`;
-            container.appendChild(div);
-        });
-    }
+        let lista =
+          tipo === "categorias"
+            ? categorias
+            : tipo === "marcas"
+              ? marcas
+              : banners;
 
-    async function gerenciarItem(tipo, acao, index = null) {
-        let lista = (tipo === 'categorias') ? categorias : (tipo === 'marcas' ? marcas : banners);
-        
-        if(acao === 'add') {
-            if(tipo === 'categorias') {
-                const nomeIn = document.getElementById('nova-cat-nome');
-                const valorIn = document.getElementById('nova-cat-id');
-                const selectGrupo = document.getElementById('nova-cat-grupo-select');
-                const inputManual = document.getElementById('nova-cat-grupo-manual');
-                
-                if(!nomeIn.value || !valorIn.value) return alert("Preencha Nome e ID!");
-                
-                const novaCat = { nome: nomeIn.value, valor: valorIn.value };
-                
-                let grupoFinal = "";
-                if (selectGrupo && selectGrupo.value === "NOVO_GRUPO") {
-                    grupoFinal = inputManual ? inputManual.value.trim() : "";
-                } else if (selectGrupo) {
-                    grupoFinal = selectGrupo.value.trim();
-                }
-                
-                if(grupoFinal !== "") {
-                    novaCat.grupo = grupoFinal.toUpperCase();
-                }
-                
-                lista.push(novaCat);
-                
-                nomeIn.value = "";
-                valorIn.value = "";
-                if(selectGrupo) selectGrupo.value = "";
-                if(inputManual) {
-                    inputManual.value = "";
-                    inputManual.style.display = "none";
-                }
-            } else if(tipo === 'marcas') {
-                lista.push(document.getElementById('nova-marca').value.toUpperCase());
+        lista.forEach((item, index) => {
+          // Se for categoria, exibe o nome acompanhado do grupo correspondente
+          const nome =
+            tipo === "categorias"
+              ? item.grupo
+                ? `${item.nome} [Grupo: ${item.grupo}]`
+                : item.nome
+              : item;
+          const div = document.createElement("div");
+          div.className = "data-item";
+          div.innerHTML = `<span>${nome}</span> <button class="btn-danger" onclick="gerenciarItem('${tipo}', 'del', ${index})">Remover</button>`;
+          container.appendChild(div);
+        });
+      }
+
+      async function gerenciarItem(tipo, acao, index = null) {
+        let lista =
+          tipo === "categorias"
+            ? categorias
+            : tipo === "marcas"
+              ? marcas
+              : banners;
+
+        if (acao === "add") {
+          if (tipo === "categorias") {
+            const nomeIn = document.getElementById("nova-cat-nome");
+            const valorIn = document.getElementById("nova-cat-id");
+            const selectGrupo = document.getElementById(
+              "nova-cat-grupo-select",
+            );
+            const inputManual = document.getElementById(
+              "nova-cat-grupo-manual",
+            );
+
+            if (!nomeIn.value || !valorIn.value)
+              return alert("Preencha Nome e ID!");
+
+            const novaCat = { nome: nomeIn.value, valor: valorIn.value };
+
+            let grupoFinal = "";
+            if (selectGrupo && selectGrupo.value === "NOVO_GRUPO") {
+              grupoFinal = inputManual ? inputManual.value.trim() : "";
+            } else if (selectGrupo) {
+              grupoFinal = selectGrupo.value.trim();
             }
+
+            if (grupoFinal !== "") {
+              novaCat.grupo = grupoFinal.toUpperCase();
+            }
+
+            lista.push(novaCat);
+
+            nomeIn.value = "";
+            valorIn.value = "";
+            if (selectGrupo) selectGrupo.value = "";
+            if (inputManual) {
+              inputManual.value = "";
+              inputManual.style.display = "none";
+            }
+          } else if (tipo === "marcas") {
+            lista.push(
+              document.getElementById("nova-marca").value.toUpperCase(),
+            );
+          }
         } else {
-            lista.splice(index, 1);
+          lista.splice(index, 1);
         }
 
         await saveGitHub(`${tipo}.json`, lista, `Gerenciar ${tipo}`);
         carregarConfig(tipo);
-    }
+      }
 
-    // UPLOAD DE BANNER (PC -> GITHUB)
-    document.getElementById('file-banner').onchange = function() {
-        document.getElementById('file-name-display').innerText = "Selecionado: " + this.files[0].name;
-    };
+      // UPLOAD DE BANNER (PC -> GITHUB)
+      document.getElementById("file-banner").onchange = function () {
+        document.getElementById("file-name-display").innerText =
+          "Selecionado: " + this.files[0].name;
+      };
 
-    async function fazerUploadBanner() {
-        const fileInput = document.getElementById('file-banner');
-        if(fileInput.files.length === 0) return alert("Selecione uma imagem!");
-        
+      async function fazerUploadBanner() {
+        const fileInput = document.getElementById("file-banner");
+        if (fileInput.files.length === 0) return alert("Selecione uma imagem!");
+
         const file = fileInput.files[0];
         const reader = new FileReader();
-        
-        reader.onload = async function() {
-            const base64Content = reader.result.split(',')[1];
-            const u = localStorage.getItem('gh_user'), r = localStorage.getItem('gh_repo'), t = localStorage.getItem('gh_token');
-            const fileName = file.name.replace(/\s+/g, '_').toLowerCase();
-            
-            // 1. Sobe a imagem física para a pasta /images
-            await fetch(`https://api.github.com/repos/${u}/${r}/contents/images/${fileName}`, {
-                method: 'PUT',
-                headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: `Upload banner ${fileName}`, content: base64Content })
-            });
 
-            // 2. Adiciona o caminho no banners.json
-            banners.push(`images/${fileName}`);
-            await saveGitHub(`banners.json`, banners, `Link banner no JSON`);
-            carregarConfig('banners');
-            alert("Banner enviado com sucesso!");
+        reader.onload = async function () {
+          const base64Content = reader.result.split(",")[1];
+          const u = localStorage.getItem("gh_user"),
+            r = localStorage.getItem("gh_repo"),
+            t = localStorage.getItem("gh_token");
+          const fileName = file.name.replace(/\s+/g, "_").toLowerCase();
+
+          // 1. Sobe a imagem física para a pasta /images
+          await fetch(
+            `https://api.github.com/repos/${u}/${r}/contents/images/${fileName}`,
+            {
+              method: "PUT",
+              headers: {
+                Authorization: `token ${t}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                message: `Upload banner ${fileName}`,
+                content: base64Content,
+              }),
+            },
+          );
+
+          // 2. Adiciona o caminho no banners.json
+          banners.push(`images/${fileName}`);
+          await saveGitHub(`banners.json`, banners, `Link banner no JSON`);
+          carregarConfig("banners");
+          alert("Banner enviado com sucesso!");
         };
         reader.readAsDataURL(file);
-    }
+      }
 
-    function showStatus(txt) {
-        const s = document.getElementById('status');
-        s.innerText = txt; s.style.display = "block";
-        setTimeout(() => s.style.display="none", 3000);
-    }
+      function showStatus(txt) {
+        const s = document.getElementById("status");
+        s.innerText = txt;
+        s.style.display = "block";
+        setTimeout(() => (s.style.display = "none"), 3000);
+      }
 
-    function limparCampos() {
-        document.querySelectorAll('#tab-produtos input, #tab-produtos textarea').forEach(i => i.value = "");
-        document.getElementById('p-descricao').value = "DESCRIÇÃO DO PRODUTO\n\n";
-        document.getElementById('p-descricao-modal').value = "DESCRIÇÃO DO PRODUTO\n\n";
+      function limparCampos() {
+        document
+          .querySelectorAll("#tab-produtos input, #tab-produtos textarea")
+          .forEach((i) => (i.value = ""));
+        document.getElementById("p-descricao").value =
+          "DESCRIÇÃO DO PRODUTO\n\n";
+        document.getElementById("p-descricao-modal").value =
+          "DESCRIÇÃO DO PRODUTO\n\n";
         editandoIndex = null;
-        document.getElementById('btn-save').innerText = "Salvar na Lista Local";
+        document.getElementById("btn-save").innerText = "Salvar na Lista Local";
         atualizarContador();
-    }
+      }
 
-    function inserirEmblema(codigo) {
-        document.getElementById('p-subtitulo').value = codigo;
-    }
+      function inserirEmblema(codigo) {
+        document.getElementById("p-subtitulo").value = codigo;
+      }
 
-    function checarNovoGrupo(val) {
-        const inputManual = document.getElementById('nova-cat-grupo-manual');
+      function checarNovoGrupo(val) {
+        const inputManual = document.getElementById("nova-cat-grupo-manual");
         if (!inputManual) return;
         if (val === "NOVO_GRUPO") {
-            inputManual.style.display = "block";
-            inputManual.focus();
+          inputManual.style.display = "block";
+          inputManual.focus();
         } else {
-            inputManual.style.display = "none";
-            inputManual.value = "";
+          inputManual.style.display = "none";
+          inputManual.value = "";
         }
-    }
-
-    function atualizarContador() {
-        const input = document.getElementById('p-titulo');
-        const count = input.value.length;
-        const display = document.getElementById('char-count');
-        const bar = document.getElementById('title-bar-fill');
-        
-        display.innerText = `${count}/60`;
-        bar.style.width = `${(count / 60) * 100}%`;
-        
-        if (count < 50) { bar.style.background = 'var(--success)'; display.style.color = 'var(--text-muted)'; }
-        else if (count < 60) { bar.style.background = 'var(--gold)'; display.style.color = 'var(--gold)'; }
-        else { bar.style.background = 'var(--danger)'; display.style.color = 'var(--danger)'; }
-    }
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>
