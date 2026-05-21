@@ -184,12 +184,19 @@ function renderizar(lista, recomecar = true) {
         <img src="${p.imagens[0]}" onerror="this.onerror=null; this.src='images/atualizando.png';" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
         <div class="card-badge-container">
-            ${p.subtitulo === '[SHOPEE]' ? '<span class="emblema-premium shopee-badge">Shopee</span>' : 
-              p.subtitulo === '[ML]' ? '<span class="emblema-premium ml-badge">mercado livre</span>' : 
-              p.subtitulo === '[TIKTOK]' ? '<span class="emblema-premium tiktok-badge">TikTok Shop</span>' : 
-              p.subtitulo === '[AMAZON]' ? '<span class="emblema-premium amazon-badge">amazon</span>' : 
-              `<span class="card-subtitle">${p.subtitulo || ""}</span>`}
+            ${(() => {
+                const sub = (p.subtitulo || "").trim();
+                const subUp = sub.toUpperCase();
+
+                if (subUp === '[SHOPEE]' || subUp === 'SHOPEE') return '<span class="emblema-premium shopee-badge">Shopee</span>';
+                if (subUp === '[ML]' || subUp === 'MERCADO LIVRE') return '<span class="emblema-premium ml-badge">mercado livre</span>';
+                if (subUp === '[TIKTOK]' || subUp === 'TIKTOK SHOP') return '<span class="emblema-premium tiktok-badge">TikTok Shop</span>';
+                if (subUp === '[AMAZON]' || subUp === 'AMAZON') return '<span class="emblema-premium amazon-badge">amazon</span>';
+                
+                return `<span class="card-subtitle">${sub}</span>`;
+            })()}
         </div>
+        
         <div class="stars-row">
           <span class="rating-val">${p.nota || "0.0"}</span>
           ${estrelas} 
