@@ -860,3 +860,47 @@ body[data-ambiente="all"] .bg-glow {
   #modal-zoom-result { display: none !important; }
 }
 
+/* =========================================
+   EMBLEMAS PREMIUM - CARDS DE PRODUTOS
+   ========================================= */
+.card-badge-container {
+    margin-top: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+.emblema-premium {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    height: 24px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.shopee-badge {
+    background: #EE4D2D;
+    color: #FFFFFF;
+}
+.tiktok-badge {
+    background: #000000;
+    color: #FFFFFF;
+    border-left: 2px solid #00F2FE;
+    border-right: 2px solid #FE2C55;
+    text-transform: none; /* Mantém a grafia TikTok Shop intacta */
+    font-weight: 700;
+}
+.ml-badge {
+    background: #FFE600;
+    padding: 2px 15px; /* Mais largo para o ícone respirar */
+}
+.amazon-badge {
+    background: #232F3E;
+    padding: 2px 15px;
+    border-bottom: 2px solid #FF9900;
+    border-radius: 6px 6px 4px 4px; /* Ajuste suave para a base reta da Amazon */
+}
