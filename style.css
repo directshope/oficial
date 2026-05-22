@@ -772,6 +772,7 @@ body[data-ambiente="all"] .bg-glow {
 .badge-oportunidade { background: linear-gradient(135deg, #00b894, #05c46b) !important; border-color: rgba(0, 184, 148, 0.5) !important; }
 .badge-tendencia { background: linear-gradient(135deg, #0984e3, #2980b9) !important; border-color: rgba(9, 132, 227, 0.5) !important; }
 .badge-presente { background: linear-gradient(135deg, #fd79a8, #e84393) !important; border-color: rgba(253, 121, 168, 0.5) !important; }
+.badge-copa { background: linear-gradient(135deg, #009c3b 0%, #ffdf00 100%) !important; border-color: rgba(0, 156, 59, 0.5) !important; color: #ffffff !important; text-shadow: 0px 1px 3px rgba(0,0,0,0.6) !important; }
 
 /* --- OVERRIDE PREMIUM: EFEITO VIDRO --- */
 .header {
@@ -881,32 +882,6 @@ body[data-ambiente="all"] .bg-glow {
     box-shadow: none;
     text-shadow: none;
     line-height: 1;
-}
-/* =========================================
-   SELO PREMIUM COPA DO MUNDO
-   ========================================= */
-.emblema-copa {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 10px;
-    font-weight: 800;
-    font-family: 'Poppins', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #ffffff;
-    background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 50%, #fcf6ba 55%, #aa771c 100%);
-    padding: 4px 10px;
-    border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 2px 10px rgba(189, 149, 63, 0.3);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.emblema-copa:hover {
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: 0 4px 15px rgba(189, 149, 63, 0.5);
 }
 /* Cores Oficiais das Marcas - Estilo Ghost */
 .shopee-badge { background: transparent; color: #FFFFFF; border: 1px solid #EE4D2D; text-transform: none; }
