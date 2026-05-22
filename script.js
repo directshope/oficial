@@ -192,6 +192,7 @@ function renderizar(lista, recomecar = true) {
                 if (subUp === '[ML]' || subUp === 'MERCADO LIVRE') return '<span class="emblema-premium">Mercado Livre</span>';
                 if (subUp === '[TIKTOK]' || subUp === 'TIKTOK SHOP') return '<span class="emblema-premium">TikTok Shop</span>';
                 if (subUp === '[AMAZON]' || subUp === 'AMAZON') return '<span class="emblema-premium">Amazon</span>';
+                if (subUp === '[COPA]' || subUp === 'COPA') return '<span class="emblema-copa">🏆 VIBE COPA</span>';
                 
                 return `<span class="card-subtitle">${sub}</span>`;
             })()}
