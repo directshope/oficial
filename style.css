@@ -889,79 +889,60 @@ body[data-ambiente="all"] .bg-glow {
 .tiktok-badge { background: transparent; color: #FFFFFF; border: 1px solid #333; border-left: 1px solid #00F2FE; border-right: 1px solid #FE2C55; text-transform: none; }
 .amazon-badge { background: transparent; color: #FFFFFF; border: 1px solid #FF9900; text-transform: lowercase; letter-spacing: -0.5px; }
 /* =========================================
-   RESPONSIVIDADE MOBILE (TELEMÓVEIS) - 2 CARDS LADO A LADO
+   RESPONSIVIDADE MOBILE (CELULARES) - SITE ENQUADRADO
    ========================================= */
 @media (max-width: 768px) {
-    /* Ajuste do contentor principal para aproveitar o espaço do ecrã */
+    /* 1. CORREÇÃO DA LARGURA DA TELA (Fim do efeito pinça) */
+    .nav-premium-card {
+        min-width: 100% !important; /* Destrava os 650px que forçavam a tela a esticar */
+        padding: 20px 15px !important;
+    }
+
+    .header {
+        flex-direction: column; /* Empilha a logo, abas e barra de busca */
+        padding: 15px 10px;
+        gap: 15px;
+    }
+
+    .header-tools {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #search {
+        min-width: 100% !important;
+        width: 100%;
+    }
+
+    .custom-select-trigger {
+        min-width: 100%;
+    }
+
+    .nav-premium-container {
+        padding: 0 10px;
+    }
+    
+    /* Faixa de logos ajustada */
+    .marcas-container { padding: 10px 0; }
+    .marca-item { font-size: 12px; padding-right: 30px; }
+
+    /* 2. VITRINE E CARDS (2 Colunas Perfeitas) */
     .produtos-section { padding: 20px 10px; }
+    .produtos { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     
-    /* A MÁGICA: Força 2 colunas perfeitas (50% cada) com um espaço menor entre elas */
-    .produtos { 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 12px; 
-    }
-
-    /* Ajuste estrutural do Card para ficar elegante e compacto */
-    .card {
-        padding: 10px;
-        min-height: auto;
-        border-radius: 12px;
-    }
-
-    /* Imagem do produto proporcional ao telemóvel */
-    .card img {
-        height: 130px;
-        margin-bottom: 10px;
-        padding: 5px;
-        border-radius: 10px;
-    }
-
-    /* Tag de topo (Selo) mais discreta e sem invadir a imagem */
-    .badge {
-        top: 8px;
-        left: 8px;
-        padding: 4px 8px;
-        font-size: 8px;
-    }
-
-    /* Título do produto: reduzido para não encavalar */
-    .card h3 {
-        font-size: 11px;
-        height: 32px; /* Espaço exato para duas linhas */
-        margin-bottom: 6px;
-    }
-
-    /* Marcas e Subtítulos */
-    .card-subtitle, .emblema-premium {
-        font-size: 9px;
-        margin-bottom: 8px;
-    }
-    
-    /* O novo selo da Copa adaptado ao telemóvel */
-    .emblema-copa {
-        padding: 2px 6px;
-        font-size: 7px;
-        letter-spacing: 0.5px;
-    }
-
-    /* Avaliações e Categoria */
+    .card { padding: 10px; min-height: auto; border-radius: 12px; }
+    .card img { height: 130px; margin-bottom: 10px; padding: 5px; border-radius: 10px; }
+    .badge { top: 8px; left: 8px; padding: 4px 8px; font-size: 8px; }
+    .card h3 { font-size: 11px; height: 32px; margin-bottom: 6px; }
+    .card-subtitle, .emblema-premium { font-size: 9px; margin-bottom: 8px; }
+    .emblema-copa { padding: 2px 6px; font-size: 7px; letter-spacing: 0.5px; }
     .stars-row { font-size: 10px; }
     .rating-val { font-size: 10px; }
     .rev-text { font-size: 8px; }
     .card-category { font-size: 8px; margin-bottom: 8px; }
-
-    /* Preço em destaque, mas adaptado */
     .price { margin-bottom: 8px; }
     .price .currency { font-size: 10px; }
     .price .amount { font-size: 15px; }
-
-    /* Indicador de Stock */
     .stock-row { font-size: 8px; margin-bottom: 8px; }
-
-    /* Botão de Compra mais esguio */
-    .card button, .gold-button {
-        padding: 10px;
-        font-size: 10px;
-        border-radius: 8px;
-    }
+    .card button, .gold-button { padding: 10px; font-size: 10px; border-radius: 8px; }
 }
