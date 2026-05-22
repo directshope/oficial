@@ -870,17 +870,17 @@ body[data-ambiente="all"] .bg-glow {
     align-items: center;
 }
 .emblema-premium {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 10px;
-    border-radius: 6px;
+    display: inline-block;
     font-size: 11px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    height: 24px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    font-weight: 700;
+    color: #d1d1d18a;
+    text-transform: none; /* Mantém exatamente como você escreve (TikTok Shop, etc) */
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    text-shadow: none;
+    line-height: 1;
 }
 /* Cores Oficiais das Marcas - Estilo Ghost */
 .shopee-badge { background: transparent; color: #FFFFFF; border: 1px solid #EE4D2D; text-transform: none; }
