@@ -1,1291 +1,915 @@
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Direct Shop | Dashboard</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --gold: #f1c40f;
-        --dark-bg: #060608;
-        --card-bg: #0f0f12;
-        --input-bg: #000;
-        --border: #1f1f23;
-        --text: #ffffff;
-        --text-muted: #888;
-        --success: #2ecc71;
-        --danger: #e74c3c;
-      }
-
-      body {
-        margin: 0;
-        font-family: "Poppins", sans-serif;
-        background: var(--dark-bg);
-        color: var(--text);
-        min-height: 100vh;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-      }
-
-      .container {
-        background: var(--card-bg);
-        width: 100%;
-        max-width: 1000px;
-        padding: 40px;
-        border-radius: 24px;
-        border: 1px solid var(--border);
-        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
-      }
-
-      h2 {
-        color: var(--gold);
-        text-transform: uppercase;
-        text-align: center;
-        margin-bottom: 30px;
-        letter-spacing: 4px;
-        font-weight: 900;
-        font-size: 22px;
-      }
-
-      /* NAVEGAÇÃO */
-      .dashboard-tabs {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 30px;
-        border-bottom: 1px solid var(--border);
-        padding-bottom: 15px;
-        overflow-x: auto;
-      }
-      .tab-btn {
-        background: #16161a;
-        border: 1px solid var(--border);
-        color: var(--text-muted);
-        padding: 12px 20px;
-        border-radius: 12px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 13px;
-        text-transform: uppercase;
-        transition: 0.3s;
-        white-space: nowrap;
-      }
-      .tab-btn.active {
-        background: var(--gold);
-        color: #000;
-        border-color: var(--gold);
-        box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2);
-      }
-      .tab-content {
-        display: none;
-        animation: fadeIn 0.4s ease;
-      }
-      .tab-content.active {
-        display: block;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* FORMULÁRIOS */
-      .section-title {
-        font-size: 12px;
-        color: var(--gold);
-        border-left: 3px solid var(--gold);
-        padding-left: 10px;
-        margin: 30px 0 20px;
-        text-transform: uppercase;
-        font-weight: bold;
-      }
-      .input-group {
-        margin-bottom: 20px;
-        position: relative;
-      }
-      label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--text-muted);
-        font-size: 11px;
-        text-transform: uppercase;
-        font-weight: bold;
-      }
-      input,
-      select,
-      textarea {
-        width: 100%;
-        padding: 14px;
-        background: var(--input-bg);
-        border: 1px solid var(--border);
-        color: var(--text);
-        border-radius: 12px;
-        font-size: 14px;
-        box-sizing: border-box;
-      }
-      input:focus,
-      select:focus,
-      textarea:focus {
-        border-color: var(--gold);
-        outline: none;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-      }
-
-      /* BOTÕES */
-      .btn-main {
-        width: 100%;
-        padding: 18px;
-        background: linear-gradient(135deg, #f1c40f, #d4ac0d);
-        color: #000;
-        border: none;
-        border-radius: 15px;
-        font-size: 14px;
-        font-weight: 800;
-        cursor: pointer;
-        text-transform: uppercase;
-        transition: 0.3s;
-      }
-      .btn-main:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3);
-      }
-      .btn-danger {
-        background: #e74c3c22;
-        color: #e74c3c;
-        border: 1px solid #e74c3c;
-        padding: 10px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 11px;
-      }
-
-      /* LISTAS */
-      #lista-busca {
-        background: #0f0f12;
-        border: 1px solid var(--gold);
-        position: absolute;
-        width: 100%;
-        z-index: 100;
-        max-height: 250px;
-        overflow-y: auto;
-        display: none;
-        border-radius: 12px;
-        margin-top: 5px;
-      }
-      .item-busca {
-        padding: 15px;
-        border-bottom: 1px solid var(--border);
-        cursor: pointer;
-        font-size: 13px;
-      }
-      .item-busca:hover {
-        background: #1a1a1f;
-        color: var(--gold);
-      }
-      .data-list {
-        margin-top: 20px;
-        border: 1px solid var(--border);
-        border-radius: 15px;
-        overflow: hidden;
-      }
-      .data-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        background: #16161a;
-        border-bottom: 1px solid var(--border);
-      }
-
-      #status {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10000;
-        background: var(--success);
-        color: #000;
-        padding: 16px 40px;
-        border-radius: 50px;
-        font-weight: 900;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-        display: none;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border: 2px solid rgba(0, 0, 0, 0.1);
-      }
-      .logout-btn {
-        background: none;
-        color: #444;
-        border: none;
-        font-size: 11px;
-        cursor: pointer;
-        text-decoration: underline;
-        margin-top: 40px;
-        display: block;
-        width: 100%;
-        text-align: center;
-      }
-
-      #login-screen {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-      #admin-panel {
-        display: none;
-        width: 100%;
-      }
-      .title-bar-container {
-        height: 4px;
-        background: #222;
-        margin-top: 8px;
-        border-radius: 2px;
-        overflow: hidden;
-      }
-      .title-bar-fill {
-        height: 100%;
-        width: 0%;
-        transition: 0.3s;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container" id="login-screen">
-      <h2>Acesso Admin Premium</h2>
-      <div class="input-group">
-        <label>Usuário GitHub:</label><input type="text" id="gh-user" />
-      </div>
-      <div class="input-group">
-        <label>Repositório:</label><input type="text" id="gh-repo" />
-      </div>
-      <div class="input-group">
-        <label>Token GitHub:</label><input type="password" id="gh-token" />
-      </div>
-      <button class="btn-main" onclick="fazerLogin()">
-        Entrar no Dashboard
-      </button>
-    </div>
-
-    <div class="container" id="admin-panel">
-      <h2>Direct Shop Admin</h2>
-
-      <div class="dashboard-tabs">
-        <button class="tab-btn active" onclick="switchTab('tab-produtos')">
-          📦 Produtos
-        </button>
-        <button class="tab-btn" onclick="switchTab('tab-categorias')">
-          📁 Categorias
-        </button>
-        <button class="tab-btn" onclick="switchTab('tab-marcas')">
-          🏷️ Marcas
-        </button>
-        <button class="tab-btn" onclick="switchTab('tab-banners')">
-          🖼️ Banners
-        </button>
-      </div>
-
-      <div id="tab-produtos" class="tab-content active">
-        <div
-          class="input-group"
-          style="
-            background: #16161a;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid var(--border);
-          "
-        >
-          <label style="color: var(--gold)">🛒 Loja Ativa:</label>
-          <select
-            id="loja-ativa"
-            onchange="carregarDadosLoja()"
-            style="
-              color: var(--gold);
-              border-color: var(--gold);
-              font-weight: bold;
-            "
-          >
-            <option value="ml">Mercado Livre</option>
-            <option value="shopee">Shopee</option>
-            <option value="tiktok">TikTok</option>
-          </select>
-        </div>
-
-        <div class="section-title">🔍 Localizar e Alterar Produtos</div>
-        <div class="input-group">
-          <input
-            type="text"
-            id="busca-editar"
-            placeholder="Buscar produto nesta loja..."
-            oninput="buscarNoJson()"
-          />
-          <div id="lista-busca"></div>
-        </div>
-
-        <div class="section-title">📦 Dados do Produto</div>
-        <div class="grid">
-          <div class="input-group">
-            <label>Título:</label>
-            <input type="text" id="p-titulo" />
-          </div>
-          <div class="input-group">
-            <label>Marca, Volume ou Detalhe (Destaque):</label>
-            <input
-              type="text"
-              id="p-subtitulo"
-              placeholder="Ex: 200ml ou Logitech"
-            />
-
-            <div
-              style="
-                margin-top: 10px;
-                display: flex;
-                gap: 15px;
-                flex-wrap: wrap;
-                width: 100%;
-              "
-            >
-              <button
-                type="button"
-                style="
-                  background: transparent;
-                  color: #d1d1d1;
-                  border: none;
-                  padding: 0;
-                  cursor: pointer;
-                  font-size: 11px;
-                  font-weight: 600;
-                  font-family: &quot;Poppins&quot;, sans-serif;
-                  text-transform: none;
-                "
-                onclick="inserirEmblema('[TIKTOK]')"
-              >
-                TikTok Shop
-              </button>
-              <button
-                type="button"
-                style="
-                  background: transparent;
-                  color: #d1d1d1;
-                  border: none;
-                  padding: 0;
-                  cursor: pointer;
-                  font-size: 11px;
-                  font-weight: 600;
-                  font-family: &quot;Poppins&quot;, sans-serif;
-                  text-transform: none;
-                "
-                onclick="inserirEmblema('[SHOPEE]')"
-              >
-                Shopee
-              </button>
-              <button
-                type="button"
-                style="
-                  background: transparent;
-                  color: #d1d1d1;
-                  border: none;
-                  padding: 0;
-                  cursor: pointer;
-                  font-size: 11px;
-                  font-weight: 600;
-                  font-family: &quot;Poppins&quot;, sans-serif;
-                  text-transform: none;
-                "
-                onclick="inserirEmblema('[ML]')"
-              >
-                Mercado Livre
-              </button>
-              <button
-                type="button"
-                style="
-                  background: transparent;
-                  color: #d1d1d1;
-                  border: none;
-                  padding: 0;
-                  cursor: pointer;
-                  font-size: 11px;
-                  font-weight: 600;
-                  font-family: &quot;Poppins&quot;, sans-serif;
-                  text-transform: none;
-                "
-                onclick="inserirEmblema('[AMAZON]')"
-              >
-                Amazon
-              </button>
-              <button
-                type="button"
-                style="
-                  background: transparent;
-                  color: #f1c40f;
-                  border: none;
-                  padding: 0;
-                  cursor: pointer;
-                  font-size: 11px;
-                  font-weight: 700;
-                  font-family: &quot;Poppins&quot;, sans-serif;
-                  text-transform: uppercase;
-                  letter-spacing: 1px;
-                "
-                onclick="inserirEmblema('[COPA]')"
-              >
-                🏆 Vibe Copa
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="grid">
-          <div class="input-group">
-            <label>Preço:</label><input type="text" id="p-preco" />
-          </div>
-          <div class="input-group">
-            <label>Categoria:</label
-            ><select id="p-categoria"></select>
-          </div>
-          <div class="input-group">
-            <label>Selo:</label>
-            <select id="p-tag">
-              <option value="">Nenhum Selo</option>
-              <optgroup label="✨ Efeitos Premium (Hover Ativo)">
-                <option value="Mais Vendido">📈 Mais Vendido</option>
-                <option value="O Queridinho do Mês">
-                  🏆 O Queridinho do Mês
-                </option>
-                <option value="Quem Viu, Comprou">👀 Quem Viu, Comprou</option>
-                <option value="Viralizado do TikTok">
-                  📱 Viralizado do TikTok
-                </option>
-                <option value="Oportunidade Única">
-                  ⚡ Oportunidade Única
-                </option>
-                <option value="Tendência">🌍 Tendência</option>
-                <option value="Para Presentear">🎁 Para Presentear</option>
-              </optgroup>
-              <optgroup label="✅ Informativos (Sóbrios)">
-                <option value="Testado e Aprovado">
-                  ✅ Testado e Aprovado
-                </option>
-                <option value="Frete Grátis">🚚 Frete Grátis</option>
-                <option value="Últimas Unidades">⚠️ Últimas Unidades</option>
-                <option value="Custo-Benefício">
-                  💰 Melhor Custo-Benefício
-                </option>
-              </optgroup>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid">
-          <div class="input-group">
-            <label>Nota Produtos:</label
-            ><input type="text" id="p-nota" placeholder="Ex: 4.8" />
-          </div>
-          <div class="input-group">
-            <label>Nº Avaliações:</label
-            ><input type="text" id="p-avaliacoes" placeholder="Ex: 150" />
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label>Descrição Completa do Produto (Clique para expandir):</label>
-          <textarea
-            id="p-descricao"
-            rows="4"
-            placeholder="Clique aqui dentro para expandir a tela e colar sua descrição..."
-            onclick="abrirEditorModal()"
-            readonly
-            style="cursor: pointer"
-          >
-DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
-          >
-        </div>
-
-        <div class="section-title">🖼️ Imagens (Links)</div>
-        <div class="grid">
-          <input type="text" id="img1" placeholder="Link Foto 1 (Principal)" />
-          <input type="text" id="img2" placeholder="Link Foto 2" />
-          <input type="text" id="img3" placeholder="Link Foto 3" />
-          <input type="text" id="img4" placeholder="Link Foto 4" />
-        </div>
-        <div class="grid" style="margin-top: 20px">
-          <input type="text" id="img5" placeholder="Link Foto 5" />
-          <input type="text" id="img6" placeholder="Link Foto 6" />
-          <input type="text" id="img7" placeholder="Link Foto 7" />
-          <input type="text" id="img8" placeholder="Link Foto 8" />
-        </div>
-
-        <div class="section-title">🔗 Link de Compra</div>
-        <input type="text" id="p-link" style="margin-bottom: 20px" />
-        <button
-          class="btn-main"
-          id="btn-save"
-          onclick="salvarProduto()"
-          style="margin-bottom: 15px"
-        >
-          Salvar na Lista Local
-        </button>
-        <div
-          id="contador-sessao"
-          style="
-            text-align: center;
-            color: var(--gold);
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-          "
-        >
-          📦 0 itens salvos nesta sessão
-        </div>
-               
-        <button
-          class="btn-main"
-          id="btn-sync-all"
-          onclick="sincronizarComGitHub()"
-          style="
-            background: var(--success);
-            color: #000;
-            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
-          "
-        >
-          🚀 PUBLICAR TUDO NO GITHUB
-        </button>
-      </div>
-
-      <div id="tab-categorias" class="tab-content">
-        <div class="section-title">📁 Adicionar Categoria</div>
-        <div class="grid">
-          <input
-            type="text"
-            id="nova-cat-nome"
-            placeholder="Nome (Ex: Fones de ouvido)"
-          />
-          <input
-            type="text"
-            id="nova-cat-id"
-            placeholder="ID/Valor (Ex: Fones de ouvido)"
-          />
-          <div style="display: flex; flex-direction: column; gap: 5px">
-            <select
-              id="nova-cat-grupo-select"
-              onchange="checarNovoGrupo(this.value)"
-            >
-              <option value="">Selecione um Grupo</option>
-              <option value="NOVO">➕ Criar Novo Grupo</option>
-            </select>
-            <input
-              type="text"
-              id="nova-cat-grupo-manual"
-              placeholder="Nome do Novo Grupo"
-              style="display: none; margin-top: 5px"
-            />
-          </div>
-          <button
-            class="btn-main"
-            style="margin-top: 0"
-            onclick="gerenciarItem('categorias', 'add')"
-          >
-            Adicionar
-          </button>
-        </div>
-        <div class="data-list" id="lista-categorias-admin"></div>
-      </div>
-
-      <div id="tab-marcas" class="tab-content">
-        <div class="section-title">🏷️ Gestão de Marcas</div>
-        <div class="grid">
-          <input
-            type="text"
-            id="nova-marca"
-            placeholder="Nome da Marca (Ex: SONY)"
-          />
-          <button
-            class="btn-main"
-            style="margin-top: 0"
-            onclick="gerenciarItem('marcas', 'add')"
-          >
-            Adicionar
-          </button>
-        </div>
-        <div class="data-list" id="lista-marcas-admin"></div>
-      </div>
-
-      <div id="tab-banners" class="tab-content">
-        <div class="section-title">🖼️ Enviar Novo Banner (PC -> GitHub)</div>
-        <div
-          style="
-            background: #16161a;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px dashed var(--gold);
-            text-align: center;
-          "
-        >
-          <input
-            type="file"
-            id="file-banner"
-            accept="image/*"
-            style="display: none"
-          />
-          <button
-            class="btn-main"
-            style="width: auto; padding: 15px 30px"
-            onclick="document.getElementById('file-banner').click()"
-          >
-            Selecionar Imagem do PC
-          </button>
-          <p
-            id="file-name-display"
-            style="font-size: 12px; margin-top: 10px; color: var(--gold)"
-          ></p>
-          <button
-            class="btn-main"
-            onclick="fazerUploadBanner()"
-            style="background: var(--success); color: #000; margin-top: 10px"
-          >
-            Enviar para Pasta /Images
-          </button>
-        </div>
-        <div class="section-title">📋 Banners Ativos</div>
-        <div class="data-list" id="lista-banners-admin"></div>
-      </div>
-
-      <div id="status"></div>
-      <button class="logout-btn" onclick="logout()">Desconectar</button>
-    </div>
-
-    <div
-      id="modal-descricao-painel"
-      style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.85);
-        z-index: 999999;
-        justify-content: center;
-        align-items: center;
-        backdrop-filter: blur(8px);
-      "
-    >
-      <div
-        style="
-          background: var(--card-bg);
-          width: 95%;
-          max-width: 900px;
-          padding: 25px;
-          border-radius: 20px;
-          border: 1px solid var(--gold);
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
-          display: flex;
-          flex-direction: column;
-          height: 85vh;
-        "
-      >
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-          "
-        >
-          <h3
-            style="
-              color: var(--gold);
-              margin: 0;
-              font-size: 18px;
-              text-transform: uppercase;
-              font-weight: 900;
-            "
-          >
-            ✍️ Descrição do Produto
-          </h3>
-          <button
-            type="button"
-            onclick="salvarEditorModal()"
-            style="
-              background: var(--success);
-              color: #000;
-              border: none;
-              padding: 10px 25px;
-              border-radius: 10px;
-              font-weight: 900;
-              cursor: pointer;
-              transition: 0.3s;
-              text-transform: uppercase;
-            "
-          >
-            Fexar
-          </button>
-        </div>
-        <textarea
-          id="p-descricao-modal"
-          style="
-            flex: 1;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 20px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: inherit;
-            resize: none;
-            outline: none;
-            line-height: 1.6;
-          "
-          placeholder="Cole ou digite sua descrição completa aqui..."
-        >
-DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
-        >
-      </div>
-    </div>
-
-    <script>
-      let produtosLoja = [];
-      let categorias = [];
-      let marcas = [];
-      let banners = [];
-      let editandoIndex = null;
-      let rascunhosDisco =
-        JSON.parse(localStorage.getItem("rascunhos_painel")) || {};
-      let produtosNestaSessao = 0;
-
-      window.onload = () => {
-        if (localStorage.getItem("gh_token")) mostrarPainel();
-      };
-
-      function switchTab(tabId) {
-        document
-          .querySelectorAll(".tab-content")
-          .forEach((t) => t.classList.remove("active"));
-        document
-          .querySelectorAll(".tab-btn")
-          .forEach((b) => b.classList.remove("active"));
-        document.getElementById(tabId).classList.add("active");
-        event.currentTarget.classList.add("active");
-        if (tabId === "tab-categorias") carregarConfig("categorias");
-        if (tabId === "tab-marcas") carregarConfig("marcas");
-        if (tabId === "tab-banners") carregarConfig("banners");
-      }
-
-      function fazerLogin() {
-        const u = document.getElementById("gh-user").value,
-          r = document.getElementById("gh-repo").value,
-          t = document.getElementById("gh-token").value;
-        if (!u || !r || !t) return alert("Preencha tudo!");
-        localStorage.setItem("gh_user", u);
-        localStorage.setItem("gh_repo", r);
-        localStorage.setItem("gh_token", t);
-        mostrarPainel();
-      }
-
-      function mostrarPainel() {
-        document.getElementById("login-screen").style.display = "none";
-        document.getElementById("admin-panel").style.display = "block";
-        document
-          .querySelectorAll("input")
-          .forEach((i) => (i.autocomplete = "off"));
-        carregarDadosLoja();
-        carregarConfig("categorias");
-      }
-
-      function logout() {
-        localStorage.clear();
-        location.reload();
-      }
-
-      // FUNÇÕES DE CARREGAMENTO
-      async function carregarDadosLoja() {
-        const loja = document.getElementById("loja-ativa").value;
-
-        // Verifica se existe rascunho salvo no disco para esta loja
-        if (rascunhosDisco[loja] && rascunhosDisco[loja].length > 0) {
-          produtosLoja = rascunhosDisco[loja];
-        } else {
-          // Se a gaveta do disco estiver vazia, baixa os dados consolidados do GitHub
-          produtosLoja = await fetchGitHub(`${loja}.json`);
-        }
-
-        editandoIndex = null;
-        document.getElementById("btn-save").innerText = "Salvar na Lista Local";
-      }
-
-      async function carregarConfig(tipo) {
-        const dados = await fetchGitHub(`${tipo}.json`);
-        if (tipo === "categorias") {
-          categorias = dados;
-          const select = document.getElementById("p-categoria");
-          if (select) {
-            select.innerHTML = "";
-            let htmlOptions = "";
-            let grupos = {};
-
-            // Separa as opções da raiz e mapeia os grupos ativos
-            categorias.forEach((c) => {
-              if (c.valor === "todos" || !c.grupo) {
-                htmlOptions += `<option value="${c.valor}">${c.nome}</option>`;
-              } else {
-                if (!grupos[c.grupo]) grupos[c.grupo] = [];
-                grupos[c.grupo].push(c);
-              }
-            });
-
-            // Injeta as famílias estruturadas com optgroup
-            for (let g in grupos) {
-              htmlOptions += `<optgroup label="${g}">`;
-              grupos[g].forEach((c) => {
-                htmlOptions += `<option value="${c.valor}">${c.nome}</option>`;
-              });
-              htmlOptions += `</optgroup>`;
-            }
-            select.innerHTML = htmlOptions;
-          }
-
-          // Mapeia e popula dinamicamente o seletor de grupos na aba de categorias
-          const selectGrupoAdmin = document.getElementById(
-            "nova-cat-grupo-select",
-          );
-          if (selectGrupoAdmin) {
-            let uniqueGroups = [
-              ...new Set(categorias.map((c) => c.grupo).filter((g) => g)),
-            ];
-            let grupoHtml = `<option value="">Sem Grupo (Raiz)</option>`;
-            uniqueGroups.forEach((g) => {
-              grupoHtml += `<option value="${g}">${g}</option>`;
-            });
-            grupoHtml += `<option value="NOVO_GRUPO">➕ Criar Novo Grupo...</option>`;
-            selectGrupoAdmin.innerHTML = grupoHtml;
-
-            const inputManual = document.getElementById(
-              "nova-cat-grupo-manual",
-            );
-            if (inputManual) inputManual.style.display = "none";
-          }
-          renderLista("categorias", "lista-categorias-admin");
-        }
-        if (tipo === "marcas") {
-          marcas = dados;
-          renderLista("marcas", "lista-marcas-admin");
-        }
-        if (tipo === "banners") {
-          banners = dados;
-          renderLista("banners", "lista-banners-admin");
-        }
-      }
-
-      // COMUNICAÇÃO GITHUB
-      async function fetchGitHub(file) {
-        const u = localStorage.getItem("gh_user"),
-          r = localStorage.getItem("gh_repo"),
-          t = localStorage.getItem("gh_token");
-        try {
-          const res = await fetch(
-            `https://api.github.com/repos/${u}/${r}/contents/${file}?t=${Date.now()}`,
-            {
-              headers: { Authorization: `token ${t}` },
-            },
-          );
-          const data = await res.json();
-          return JSON.parse(
-            decodeURIComponent(escape(atob(data.content.replace(/\s/g, "")))),
-          );
-        } catch (e) {
-          return [];
-        }
-      }
-
-      async function saveGitHub(file, content, msg) {
-        const u = localStorage.getItem("gh_user"),
-          r = localStorage.getItem("gh_repo"),
-          t = localStorage.getItem("gh_token");
-        const url = `https://api.github.com/repos/${u}/${r}/contents/${file}`;
-        const res = await fetch(url, {
-          headers: { Authorization: `token ${t}` },
-        });
-        const fileData = await res.json();
-
-        const body = JSON.stringify({
-          message: msg,
-          content: btoa(
-            unescape(encodeURIComponent(JSON.stringify(content, null, 2))),
-          ),
-          sha: fileData.sha,
-        });
-
-        const save = await fetch(url, {
-          method: "PUT",
-          headers: { Authorization: `token ${t}` },
-          body,
-        });
-        if (save.ok) showStatus("✅ SINCRONIZADO COM SUCESSO!");
-      }
-
-      // LÓGICA DO EDITOR DE DESCRIÇÃO EXPANDIDO
-      function abrirEditorModal() {
-        document.getElementById("p-descricao-modal").value =
-          document.getElementById("p-descricao").value;
-        document.getElementById("modal-descricao-painel").style.display =
-          "flex";
-      }
-      function fecharEditorModal() {
-        document.getElementById("modal-descricao-painel").style.display =
-          "none";
-      }
-      function salvarEditorModal() {
-        document.getElementById("p-descricao").value =
-          document.getElementById("p-descricao-modal").value;
-        fecharEditorModal();
-      }
-
-      // GESTÃO DE PRODUTOS
-      function buscarNoJson() {
-        const termo = document
-          .getElementById("busca-editar")
-          .value.toLowerCase();
-        const lista = document.getElementById("lista-busca");
-        lista.innerHTML = "";
-        if (termo.length < 2) {
-          lista.style.display = "none";
-          return;
-        }
-
-        const res = produtosLoja.filter((p) =>
-          p.titulo.toLowerCase().includes(termo),
-        );
-        if (res.length > 0) {
-          lista.style.display = "block";
-          res.forEach((p) => {
-            const indexReal = produtosLoja.indexOf(p);
-            const div = document.createElement("div");
-            div.className = "item-busca";
-            div.style.display = "flex";
-            div.style.justifyContent = "space-between";
-            div.style.alignItems = "center";
-
-            const spanNome = document.createElement("span");
-            spanNome.innerText = `✏️ EDITAR: ${p.titulo}`;
-            spanNome.style.flex = "1";
-            spanNome.onclick = () => {
-              editandoIndex = indexReal;
-              preencherForm(p);
-              lista.style.display = "none";
-            };
-
-            const btnExcluir = document.createElement("button");
-            btnExcluir.innerText = "❌ EXCLUIR";
-            btnExcluir.style.background = "var(--danger)";
-            btnExcluir.style.color = "#fff";
-            btnExcluir.style.border = "none";
-            btnExcluir.style.padding = "5px 12px";
-            btnExcluir.style.borderRadius = "6px";
-            btnExcluir.style.cursor = "pointer";
-            btnExcluir.style.fontWeight = "900";
-            btnExcluir.style.fontSize = "11px";
-            btnExcluir.onclick = async (e) => {
-              e.stopPropagation(); // Impede de abrir a edição ao clicar em excluir
-              if (
-                confirm(
-                  `🚨 ATENÇÃO!\nTem certeza que deseja EXCLUIR definitivamente o produto:\n\n"${p.titulo}"?`,
-                )
-              ) {
-                produtosLoja.splice(indexReal, 1);
-                const loja = document.getElementById("loja-ativa").value;
-                await saveGitHub(
-                  `${loja}.json`,
-                  produtosLoja,
-                  `Exclusão de produto via Painel`,
-                );
-                document.getElementById("busca-editar").value = ""; // Limpa a busca
-                lista.style.display = "none";
-                limparCampos();
-              }
-            };
-
-            div.appendChild(spanNome);
-            div.appendChild(btnExcluir);
-            lista.appendChild(div);
-          });
-        }
-      }
-
-      function preencherForm(p) {
-        document.getElementById("p-titulo").value = p.titulo;
-        document.getElementById("p-subtitulo").value = p.subtitulo;
-        document.getElementById("p-preco").value = p.preco;
-        document.getElementById("p-categoria").value = p.categoria;
-        document.getElementById("p-tag").value = p.tag || "";
-        document.getElementById("p-descricao").value = p.descricao || "";
-        document.getElementById("p-link").value = p.link;
-        document.getElementById("p-nota").value = p.nota || "";
-        document.getElementById("p-avaliacoes").value = p.avaliacoes || "";
-        for (let i = 1; i <= 8; i++)
-          document.getElementById(`img${i}`).value =
-            p.imagens && p.imagens[i - 1] ? p.imagens[i - 1] : "";
-        document.getElementById("btn-save").innerText = "ATUALIZAR ITEM";
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-
-      async function salvarProduto() {
-        const loja = document.getElementById("loja-ativa").value;
-        const imgs = [1, 2, 3, 4, 5, 6, 7, 8]
-          .map((i) => document.getElementById(`img${i}`).value)
-          .filter((v) => v !== "");
-        const p = {
-          titulo: document.getElementById("p-titulo").value,
-          subtitulo: document.getElementById("p-subtitulo").value,
-          preco: document.getElementById("p-preco").value,
-          tag: document.getElementById("p-tag").value,
-          nota: document.getElementById("p-nota").value,
-          avaliacoes: document.getElementById("p-avaliacoes").value,
-          link: document.getElementById("p-link").value,
-          loja: loja,
-          categoria:
-            document.getElementById("p-categoria").options[
-              document.getElementById("p-categoria").selectedIndex
-            ].text,
-          descricao: document.getElementById("p-descricao").value,
-          imagens: imgs,
-          data: new Date().toLocaleDateString("pt-BR"),
-        };
-
-        if (editandoIndex !== null) produtosLoja[editandoIndex] = p;
-        else produtosLoja.unshift(p);
-
-        // Atualiza a memória geral e grava uma cópia de segurança invisível no disco
-        rascunhosDisco[loja] = produtosLoja;
-        localStorage.setItem(
-          "rascunhos_painel",
-          JSON.stringify(rascunhosDisco),
-        );
-
-        produtosNestaSessao++;
-        document.getElementById("contador-sessao").innerText =
-          `📦 ${produtosNestaSessao} itens salvos nesta sessão`;
-
-        showStatus("✅ ADICIONADO NA LISTA LOCAL E SALVO NO DISCO!");
-        limparCampos();
-      }
-
-      async function sincronizarComGitHub() {
-        const btn = document.getElementById("btn-sync-all");
-        btn.innerText = "⏳ PUBLICANDO TODAS AS LOJAS...";
-        // Se não houver rascunhos no disco (clique direto), envia apenas o que estiver na tela atual
-        if (Object.keys(rascunhosDisco).length === 0) {
-          const lojaAtual = document.getElementById("loja-ativa").value;
-          await saveGitHub(
-            `${lojaAtual}.json`,
-            produtosLoja,
-            `Atualização direta via Painel: ${lojaAtual}`,
-          );
-        } else {
-          // Varre o disco: se tiver pendência no TikTok, ML ou Shopee, envia um por um
-          for (const loja in rascunhosDisco) {
-            if (rascunhosDisco[loja].length > 0) {
-              await saveGitHub(
-                `${loja}.json`,
-                rascunhosDisco[loja],
-                `Atualização híbrida via Painel: ${loja}`,
-              );
-            }
-          }
-        }
-
-        // A Vassoura: Aniquila os dados do disco e da memória para deixar o PC limpo
-        localStorage.removeItem("rascunhos_painel");
-        rascunhosDisco = {};
-
-        btn.innerText = "🚀 PUBLICAR TUDO NO GITHUB";
-        if (produtosNestaSessao > 0) {
-          showStatus(
-            `✅ TODOS OS ${produtosNestaSessao} PRODUTOS PUBLICADOS COM SUCESSO!`,
-          );
-        } else {
-          showStatus("✅ TODAS AS LOJAS PUBLICADAS E DISCO LIMPO!");
-        }
-        produtosNestaSessao = 0;
-        document.getElementById("contador-sessao").innerText =
-          `📦 0 itens salvos nesta sessão`;
-      }
-
-      // GESTÃO DE CONFIGURAÇÕES (Categorias, Marcas, Banners)
-      function renderLista(tipo, elementId) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-        container.innerHTML = "";
-        let lista =
-          tipo === "categorias"
-            ? categorias
-            : tipo === "marcas"
-              ? marcas
-              : banners;
-
-        lista.forEach((item, index) => {
-          // Se for categoria, exibe o nome acompanhado do grupo correspondente
-          const nome =
-            tipo === "categorias"
-              ? item.grupo
-                ? `${item.nome} [Grupo: ${item.grupo}]`
-                : item.nome
-              : item;
-          const div = document.createElement("div");
-          div.className = "data-item";
-          div.innerHTML = `<span>${nome}</span> <button class="btn-danger" onclick="gerenciarItem('${tipo}', 'del', ${index})">Remover</button>`;
-          container.appendChild(div);
-        });
-      }
-
-      async function gerenciarItem(tipo, acao, index = null) {
-        let lista =
-          tipo === "categorias"
-            ? categorias
-            : tipo === "marcas"
-              ? marcas
-              : banners;
-
-        if (acao === "add") {
-          if (tipo === "categorias") {
-            const nomeIn = document.getElementById("nova-cat-nome");
-            const valorIn = document.getElementById("nova-cat-id");
-            const selectGrupo = document.getElementById(
-              "nova-cat-grupo-select",
-            );
-            const inputManual = document.getElementById(
-              "nova-cat-grupo-manual",
-            );
-
-            if (!nomeIn.value || !valorIn.value)
-              return alert("Preencha Nome e ID!");
-
-            const novaCat = { nome: nomeIn.value, valor: valorIn.value };
-
-            let grupoFinal = "";
-            if (selectGrupo && selectGrupo.value === "NOVO_GRUPO") {
-              grupoFinal = inputManual ? inputManual.value.trim() : "";
-            } else if (selectGrupo) {
-              grupoFinal = selectGrupo.value.trim();
-            }
-
-            if (grupoFinal !== "") {
-              novaCat.grupo = grupoFinal.toUpperCase();
-            }
-
-            lista.push(novaCat);
-
-            nomeIn.value = "";
-            valorIn.value = "";
-            if (selectGrupo) selectGrupo.value = "";
-            if (inputManual) {
-              inputManual.value = "";
-              inputManual.style.display = "none";
-            }
-          } else if (tipo === "marcas") {
-            lista.push(
-              document.getElementById("nova-marca").value.toUpperCase(),
-            );
-          }
-        } else {
-          lista.splice(index, 1);
-        }
-
-        await saveGitHub(`${tipo}.json`, lista, `Gerenciar ${tipo}`);
-        carregarConfig(tipo);
-      }
-
-      // UPLOAD DE BANNER (PC -> GITHUB)
-      document.getElementById("file-banner").onchange = function () {
-        document.getElementById("file-name-display").innerText =
-          "Selecionado: " + this.files[0].name;
-      };
-
-      async function fazerUploadBanner() {
-        const fileInput = document.getElementById("file-banner");
-        if (fileInput.files.length === 0) return alert("Selecione uma imagem!");
-
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-
-        reader.onload = async function () {
-          const base64Content = reader.result.split(",")[1];
-          const u = localStorage.getItem("gh_user"),
-            r = localStorage.getItem("gh_repo"),
-            t = localStorage.getItem("gh_token");
-          const fileName = file.name.replace(/\s+/g, "_").toLowerCase();
-
-          // 1. Sobe a imagem física para a pasta /images
-          await fetch(
-            `https://api.github.com/repos/${u}/${r}/contents/images/${fileName}`,
-            {
-              method: "PUT",
-              headers: {
-                Authorization: `token ${t}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                message: `Upload banner ${fileName}`,
-                content: base64Content,
-              }),
-            },
-          );
-
-          // 2. Adiciona o caminho no banners.json
-          banners.push(`images/${fileName}`);
-          await saveGitHub(`banners.json`, banners, `Link banner no JSON`);
-          carregarConfig("banners");
-          alert("Banner enviado com sucesso!");
-        };
-        reader.readAsDataURL(file);
-      }
-
-      function showStatus(txt) {
-        const s = document.getElementById("status");
-        s.innerText = txt;
-        s.style.display = "block";
-        setTimeout(() => (s.style.display = "none"), 3000);
-      }
-
-      function limparCampos() {
-        document
-          .querySelectorAll("#tab-produtos input, #tab-produtos textarea")
-          .forEach((i) => (i.value = ""));
-        document.getElementById("p-descricao").value =
-          "DESCRIÇÃO DO PRODUTO\n\n";
-        document.getElementById("p-descricao-modal").value =
-          "DESCRIÇÃO DO PRODUTO\n\n";
-        editandoIndex = null;
-        document.getElementById("btn-save").innerText = "Salvar na Lista Local";
-      }
-
-      function inserirEmblema(codigo) {
-        document.getElementById("p-subtitulo").value = codigo;
-      }
-
-      function checarNovoGrupo(val) {
-        const inputManual = document.getElementById("nova-cat-grupo-manual");
-        if (!inputManual) return;
-        if (val === "NOVO_GRUPO") {
-          inputManual.style.display = "block";
-          inputManual.focus();
-        } else {
-          inputManual.style.display = "none";
-          inputManual.value = "";
-        }
-      }
-    </script>
-  </body>
-</html>
+/* RESET E BASE PREMIUM DARK */
+body.premium-dark {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #08080a;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* EFEITO DE FUNDO ANIMADO (GLOW PARTICLES) */
+.bg-glow {
+  position: fixed;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 30%);
+  z-index: -1;
+  animation: bgPulse 15s infinite alternate ease-in-out;
+  pointer-events: none;
+  transition: background 1.2s ease-in-out; /* O segredo do efeito: transição de cores suave */
+}
+
+@keyframes bgPulse {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.1) translate(2%, 2%); }
+}
+
+/* --- ATMOSFERA DINÂMICA PREMIUM (AMBIENT GLOW) --- */
+
+/* Quando a Shopee está ativa: Névoa Laranja Quente visível */
+body[data-ambiente="shopee"] .bg-glow {
+    background: radial-gradient(circle at 50% 50%, rgba(238, 77, 45, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 30%);
+}
+
+/* Quando o TikTok está ativo: Iluminação Real de Estúdio (Ciano + Magenta Neon) */
+body[data-ambiente="tiktok"] .bg-glow {
+    background: radial-gradient(circle at 30% 40%, rgba(0, 242, 234, 0.15) 0%, transparent 5rem),
+                radial-gradient(circle at 70% 60%, rgba(255, 0, 80, 0.12) 0%, transparent 50%);
+}
+
+/* Quando o Mercado Livre está ativo: Ouro Realçado */
+body[data-ambiente="ml"] .bg-glow {
+    background: radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 30%);
+}
+
+/* Quando a aba Todos está ativa: Volta ao Ouro Padrão Luxuoso da Direct Shop */
+body[data-ambiente="all"] .bg-glow {
+    background: radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 30%);
+}
+/* HEADER PREMIUM (Layout de 3 Zonas Simétricas) */
+.header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: rgba(8, 8, 10, 0.85); /* Fundo um pouco mais sólido para destacar os elementos */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 20px;
+}
+
+/* 1. LADO ESQUERDO: LOGO MINIMALISTA LUXO */
+.logo { 
+  flex: 1; /* Força o bloco a ocupar o mesmo espaço que o bloco da direita para centralizar o meio */
+  display: flex;
+  justify-content: flex-start;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800; 
+  font-size: 22px; 
+  letter-spacing: 2px; /* Espaçamento premium */
+  gap: 6px;
+  user-select: none;
+}
+.logo-direct { color: #ffffff; }
+.logo-shop { color: #a1a1aa; font-weight: 600; } /* Platinado suave, elegância pura */
+
+/* 2. CENTRO EXATO: ABAS DAS LOJAS */
+#abas-lojas {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* 3. LADO DIREITO: FERRAMENTAS DE BUSCA E CATEGORIA */
+.header-tools {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+#search, #categoria { 
+  padding: 12px 18px; 
+  border-radius: 12px; /* Cantos arredondados, pegada mais orgânica/tech */
+  border: 1px solid rgba(255, 255, 255, 0.08); 
+  background: rgba(255, 255, 255, 0.03); 
+  color: #fff; 
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+#search { 
+  padding: 12px 18px; 
+  border-radius: 12px; 
+  border: 1px solid rgba(255, 255, 255, 0.08); 
+  background: rgba(255, 255, 255, 0.03); 
+  color: #fff; 
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  width: 100%; 
+  min-width: 250px; 
+}
+#search::placeholder { color: rgba(255, 255, 255, 0.3); }
+#search:focus { border-color: #a12aff; outline: none; background: rgba(20, 20, 25, 0.9); box-shadow: 0 0 15px rgba(161, 42, 255, 0.15); }
+
+/* CONTAINER DO DROPDOWN PREMIUM */
+.custom-select-container {
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  user-select: none;
+}
+
+/* BOTÃO PRINCIPAL NO HEADER */
+.custom-select-trigger {
+  padding: 12px 18px; 
+  border-radius: 12px; 
+  border: 1px solid rgba(255, 255, 255, 0.08); 
+  background: rgba(255, 255, 255, 0.03); 
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  min-width: 220px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+.custom-select-trigger:hover { border-color: #a12aff; background: rgba(255, 255, 255, 0.06); }
+
+/* CAIXA DE OPÇÕES INTERNA */
+.custom-select-options {
+  display: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  width: 260px;
+  max-height: 600px;
+  background: #08080a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  overflow-y: auto;
+  z-index: 9999;
+  padding: 8px 0;
+}
+.custom-select-options.open { display: block; }
+
+/* TÍTULOS DAS FAMÍLIAS DE CATEGORIAS */
+.custom-group-title {
+  font-size: 10px;
+  font-weight: 800;
+  color: #a12aff; 
+  letter-spacing: 1.5px;
+  padding: 12px 16px 4px 16px;
+  text-transform: uppercase;
+}
+
+.custom-group-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* CATEGORIAS INDIVIDUAIS */
+.custom-option {
+  padding: 8px 20px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.custom-option:hover {
+  background: rgba(161, 42, 255, 0.08);
+  color: #fff;
+  padding-left: 24px;
+}
+
+/* BARRA DE ROLAGEM ULTRAFINA DO DROPDOWN */
+.custom-select-options::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-select-options::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-select-options::-webkit-scrollbar-thumb {
+  background: rgba(161, 42, 255, 0.3);
+  border-radius: 10px;
+}
+.custom-select-options::-webkit-scrollbar-thumb:hover {
+  background: #a12aff;
+}
+
+/* BANNER SLIDER PREMIUM - ESMAECER (CROSS-FADE) */
+.banner { position: relative; width: 100%; overflow: hidden; height: auto; background: #000; }
+.slides { 
+  display: grid; 
+  grid-template-columns: 1fr; 
+  width: 100%; 
+  height: auto; 
+}
+.slides img { 
+  grid-area: 1 / 1 / 2 / 2; /* Empilha todas as imagens perfeitamente no mesmo espaço mantendo a proporção */
+  width: 100%; 
+  height: auto; 
+  display: block; 
+  object-fit: contain; 
+  opacity: 0; 
+  transition: opacity 0.8s ease-in-out; /* Transição cinematográfica esmaecida */
+  z-index: 1; 
+}
+.slides img.active { 
+  opacity: 1; 
+  z-index: 2; 
+}
+.banner-fade { 
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 80px; 
+  background: linear-gradient(to top, #08080a, transparent); 
+  pointer-events: none; 
+  z-index: 3; 
+}
+
+/* BARRINHAS HORIZONTAIS DE PROGRESSO (ESTILO STORIES) */
+.banner-indicators {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  width: auto;
+  max-width: 90%;
+}
+.banner-dash {
+  width: 45px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.3s;
+}
+.banner-dash:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+.banner-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #f1c40f; /* Tom dourado característico da Direct Shop */
+  border-radius: 2px;
+}
+
+/* SETAS SELETORAS REFINADAS EM HOVER */
+.banner-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 20px;
+  padding: 12px 16px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-family: monospace;
+}
+.banner:hover .banner-arrow {
+  opacity: 1;
+  visibility: visible;
+}
+.banner-arrow:hover {
+  background: #f1c40f;
+  color: #000;
+  border-color: #f1c40f;
+  box-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+}
+.banner-arrow.prev { left: 25px; }
+.banner-arrow.next { right: 25px; }
+
+
+/* FAIXA DE LOGOMARCAS INFINITA */
+.marcas-container {
+  width: 100%;
+  overflow: hidden;
+  background: #0d0d11;
+  padding: 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+.marcas-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: scrollMarcas 60s linear infinite;
+  white-space: nowrap;
+}
+.marca-item { padding-right: 60px; font-size: 16px; font-weight: 800; color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; transition: 0.3s; }
+.marca-item:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+@keyframes scrollMarcas {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
+}
+
+/* CARD DE BOAS-VINDAS PREMIUM (Suave e Elegante) */
+.nav-premium-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  position: relative;
+  z-index: 50;
+  padding: 0 20px;
+}
+
+.nav-premium-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Fundo escurecido para 0.98 de opacidade para garantir contraste máximo com os textos */
+  background: linear-gradient(rgba(8, 8, 10, 0.98), rgba(8, 8, 10, 0.98)) padding-box,
+              linear-gradient(90deg, #ffdb15 0%, #ee4d2d 35%, #25f4ee 70%, #fe2c55 100%) border-box;
+  border: 1px solid transparent; 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 30px 50px;
+  border-radius: 20px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7); /* Sombra ligeiramente mais forte para destacar o bloco */
+  width: fit-content;
+  min-width: 650px;
+  transition: all 0.3s ease;
+}
+
+/* Container centralizador gerado pelo JS */
+.card-frases-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Frase principal com brilho dourado em movimento */
+.card-frase-premium {
+  font-size: 19px;
+  font-weight: 800;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(90deg, #ff2a5f, #a12aff, #00f0ff, #a12aff, #ff2a5f); /* Gradiente RGB Premium e elegante */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shineRGB 4s linear infinite; /* Mantém o efeito de corrida das cores */
+  text-shadow: 0px 2px 15px rgba(161, 42, 255, 0.2); /* Sombra neon sutilizada */
+  letter-spacing: 0.5px;
+}
+
+@keyframes shineRGB {
+  to { background-position: -200% center; }
+}
+
+/* Vantagens com uma cor platinum/gelo definida para dar destaque elegante */
+.card-vantagens-premium {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #cbd5e1; /* Cor sólida, nítida e extremamente elegante para o tema escuro */
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  flex-wrap: wrap;
+}
+
+.card-vantagens-premium .divisor {
+  color: #a12aff; /* Divisor acompanhando o tom violeta do RGB */
+  font-size: 12px;
+}
+
+/* Centraliza os botões das lojas que mudaram para a faixa de cima */
+#abas-lojas {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.tab-link {
+  padding: 8px 18px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.4s ease;
+}
+.tab-link:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
+.tab-link.active[data-loja="all"], .tab-link.active[data-loja="ml"] { background: rgba(241, 196, 15, 0.15) !important; color: #f1c40f !important; border-color: rgba(241, 196, 15, 0.4) !important; box-shadow: inset 0 0 10px rgba(241, 196, 15, 0.1) !important; }
+.tab-link.active[data-loja="shopee"] { background: rgba(238, 77, 45, 0.15) !important; color: #ee4d2d !important; border-color: rgba(238, 77, 45, 0.4) !important; box-shadow: inset 0 0 10px rgba(238, 77, 45, 0.1) !important; }
+.tab-link.active[data-loja="tiktok"] { background: rgba(0, 242, 234, 0.15) !important; color: #00f2ea !important; border-color: rgba(0, 242, 234, 0.4) !important; box-shadow: inset 0 0 10px rgba(0, 242, 234, 0.1) !important; }
+
+/* PRODUTOS */
+.produtos-section { padding: 60px 20px; max-width: 1400px; margin: 0 auto; }
+.produtos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; justify-content: center; }
+
+/* CARDS PREMIUM (Hover Cinematográfico) */
+.card {
+  background: rgba(32, 32, 36, 0.95);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  min-height: 520px;
+  backdrop-filter: blur(10px);
+}
+.card:hover { 
+  transform: translateY(-10px); 
+  border-color: rgba(241, 196, 15, 0.5); 
+  box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 30px rgba(241, 196, 15, 0.15); 
+}
+
+/* BASE DA TAG (Sempre visível, texto branco e fundo premium) */
+.badge { 
+    position: absolute; top: 15px; left: 15px; 
+    padding: 6px 14px; font-size: 11px; font-weight: 800; 
+    border-radius: 20px; color: #ffffff; z-index: 10;
+    background: rgba(20, 20, 25, 0.85); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    overflow: hidden;
+}
+
+/* Feixe de luz de scanner passando continuamente em TODAS as tags */
+.badge::before {
+    content: "";
+    position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: skewX(-20deg);
+    animation: shinePremium 2.5s infinite;
+    z-index: -1;
+}
+
+@keyframes shinePremium {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+
+.card img {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  display: block;
+  background: #fff;
+  padding: 10px;
+  box-sizing: border-box;
+
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card h3 { font-size: 16px; font-weight: 600; color: #fff; height: 45px; overflow: hidden; margin: 0 0 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-overflow: ellipsis; }
+
+/* LINHA DIVISÓRIA PREMIUM */
+.card-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  margin: 5px 0 10px 0;
+}
+
+/* INDICADOR DE ESTOQUE (BOLINHA NORMAL, SEM EFEITO DE PULSO) */
+.stock-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #2ecc71; 
+  font-size: 9px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.stock-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #2ecc71; 
+  border-radius: 50%;
+}
+
+/* TIPOGRAFIA DO PREÇO TOTALMENTE BRANCA (AJUSTADA) */
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  color: #ffffff; /* Força o valor e a moeda a ficarem em branco puro */
+  margin: 0;
+}
+.price .currency {
+  font-size: 12px;
+  font-weight: 600;
+}
+.price .amount {
+  font-size: 22px;
+  font-weight: 800;
+}
+/* Estrela Base (Fundo Cinza) */
+.star {
+    display: inline-block;
+    font-size: 16px;
+    position: relative;
+    color: #333; /* Cor da estrela vazia - um cinza escuro premium */
+}
+
+/* Preenchimento Dinâmico (Ouro) */
+.star.filled {
+    background: linear-gradient(90deg, #ffca28 var(--fill), #333 var(--fill));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.rev-text { color: rgba(255, 255, 255, 0.4); font-size: 11px; margin-left: 5px; display: inline-block; transform: translateY(0px); }
+
+.card-category { font-size: 11px; color: #70d6ff; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+
+.card-footer { margin-top: auto; }
+.price { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 15px; }
+
+/* Subtítulo (Marca/Volume) */
+.card-subtitle { 
+    font-size: 13px; 
+    color: rgba(255, 255, 255, 0.5); 
+    margin: -5px 0 15px 0; 
+    font-weight: 400; 
+    display: block;
+}
+
+/* Estoque com visual de Escassez Premium */
+.stock-row {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: #2ed573; /* Verde clarinho premium com excelente leitura no dark */
+    font-weight: 700;
+}
+
+.stock-qty {
+    color: rgba(255, 255, 255, 0.6); /* Um pouco mais claro que o texto, mas sem ser branco puro */
+    font-weight: 700;
+}
+
+/* Destaque numérico da nota */
+.rating-val {
+    color: #ffca28;
+    font-weight: 800;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+/* BOTÕES DOURADOS PREMIUM COM GLOW */
+.card button, .gold-button {
+  width: 100%; padding: 16px; border: none; 
+  background: linear-gradient(135deg, #00b894, #009473); 
+  color: #ffffff; font-weight: 800; border-radius: 10px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 184, 148, 0.2);
+}
+.card button:hover, .gold-button:hover {
+  background: linear-gradient(135deg, #05c46b, #00b894);
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(5, 196, 107, 0.4);
+  transform: translateY(-2px);
+}
+
+/* MODAL DA GALERIA */
+.foto-principal-modal {
+  width: 100%;
+  height: 380px; /* Altura fixa para as miniaturas nunca mais saírem do lugar */
+  object-fit: contain; /* Centraliza e ajusta o produto sem distorcer ou esticar */
+  background: #ffffff; /* Fundo branco premium para manter o mesmo padrão dos cards */
+  border-radius: 12px;
+  cursor: crosshair;
+  display: block;
+  margin: 0 auto;
+  padding: 15px; /* Espaço de respiro para o produto não encostar na borda branca */
+  box-sizing: border-box;
+}
+/* MODAL DA GALERIA - VITRINE PREMIUM */
+.modal-foto {
+  display: none; 
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999; 
+  justify-content: center; align-items: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content-premium {
+  background: rgba(15, 15, 18, 0.95);
+  border-radius: 24px;
+  width: 95%; /* Garante aproveitamento máximo das laterais em telas menores */
+  max-width: 1180px; /* Expandido de 1000px para 1180px para dar mais amplitude horizontal */
+  max-height: 92vh; /* Expandido de 85vh para 92vh para ganhar espaço superior e inferior */
+  position: relative;
+  border: 1px solid rgba(241, 196, 15, 0.3);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+/* Ajuste para celulares */
+@media (max-width: 768px) {
+  .modal-content-premium { flex-direction: column; overflow-y: auto; }
+  .modal-esquerda { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .modal-direita { overflow-y: visible !important; }
+}
+
+/* Lado Esquerdo: Imagem */
+.modal-esquerda {
+  flex: 1.2;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+/* Lado Direito: Informações */
+.modal-textos-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding-right: 5px;
+}
+.modal-direita {
+  flex: 1;
+  padding: 40px 30px 20px 30px; /* Reduzido o espaço de baixo para os botões assentarem na base */
+  text-align: left;
+  overflow-y: hidden; /* Trava a coluna para os botões ficarem fixos e não dançarem */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Lente de Zoom */
+.zoom-lens {
+  position: absolute;
+  border: 1px solid rgba(241, 196, 15, 0.5);
+  width: 150px;
+  height: 150px;
+  background-repeat: no-repeat;
+  visibility: hidden;
+  pointer-events: none;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
+  z-index: 100;
+}
+
+.foto-principal-modal {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 12px;
+  cursor: crosshair;
+  display: block;
+  margin: 0 auto;
+}
+
+.fechar-modal { 
+  position: absolute; top: 15px; right: 20px; 
+  font-size: 32px; color: #fff; cursor: pointer; opacity: 0.5; transition: 0.3s;
+  z-index: 101; line-height: 1;
+}
+.fechar-modal:hover { opacity: 1; color: #f1c40f; transform: rotate(90deg) scale(1.1); }
+
+#modal-titulo-produto { font-size: 24px; color: #f1c40f; margin-bottom: 15px; font-weight: 800; line-height: 1.3; margin-top: 0; }
+#modal-descricao { 
+  color: #ccc; 
+  font-size: 14px; 
+  line-height: 1.6; 
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 20px;
+  white-space: pre-wrap;
+  flex: 1; /* Força o limite a descer e ocupar todo o espaço vazio até os botões */
+  overflow-y: auto; /* Ativa a rolagem elegante apenas se o texto for absurdamente gigante */
+  margin-bottom: 15px; /* Deixa o texto bem próximo do botão de compra, mantendo o respiro ideal */
+  padding-right: 5px;
+}
+
+.modal-cta { 
+  margin-top: auto; 
+  padding-top: 10px; 
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Deixa os dois botões elegantemente próximos */
+}
+
+/* Reduz o tamanho do botão de compra dentro do modal */
+.modal-cta button, .modal-cta .gold-button {
+  padding: 11px 16px !important; /* Diminuído de 16px para 11px para ficar mais discreto e elegante */
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+/* Reduz o tamanho do botão de copiar link dentro do modal */
+.modal-cta .share-button {
+  padding: 11px 16px !important; /* Sincronizado em 11px para manter o padrão visual harmônico */
+  font-size: 13px;
+  margin-bottom: 0px; /* Remove o espaço excessivo de baixo */
+  border-radius: 8px;
+}
+
+/* MINIATURAS PREMIUM DO MODAL */
+.miniaturas-row {
+  display: flex; justify-content: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; width: 100%;
+}
+.miniatura {
+  width: 65px; height: 65px; object-fit: contain; background: #ffffff; border-radius: 10px;
+  padding: 5px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s ease;
+}
+.miniatura:hover { transform: translateY(-4px); border-color: rgba(241, 196, 15, 0.6); }
+.miniatura.active { border-color: #f1c40f; box-shadow: 0 0 15px rgba(241, 196, 15, 0.3); }
+
+/* --- CORES PREMIUM PARA CADA TAG (Sincronizado com script.js) --- */
+.badge-mais-vendido { background: linear-gradient(135deg, #ff7675, #d63031) !important; border-color: rgba(255, 118, 117, 0.5) !important; }
+.badge-campeao { background: linear-gradient(135deg, #ff4b2b, #ff416c) !important; border-color: rgba(255, 75, 43, 0.5) !important; }
+.badge-queridinho { background: linear-gradient(135deg, #f1c40f, #e67e22) !important; border-color: rgba(241, 196, 15, 0.5) !important; }
+.badge-quem-viu { background: linear-gradient(135deg, #6c5ce7, #8e44ad) !important; border-color: rgba(108, 92, 231, 0.5) !important; }
+.badge-tiktok { background: linear-gradient(135deg, #00f2ea, #ff0050) !important; border-color: rgba(255, 0, 80, 0.5) !important; }
+.badge-oportunidade { background: linear-gradient(135deg, #00b894, #05c46b) !important; border-color: rgba(0, 184, 148, 0.5) !important; }
+.badge-tendencia { background: linear-gradient(135deg, #0984e3, #2980b9) !important; border-color: rgba(9, 132, 227, 0.5) !important; }
+.badge-presente { background: linear-gradient(135deg, #fd79a8, #e84393) !important; border-color: rgba(253, 121, 168, 0.5) !important; }
+
+/* --- OVERRIDE PREMIUM: EFEITO VIDRO --- */
+.header {
+    background: rgba(8, 8, 10, 0.65) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* --- SKELETON LOADING PREMIUM --- */
+.skeleton-card {
+    background: var(--card-bg, #0f0f12);
+    border-radius: 16px;
+    padding: 15px;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+}
+.skeleton-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+.skeleton-box::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 1.5s infinite;
+}
+.skeleton-img { height: 180px; border-radius: 12px; }
+.skeleton-title { height: 20px; width: 80%; }
+.skeleton-price { height: 30px; width: 50%; margin-top: auto; }
+
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+
+/* --- DESIGN DO NOVO PAINEL DE ZOOM LATERAL --- */
+#modal-zoom-result {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45.4%; /* Encaixa cirurgicamente cobrindo a largura da sua .modal-direita */
+  height: 100%;
+  background-color: #0f0f12;
+  background-repeat: no-repeat;
+  display: none;
+  z-index: 99; /* Fica acima dos textos, mas respeita o botão de fechar */
+  border-left: 1px solid rgba(241, 196, 15, 0.2);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.9);
+}
+
+/* --- DESIGN DO BOTÃO DE COPIAR LINK PREMIUM --- */
+.share-button {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(241, 196, 15, 0.3);
+  background: rgba(241, 196, 15, 0.03);
+  color: #f1c40f;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.share-button:hover {
+  background: linear-gradient(135deg, #f1c40f, #d4ac0d);
+  color: #000;
+  box-shadow: 0 10px 20px rgba(241, 196, 15, 0.2);
+  transform: translateY(-1px);
+}
+
+/* DESABILITA O ZOOM EM DISPOSITIVOS MÓVEIS PARA PRESERVAR O LAYOUT COMPACTO */
+@media (max-width: 768px) {
+  #modal-zoom-result { display: none !important; }
+}
+
+/* =========================================
+   EMBLEMAS PREMIUM - CARDS DE PRODUTOS
+   ========================================= */
+.card-badge-container {
+    margin-top: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+.emblema-premium {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #d1d1d18a;
+    text-transform: none; /* Mantém exatamente como você escreve (TikTok Shop, etc) */
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    text-shadow: none;
+    line-height: 1;
+}
+/* =========================================
+   SELO PREMIUM COPA DO MUNDO
+   ========================================= */
+.emblema-copa {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 50%, #fcf6ba 55%, #aa771c 100%);
+    padding: 4px 10px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 10px rgba(189, 149, 63, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.emblema-copa:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 15px rgba(189, 149, 63, 0.5);
+}
+/* Cores Oficiais das Marcas - Estilo Ghost */
+.shopee-badge { background: transparent; color: #FFFFFF; border: 1px solid #EE4D2D; text-transform: none; }
+.ml-badge { background: transparent; color: #FFFFFF; border: 1px solid #FFE600; text-transform: lowercase; letter-spacing: -0.5px; }
+.tiktok-badge { background: transparent; color: #FFFFFF; border: 1px solid #333; border-left: 1px solid #00F2FE; border-right: 1px solid #FE2C55; text-transform: none; }
+.amazon-badge { background: transparent; color: #FFFFFF; border: 1px solid #FF9900; text-transform: lowercase; letter-spacing: -0.5px; }
