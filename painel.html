@@ -1018,7 +1018,6 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
             p.imagens && p.imagens[i - 1] ? p.imagens[i - 1] : "";
         document.getElementById("btn-save").innerText = "ATUALIZAR ITEM";
         window.scrollTo({ top: 0, behavior: "smooth" });
-        atualizarContador();
       }
 
       async function salvarProduto() {
@@ -1249,7 +1248,6 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
           "DESCRIÇÃO DO PRODUTO\n\n";
         editandoIndex = null;
         document.getElementById("btn-save").innerText = "Salvar na Lista Local";
-        atualizarContador();
       }
 
       function inserirEmblema(codigo) {
