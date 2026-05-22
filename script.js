@@ -179,7 +179,8 @@ function renderizar(lista, recomecar = true) {
             p.tag === 'Viralizado do TikTok' ? 'badge-tiktok' : 
             p.tag === 'Oportunidade Única' ? 'badge-oportunidade' : 
             p.tag === 'Tendência' ? 'badge-tendencia' :
-            p.tag === 'Para Presentear' ? 'badge-presente' : ''
+            p.tag === 'Para Presentear' ? 'badge-presente' : 
+            p.tag === 'Copa do Mundo' ? 'badge-copa' : ''
         }">${p.tag}</div>` : ''}
         <img src="${p.imagens[0]}" onerror="this.onerror=null; this.src='images/atualizando.png';" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
@@ -191,8 +192,7 @@ function renderizar(lista, recomecar = true) {
                 if (subUp === '[SHOPEE]' || subUp === 'SHOPEE') return '<span class="emblema-premium">Shopee</span>';
                 if (subUp === '[ML]' || subUp === 'MERCADO LIVRE') return '<span class="emblema-premium">Mercado Livre</span>';
                 if (subUp === '[TIKTOK]' || subUp === 'TIKTOK SHOP') return '<span class="emblema-premium">TikTok Shop</span>';
-                if (subUp === '[AMAZON]' || subUp === 'AMAZON') return '<span class="emblema-premium">Amazon</span>';
-                if (subUp === '[COPA]' || subUp === 'COPA') return '<span class="emblema-copa">🏆 VIBE COPA</span>';
+                if (subUp === '[AMAZON]' || subUp === 'AMAZON') return '<span class="emblema-premium">amazon</span>';
                 
                 return `<span class="card-subtitle">${sub}</span>`;
             })()}
