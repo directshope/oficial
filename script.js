@@ -188,10 +188,10 @@ function renderizar(lista, recomecar = true) {
                 const sub = (p.subtitulo || "").trim();
                 const subUp = sub.toUpperCase();
 
-                if (subUp === '[SHOPEE]' || subUp === 'SHOPEE') return '<span class="emblema-premium shopee-badge">Shopee</span>';
-                if (subUp === '[ML]' || subUp === 'MERCADO LIVRE') return '<span class="emblema-premium ml-badge">mercado livre</span>';
-                if (subUp === '[TIKTOK]' || subUp === 'TIKTOK SHOP') return '<span class="emblema-premium tiktok-badge">TikTok Shop</span>';
-                if (subUp === '[AMAZON]' || subUp === 'AMAZON') return '<span class="emblema-premium amazon-badge">amazon</span>';
+                if (subUp === '[SHOPEE]' || subUp === 'SHOPEE') return '<span class="emblema-premium">Shopee</span>';
+                if (subUp === '[ML]' || subUp === 'MERCADO LIVRE') return '<span class="emblema-premium">Mercado Livre</span>';
+                if (subUp === '[TIKTOK]' || subUp === 'TIKTOK SHOP') return '<span class="emblema-premium">TikTok Shop</span>';
+                if (subUp === '[AMAZON]' || subUp === 'AMAZON') return '<span class="emblema-premium">Amazon</span>';
                 
                 return `<span class="card-subtitle">${sub}</span>`;
             })()}
