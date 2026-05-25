@@ -21,6 +21,35 @@
         --danger: #e74c3c;
       }
 
+      /* Estilos da Aba de Estatísticas */
+      .estatisticas-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+      .card-estatistica {
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      .card-estatistica h3 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+      .card-estatistica p {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 900;
+        color: var(--gold);
+      }
+      .card-estatistica.total p {
+        color: var(--success);
+      }
+
       body {
         margin: 0;
         font-family: "Poppins", sans-serif;
@@ -296,6 +325,37 @@
         <button class="tab-btn" onclick="switchTab('tab-banners')">
           🖼️ Banners
         </button>
+        <button
+          class="tab-btn"
+          onclick="
+            switchTab('tab-estatisticas');
+            carregarEstatisticas();
+          "
+        >
+          📊 Estatísticas
+        </button>
+      </div>
+
+      <div id="tab-estatisticas" class="tab-content">
+        <h2>Quantidade de Produtos por Loja</h2>
+        <div class="estatisticas-grid">
+          <div class="card-estatistica">
+            <h3>Mercado Livre</h3>
+            <p id="qtd-ml">0</p>
+          </div>
+          <div class="card-estatistica">
+            <h3>Shopee</h3>
+            <p id="qtd-shopee">0</p>
+          </div>
+          <div class="card-estatistica">
+            <h3>TikTok</h3>
+            <p id="qtd-tiktok">0</p>
+          </div>
+          <div class="card-estatistica total">
+            <h3>Total Geral</h3>
+            <p id="qtd-total">0</p>
+          </div>
+        </div>
       </div>
 
       <div id="tab-produtos" class="tab-content active">
@@ -1233,6 +1293,27 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
           alert("Banner enviado com sucesso!");
         };
         reader.readAsDataURL(file);
+      }
+
+      async function carregarEstatisticas() {
+        try {
+          // Usa a função fetchGitHub que já existe no seu código para buscar os dados corretamente
+          const ml = await fetchGitHub("ml.json");
+          const shopee = await fetchGitHub("shopee.json");
+          const tiktok = await fetchGitHub("tiktok.json");
+
+          const qtdMl = ml.length;
+          const qtdShopee = shopee.length;
+          const qtdTiktok = tiktok.length;
+          const total = qtdMl + qtdShopee + qtdTiktok;
+
+          document.getElementById("qtd-ml").innerText = qtdMl;
+          document.getElementById("qtd-shopee").innerText = qtdShopee;
+          document.getElementById("qtd-tiktok").innerText = qtdTiktok;
+          document.getElementById("qtd-total").innerText = total;
+        } catch (erro) {
+          console.error("Erro ao carregar estatísticas:", erro);
+        }
       }
 
       function showStatus(txt) {
