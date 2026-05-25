@@ -117,5 +117,10 @@
     "nome": "Camisas e Regatas",
     "valor": "Camisas e Regatas",
     "grupo": "MODA E ESTILO"
+  },
+  {
+    "nome": "Lazer e Conforto",
+    "valor": "Lazer e Conforto",
+    "grupo": "CASA E DECORAÇÃO"
   }
 ]
