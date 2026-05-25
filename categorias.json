@@ -122,5 +122,10 @@
     "nome": "Lazer e Conforto",
     "valor": "Lazer e Conforto",
     "grupo": "CASA E DECORAÇÃO"
+  },
+  {
+    "nome": "Cozinha e Utilidades",
+    "valor": "Cozinha e Utilidades",
+    "grupo": "CASA E DECORAÇÃO"
   }
 ]
