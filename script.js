@@ -157,18 +157,7 @@ function renderizar(lista, recomecar = true) {
   const produtosParaExibir = lista.slice(0, limiteExibicao);
 
   produtosParaExibir.forEach((p, index) => {
-    let estrelas = "";
-    const nota = parseFloat(p.nota) || 0;
-    for (let i = 1; i <= 5; i++) {
-      let fill = 0;
-      if (nota >= i) {
-        fill = 100; 
-      } else if (nota > i - 1) {
-        fill = (nota - (i - 1)) * 100; 
-      }
-      estrelas += `<span class="star filled" style="--fill: ${fill}%">★</span>`;
-    }
-
+    
     const card = `
       <div class="card">
         ${p.tag ? `<div class="badge ${
@@ -199,9 +188,13 @@ function renderizar(lista, recomecar = true) {
         </div>
         
         <div class="stars-row">
+          <span class="star-icon">⭐</span>
           <span class="rating-val">${p.nota || "0.0"}</span>
-          ${estrelas} 
           <span class="rev-text">(${p.avaliacoes || '0'})</span>
+          ${p.vendidos && p.vendidos.trim() !== "" ? `
+            <span class="rating-divider">│</span>
+            <span class="sold-val">${p.vendidos} vendidos</span>
+          ` : ""}
         </div>
         
         <div class="card-category" style="font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-bottom: 12px; text-transform: uppercase;">${p.categoria || ""}</div>
