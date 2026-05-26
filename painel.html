@@ -533,12 +533,16 @@
 
         <div class="grid">
           <div class="input-group">
-            <label>Nota Produtos:</label
-            ><input type="text" id="p-nota" placeholder="Ex: 4.8" />
+            <label>Nota Produtos:</label>
+            <input type="text" id="p-nota" placeholder="Ex: 4.8" />
           </div>
           <div class="input-group">
-            <label>Nº Avaliações:</label
-            ><input type="text" id="p-avaliacoes" placeholder="Ex: 150" />
+            <label>Nº Avaliações:</label>
+            <input type="text" id="p-avaliacoes" placeholder="Ex: 150" />
+          </div>
+          <div class="input-group">
+            <label>Qtd Vendida:</label>
+            <input type="text" id="p-vendidos" placeholder="Ex: 737 ou 11.5K" />
           </div>
         </div>
 
@@ -1077,6 +1081,7 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
         document.getElementById("p-link").value = p.link;
         document.getElementById("p-nota").value = p.nota || "";
         document.getElementById("p-avaliacoes").value = p.avaliacoes || "";
+        document.getElementById("p-vendidos").value = p.vendidos || "";
         for (let i = 1; i <= 8; i++)
           document.getElementById(`img${i}`).value =
             p.imagens && p.imagens[i - 1] ? p.imagens[i - 1] : "";
@@ -1096,6 +1101,7 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
           tag: document.getElementById("p-tag").value,
           nota: document.getElementById("p-nota").value,
           avaliacoes: document.getElementById("p-avaliacoes").value,
+          vendidos: document.getElementById("p-vendidos").value,
           link: document.getElementById("p-link").value,
           loja: loja,
           categoria:
