@@ -583,12 +583,37 @@ body[data-ambiente="all"] .bg-glow {
     font-weight: 700;
 }
 
-/* Destaque numérico da nota */
-.rating-val {
-    color: #ffca28;
-    font-weight: 800;
-    font-size: 14px;
-    margin-right: 5px;
+/* ESTILOS DA CLASSIFICAÇÃO PREMIUM (CORES DA FOTO) */
+.stars-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap; /* Trava de segurança para não quebrar linha no mobile */
+  margin-top: 5px;
+}
+
+.stars-row .star-icon {
+  font-size: 12px;
+  color: #f1c40f; /* Estrela Amarela */
+}
+
+.stars-row .rating-val {
+  color: #ffffff; /* Nota Branca */
+}
+
+.stars-row .rev-text {
+  color: #3498db; /* Avaliações em Azul */
+}
+
+.stars-row .rating-divider {
+  color: #444449; /* Separador sutil e mais fino */
+  margin: 0 2px;
+}
+
+.stars-row .sold-val {
+  color: #ffffff; /* Número + vendidos em Branco */
 }
 
 /* BOTÕES DOURADOS PREMIUM COM GLOW */
