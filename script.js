@@ -173,37 +173,55 @@ function renderizar(lista, recomecar = true) {
         }">${p.tag}</div>` : ''}
         <img src="${p.imagens[0]}" onerror="this.onerror=null; this.src='images/atualizando.png';" onclick="abrirGaleria(${index})" alt="${p.titulo}">
         <h3>${p.titulo}</h3>
+        
         <div class="card-badge-container">
             ${(() => {
-                const sub = (p.subtitulo || "").trim();
-                const subUp = sub.toUpperCase();
-
-                if (subUp === '[SHOPEE]' || subUp === 'SHOPEE') return '<span class="emblema-premium">Shopee</span>';
-                if (subUp === '[ML]' || subUp === 'MERCADO LIVRE') return '<span class="emblema-premium">Mercado Livre</span>';
-                if (subUp === '[TIKTOK]' || subUp === 'TIKTOK SHOP') return '<span class="emblema-premium">TikTok Shop</span>';
-                if (subUp === '[AMAZON]' || subUp === 'AMAZON') return '<span class="emblema-premium">amazon</span>';
+                const subRaw = (p.subtitulo || "").trim();
+                const subUp = subRaw.toUpperCase();
                 
-                return `<span class="card-subtitle">${sub}</span>`;
+                let cleanName = subRaw;
+                let imgHtml = '';
+                let classeLoja = 'custom-style';
+                
+                if (subUp === '[SHOPEE]' || subUp === 'SHOPEE') {
+                    cleanName = 'Shopee';
+                    imgHtml = '<img src="images/shopee.png" />';
+                    classeLoja = 'shopee-style';
+                } else if (subUp === '[ML]' || subUp === 'MERCADO LIVRE') {
+                    cleanName = 'Mercado Livre';
+                    imgHtml = '<img src="images/ml.png" />';
+                    classeLoja = 'ml-style';
+                } else if (subUp === '[TIKTOK]' || subUp === 'TIKTOK SHOP') {
+                    cleanName = 'TikTok Shop';
+                    imgHtml = '<img src="images/tiktok.png" />';
+                    classeLoja = 'tiktok-style';
+                } else if (subUp === '[AMAZON]' || subUp === 'AMAZON') {
+                    cleanName = 'Amazon';
+                    imgHtml = `<img src="images/amazon.png" onerror="this.style.display='none';" />`;
+                    classeLoja = 'amazon-style';
+                }
+                
+                return `<span class="sub-plataforma ${classeLoja}">${imgHtml}<span class="texto-plataforma">${cleanName}</span></span>`;
             })()}
         </div>
         
         <div class="stars-row">
-          <span class="star-icon">⭐</span>
+          <span class="star-icon">★</span>
           <span class="rating-val">${p.nota || "0.0"}</span>
           <span class="rev-text">(${p.avaliacoes || '0'})</span>
           ${p.vendidos && p.vendidos.trim() !== "" ? `
-            <span class="rating-divider">│</span>
+            <span class="rating-divider">•</span>
             <span class="sold-val">${p.vendidos} vendidos</span>
           ` : ""}
         </div>
         
-        <div class="card-category" style="font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-bottom: 12px; text-transform: uppercase;">${p.categoria || ""}</div>
+        <div class="card-category">${p.categoria || ""}</div>
         
         <hr class="card-divider">
         
         <div class="card-footer" style="display: flex; flex-direction: column; gap: 0;">
           <p class="price" style="margin-bottom: 0;"><span class="currency">R$</span> <span class="amount">${p.preco}</span></p>
-          <div class="stock-row" style="margin-top: 2px; margin-bottom: 15px;"><span class="stock-dot"></span>Em estoque</div>
+          <div class="stock-row" style="margin-top: 2px; margin-bottom: 15px;"><span class="stock-dot"></span>Em Estoque</div>
           <button onclick="window.open('${p.link}', '_blank')">Comprar Agora</button>
         </div>
       </div>
