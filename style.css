@@ -603,35 +603,43 @@ body[data-ambiente="all"] .bg-glow {
   align-items: center;
   gap: 5px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 400; /* REDUZIDO: Remove o peso grosso geral e deixa o texto fino e elegante */
   white-space: nowrap; /* Trava de segurança para não quebrar linha no mobile */
   margin-top: 5px;
+  line-height: 1; /* Alinha a base de todos os textos da linha */
 }
 
 .stars-row .star-icon {
-  font-size: 13px; /* Aumentado de 12px para 14px para dar o peso visual correto com a nota em negrito */
+  font-size: 13px; 
   color: #f1c40f; /* Dourado Premium Luxo */
   line-height: 1;
   display: inline-flex;
   align-items: center;
-  transform: translateY(-1px); /* Puxa a estrela 1px para cima, alinhando-a perfeitamente ao centro do texto */
+  transform: translateY(0px); 
 }
 
 .stars-row .rating-val {
   color: #ffffff; /* Nota Branca */
+  font-weight: 500; /* Peso médio limpo para a nota numérica não sumir */
 }
 
 .stars-row .rev-text {
-  color: #2da1ee; /* Avaliações em Azul */
+  color: #5bb7f5; /* Mantido o Azul original que você pediu */
+  font-weight: 400; /* Garante as letras da avaliação totalmente finas */
 }
 
 .stars-row .rating-divider {
-  color: #444449; /* Separador sutil e mais fino */
-  margin: 0 2px;
+  color: #444449; /* Mantém a cor sutil */
+  margin: 0 6px;   /* Aumentamos um pouco o respiro para o ponto não ficar colado */
+  font-size: 8px;  /* Ajuste para o ponto ficar proporcional ao lado dos números */
+  display: inline-flex;
+  align-items: center;
+  transform: translateY(-1px); /* Centralização óptica perfeita do ponto */
 }
 
 .stars-row .sold-val {
   color: #ffffff; /* Número + vendidos em Branco */
+  font-weight: 400; /* Garante as letras de vendidos totalmente finas */
 }
 
 /* BOTÕES DOURADOS PREMIUM COM GLOW */
