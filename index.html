@@ -1,79 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DIRECT SHOP | Oficial</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="images/logo.png">
-</head>
-<body class="premium-dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WaveShopBR | Oficial</title>
 
-<div class="bg-glow"></div>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="images/logo.png" />
+  </head>
+  <body class="premium-dark">
+    <div class="bg-glow"></div>
 
-<header class="header">
-  <div class="logo">
-    <span class="logo-direct">DIRECT</span>
-    <span class="logo-shop">SHOP</span>
-  </div>
-  
-  <div class="tabs-premium" id="abas-lojas">
-    </div>
-
-  <div class="header-tools">
-    <input type="text" id="search" placeholder="Procurar produtos...">
-    <div class="custom-select-container">
-      <div class="custom-select-trigger" id="categoria-trigger">Todas as Categorias</div>
-      <div class="custom-select-options" id="categoria-options"></div>
-    </div>
-  </div>
-</header>
-
-<section class="banner">
-  <div class="slides" id="slides">
-    </div>
-  <div class="banner-fade"></div>
-</section>
-
-<section class="marcas-container">
-  <div class="marcas-track" id="marcas-track">
-    </div>
-</section>
-
-<section class="nav-premium-container">
-  <div class="nav-premium-card">
-  </div>
-</section>
-
-<section class="produtos-section">
-  <section class="produtos" id="produtos"></section>
-</section>
-
-<div id="modal-galeria" class="modal-foto">
-  <div class="modal-content-premium">
-    <span class="fechar-modal" onclick="fecharGaleria()">&times;</span>
-    
-    <div class="modal-esquerda">
-      <div id="zoom-container" style="position: relative; display: flex; justify-content: center;">
-        <img src="" id="foto-grande-modal" class="foto-principal-modal">
-        <div id="lens" class="zoom-lens"></div>
+    <header class="header">
+      <div class="logo">
+        <span class="logo-wave">Wave</span><span class="logo-shop">Shop</span>
       </div>
-      <div class="miniaturas-row" id="miniaturas-container"></div>
+
+      <div class="tabs-premium" id="abas-lojas"></div>
+
+      <div class="header-tools">
+        <input type="text" id="search" placeholder="Procurar produtos..." />
+        <div class="custom-select-container">
+          <div class="custom-select-trigger" id="categoria-trigger">
+            Categorias
+          </div>
+          <div class="custom-select-options" id="categoria-options"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="banner">
+      <div class="slides" id="slides"></div>
+      <div class="banner-fade"></div>
+    </section>
+
+    <section class="marcas-container">
+      <div class="marcas-track" id="marcas-track"></div>
+    </section>
+
+    <section class="nav-premium-container">
+      <div class="nav-premium-card"></div>
+    </section>
+
+    <section class="produtos-section">
+      <section class="produtos" id="produtos"></section>
+    </section>
+
+    <div id="modal-galeria" class="modal-foto">
+      <div class="modal-content-premium">
+        <span class="fechar-modal" onclick="fecharGaleria()">&times;</span>
+
+        <div class="modal-esquerda">
+          <div
+            id="zoom-container"
+            style="position: relative; display: flex; justify-content: center"
+          >
+            <img src="" id="foto-grande-modal" class="foto-principal-modal" />
+            <div id="lens" class="zoom-lens"></div>
+          </div>
+          <div class="miniaturas-row" id="miniaturas-container"></div>
+        </div>
+
+        <div class="modal-direita">
+          <h3 id="modal-titulo-produto"></h3>
+          <div id="modal-descricao"></div>
+          <button id="modal-link-compra" class="gold-button modal-cta">
+            Comprar Agora
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div class="modal-direita">
-      <h3 id="modal-titulo-produto"></h3>
-      <div id="modal-descricao"></div>
-      <button id="modal-link-compra" class="gold-button modal-cta">Comprar Agora</button>
-    </div>
-  </div>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
