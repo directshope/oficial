@@ -266,7 +266,26 @@ async function carregarLojas() {
         btn.className = "tab-link";
         if (index === 0) btn.classList.add("active"); // Deixa o primeiro (Todos) ativo por padrão
         btn.setAttribute("data-loja", loja.id);
-        btn.textContent = loja.nome;
+        
+        // ESTRUTURAÇÃO DE RÓTULOS PREMIUM E EXCEÇÕES DE MARCA
+        if (loja.id === "all") {
+          // Injeta os 4 quadradinhos e força o texto fixo e curto "Todos" para evitar cortes no layout
+          btn.innerHTML = `
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Todos</span>
+          `;
+        } else if (loja.id === "tiktok" || loja.nome.toUpperCase() === "TIKTOK") {
+          // Força a padronização e o nome expandido na interface do usuário
+          btn.textContent = "TikTok Shop";
+        } else {
+          // Mantém o nome padrão para as outras plataformas do arquivo JSON
+          btn.textContent = loja.nome;
+        }
         
         // Embutindo a SUA lógica exata de clique e transição suave nos botões novos
         btn.addEventListener("click", () => {
