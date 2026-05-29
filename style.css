@@ -1,4 +1,18 @@
 /* RESET E BASE PREMIUM DARK */
+/* --- CARREGAMENTO DE FONTES LOCAIS (100% OFFLINE E ULTRA VELOZ) --- */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('fonts/Montserrat-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('fonts/Montserrat-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
 body.premium-dark {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -6,6 +20,41 @@ body.premium-dark {
   color: #ffffff;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+/* --- CARREGAMENTO LOCAL DA FONTE POPPINS (100% OFFLINE) --- */
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
 }
 
 /* EFEITO DE FUNDO ANIMADO (GLOW PARTICLES) */
@@ -50,7 +99,7 @@ body[data-ambiente="all"] .bg-glow {
     background: radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.03) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 30%);
 }
-/* HEADER PREMIUM (Layout de 3 Zonas Simétricas) */
+/* HEADER PREMIUM (Layout de 3 Zonas Simétricas com Efeito Vidro Otimizado) */
 .header {
   position: sticky;
   top: 0;
@@ -58,9 +107,9 @@ body[data-ambiente="all"] .bg-glow {
   align-items: center;
   justify-content: space-between;
   padding: 15px 40px;
-  background: rgba(8, 8, 10, 0.85); /* Fundo um pouco mais sólido para destacar os elementos */
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(8, 8, 10, 0.65);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   z-index: 1000;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   gap: 20px;
@@ -68,24 +117,41 @@ body[data-ambiente="all"] .bg-glow {
 
 /* 1. LADO ESQUERDO: LOGO MINIMALISTA LUXO */
 .logo { 
-  flex: 1; /* Força o bloco a ocupar o mesmo espaço que o bloco da direita para centralizar o meio */
-  display: flex;
-  justify-content: flex-start;
+  flex: 1; 
+  display: block; /* MÁGICA: Remove o flex e faz as palavras voltarem a ser textos nativos na mesma linha */
   font-family: 'Poppins', sans-serif;
   font-weight: 800; 
-  font-size: 22px; 
-  letter-spacing: 2px; /* Espaçamento premium */
-  gap: 6px;
+  font-size: 24px; 
+  letter-spacing: 2px; 
   user-select: none;
+  white-space: nowrap; /* Garante que Wave e Shop fiquem cravados juntos */
 }
-.logo-direct { color: #ffffff; }
-.logo-shop { color: #a1a1aa; font-weight: 600; } /* Platinado suave, elegância pura */
 
+.logo-wave { 
+  color: #ffffff !important; 
+  font-family: 'Montserrat', sans-serif !important; 
+  font-weight: 900 !important; 
+  letter-spacing: -1px;
+  display: inline !important; /* Força a ser texto puro */
+}
+
+.logo-shop { 
+  font-family: 'Montserrat', sans-serif !important; 
+  font-weight: 900 !important; 
+  background: linear-gradient(90deg, #a855f7, #3b82f6) !important; 
+  -webkit-background-clip: text !important; 
+  background-clip: text !important; 
+  -webkit-text-fill-color: transparent !important; 
+  margin-left: 2px; 
+  letter-spacing: -1px; 
+  display: inline !important; /* Força a ser texto puro */
+  padding: 0.2em 0 !important; /* Expande o fundo revelando o 'P' inteiro, sem mover a régua de alinhamento nativa! */
+}
 /* 2. CENTRO EXATO: ABAS DAS LOJAS */
 #abas-lojas {
-  flex: 1;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;                           /* Espaçamento elegante entre os cards dos botões */
   justify-content: center;
 }
 
@@ -110,14 +176,6 @@ body[data-ambiente="all"] .bg-glow {
 }
 
 #search { 
-  padding: 12px 18px; 
-  border-radius: 12px; 
-  border: 1px solid rgba(255, 255, 255, 0.08); 
-  background: rgba(255, 255, 255, 0.03); 
-  color: #fff; 
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
-  transition: all 0.3s ease;
   width: 100%; 
   min-width: 250px; 
 }
@@ -406,28 +464,71 @@ body[data-ambiente="all"] .bg-glow {
   font-size: 12px;
 }
 
-/* Centraliza os botões das lojas que mudaram para a faixa de cima */
-#abas-lojas {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
 .tab-link {
-  padding: 8px 18px;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid transparent;
-  border-radius: 8px;
+  flex: 1;                             /* Divide o espaço igualmente entre as caixas */
+  min-width: 120px;                    /* Garante tamanho idêntico para todos os cards */
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05); /* Cada botão como um card individual discreto */
+  color: #ffffff !important;             /* VIVO: Texto em branco puro e nítido o tempo todo */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
   cursor: pointer;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: 13px;
-  transition: all 0.4s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
-.tab-link:hover { color: #ffffff; background: rgba(255,255,255,0.05); }
-.tab-link.active[data-loja="all"], .tab-link.active[data-loja="ml"] { background: rgba(241, 196, 15, 0.15) !important; color: #f1c40f !important; border-color: rgba(241, 196, 15, 0.4) !important; box-shadow: inset 0 0 10px rgba(241, 196, 15, 0.1) !important; }
-.tab-link.active[data-loja="shopee"] { background: rgba(238, 77, 45, 0.15) !important; color: #ee4d2d !important; border-color: rgba(238, 77, 45, 0.4) !important; box-shadow: inset 0 0 10px rgba(238, 77, 45, 0.1) !important; }
-.tab-link.active[data-loja="tiktok"] { background: rgba(0, 242, 234, 0.15) !important; color: #00f2ea !important; border-color: rgba(0, 242, 234, 0.4) !important; box-shadow: inset 0 0 10px rgba(0, 242, 234, 0.1) !important; }
+
+.tab-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 1. SELECIONADO: TODOS (Fundo mais denso e opaco para deixar claro o clique) */
+.tab-link.active[data-loja="all"] {
+  background: rgba(255, 255, 255, 0.35) !important; /* Opacidade alta para marcar a seleção com firmeza */
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 2. SELECIONADO: MERCADO LIVRE (Borda idêntica à cor de fundo ouro) */
+.tab-link.active[data-loja="ml"] {
+  background: #fff159 !important;       /* Cor de fundo amarela exata da imagem */
+  color: #1b25ac !important;            /* Cor da letra azul exata da imagem */
+  border-color: #fff159 !important;     /* Borda acompanha a mesma cor do fundo */
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif !important; 
+  font-weight: 900 !important;          /* Garante a espessura máxima da letra (Black/Heavy) */
+  font-size: 14px !important;           /* Aumentamos levemente para compensar a espessura */
+  letter-spacing: -0.8px !important;    /* Contrai as letras para ficarem compactas igual à imagem */
+  text-transform: lowercase !important; /* Força o texto para minúsculas igual ao logotipo */
+}
+
+/* 3. SELECIONADO: SHOPEE (Borda idêntica à cor de fundo laranja) */
+.tab-link.active[data-loja="shopee"] { 
+  background: #f14a25 !important;       
+  color: #ffffff !important;
+  border-color: #f14a25 !important;     /* Borda da mesma cor exata do card */
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(211, 64, 30, 0.25) !important;
+}
+
+/* 4. SELECIONADO: TIKTOK SHOP (Degradê mais escuro e remoção de borda para eliminar vazamento) */
+.tab-link.active[data-loja="tiktok"] { 
+  background: linear-gradient(135deg, #07c0ba, #c90640) !important; /* Cores originais um pouco mais escuras */
+  color: #ffffff !important;
+  border: none !important;              /* SOLUÇÃO: Remove a borda para matar o vazamento de subpixel do navegador */
+  padding: 11px 21px !important;        /* Compensa o 1px da borda sumida para manter a simetria perfeita */
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(128, 0, 38, 0.3) !important;
+}
 
 /* PRODUTOS */
 .produtos-section { padding: 60px 20px; max-width: 1400px; margin: 0 auto; }
@@ -826,14 +927,6 @@ body[data-ambiente="all"] .bg-glow {
 .badge-presente { background: linear-gradient(135deg, #fd79a8, #e84393) !important; border-color: rgba(253, 121, 168, 0.5) !important; }
 .badge-copa { background: linear-gradient(135deg, #009c3b 0%, #ffdf00 100%) !important; border-color: rgba(0, 156, 59, 0.5) !important; color: #ffffff !important; text-shadow: 0px 1px 3px rgba(0,0,0,0.6) !important; }
 
-/* --- OVERRIDE PREMIUM: EFEITO VIDRO --- */
-.header {
-    background: rgba(8, 8, 10, 0.65) !important;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
 /* --- SKELETON LOADING PREMIUM --- */
 .skeleton-card {
     background: var(--card-bg, #0f0f12);
@@ -931,16 +1024,6 @@ body[data-ambiente="all"] .bg-glow {
     align-items: center;
 }
 
-/* BLINDAGEM E ALINHAMENTO PARA OS ÍCONES DAS LOJAS */
-.sub-plataforma {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #ffffffb9;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: none;
-}
 
 .sub-plataforma img {
     width: auto !important;
