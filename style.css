@@ -729,9 +729,9 @@ body[data-ambiente="all"] .bg-glow {
 }
 
 .stars-row .rating-divider {
-  color: #444449; /* Mantém a cor sutil */
-  margin: 0 6px;   /* Aumentamos um pouco o respiro para o ponto não ficar colado */
-  font-size: 8px;  /* Ajuste para o ponto ficar proporcional ao lado dos números */
+  color: #9d9dac; /* Mantém a cor sutil */
+  margin: 0 3px;   /* Aumentamos um pouco o respiro para o ponto não ficar colado */
+  font-size: 15px;  /* Ajuste para o ponto ficar proporcional ao lado dos números */
   display: inline-flex;
   align-items: center;
   transform: translateY(-1px); /* Centralização óptica perfeita do ponto */
