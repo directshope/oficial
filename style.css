@@ -1,5 +1,4 @@
 /* RESET E BASE PREMIUM DARK */
-/* --- CARREGAMENTO DE FONTES LOCAIS (100% OFFLINE E ULTRA VELOZ) --- */
 @font-face {
   font-family: 'Montserrat';
   src: url('fonts/Montserrat-ExtraLight.ttf') format('truetype');
@@ -1024,6 +1023,12 @@ body[data-ambiente="all"] .bg-glow {
     align-items: center;
 }
 
+.sub-plataforma {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important; /* Impede o nome de quebrar e ir para baixo do ícone */
+}
 
 .sub-plataforma img {
     width: auto !important;
