@@ -464,9 +464,9 @@ body[data-ambiente="all"] .bg-glow {
 }
 
 .tab-link {
-  flex: 1;                             /* Divide o espaço igualmente entre as caixas */
-  min-width: 120px;                    /* Garante tamanho idêntico para todos os cards */
-  padding: 10px 20px;
+  width: 145px !important;               /* TRAVA RIGIDA: Garante que o botão tenha tamanho fixo imutável */
+  flex: 0 0 145px !important;            /* ESTABILIDADE ABSOLUTA: Impede o flexbox de esticar ou encolher o layout */
+  padding: 10px 0 !important;            /* Centralização óptica perfeita livre de pressões laterais */
   background: rgba(255, 255, 255, 0.05); /* Cada botão como um card individual discreto */
   color: #ffffff !important;             /* VIVO: Texto em branco puro e nítido o tempo todo */
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -480,7 +480,7 @@ body[data-ambiente="all"] .bg-glow {
   justify-content: center;
   gap: 8px;
   white-space: nowrap;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease; /* Transição linear fluida */
 }
 
 .tab-link:hover {
