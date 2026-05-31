@@ -132,5 +132,10 @@
     "nome": "Notebooks",
     "valor": "Notebooks",
     "grupo": "TECNOLOGIA E ELETRÔNICOS"
+  },
+  {
+    "nome": "Talheres e Facas",
+    "valor": "Talheres e Facas",
+    "grupo": "CASA E DECORAÇÃO"
   }
 ]
