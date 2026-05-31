@@ -137,5 +137,10 @@
     "nome": "Talheres e Facas",
     "valor": "Talheres e Facas",
     "grupo": "CASA E DECORAÇÃO"
+  },
+  {
+    "nome": "Suplementos",
+    "valor": "Suplementos",
+    "grupo": "BELEZA E SAÚDE"
   }
 ]
