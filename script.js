@@ -661,6 +661,128 @@ if (fotoModal) {
     }
   }
 }
+
+/* ==========================================================================
+   ENGINE DE DESTAQUES VIRAIS (MINI CARDS DINÂMICOS COPIANDO DADOS)
+   ========================================================================== */
+let intervaloDestaques = null;
+let destaquesData = [];
+let idxDestaqueAtual = 0;
+
+async function carregarDestaques() {
+  try {
+    const res = await fetch("destaques.json?t=" + new Date().getTime());
+    if (!res.ok) return;
+    destaquesData = await res.json();
+    
+    const section = document.querySelector(".trending-section");
+    if (!section) return;
+
+    // INTEGRAÇÃO SÊNIOR: Pausa a rotação ao colocar o mouse e retoma ao retirar
+    section.onmouseenter = () => { if (intervaloDestaques) clearInterval(intervaloDestaques); };
+    section.onmouseleave = () => { iniciarRotacaoDestaques(); };
+
+    idxDestaqueAtual = 0;
+    exibirPerfilDestaque(idxDestaqueAtual);
+    iniciarRotacaoDestaques();
+  } catch (e) {
+    console.log("Aviso: Não foi possível carregar ou processar o arquivo destaques.json");
+  }
+}
+
+function exibirPerfilDestaque(index) {
+  if (!destaquesData || destaquesData.length === 0) return;
+  const data = destaquesData[index];
+  
+  const txtTitulo = document.getElementById("trending-title");
+  const containerTray = document.getElementById("trending-tray");
+  
+  if (!txtTitulo || !containerTray) return;
+  
+  const tituloSemEmoji = data.config.titulo_secao.replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF]/g, "").trim();
+  
+  // DESIGN VETORIAL: Fogo realista redesenhado com duas camadas independentes de degradê
+  txtTitulo.innerHTML = `
+    <svg class="trending-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fogoGradExterno" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#ff1a00" />
+          <stop offset="60%" stop-color="#ff7700" />
+          <stop offset="100%" stop-color="#ffdd00" />
+        </linearGradient>
+        <linearGradient id="fogoGradInterno" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#ff7700" />
+          <stop offset="100%" stop-color="#ffff00" />
+        </linearGradient>
+      </defs>
+      <path fill="url(#fogoGradExterno)" d="M12 23c4.97 0 9-4.03 9-9 0-2.12-.74-4.07-1.97-5.61l-.43-.53c-.6-.75-1.11-1.63-1.52-2.57C16.33 3.59 15.1 1.94 12 1c-1.14 2.33-2 5-2 7 0 .61.11 1.21.31 1.78-.44-.39-.93-.84-1.36-1.36C7.83 7.15 7 5.5 7 5.5s-.83 1.65-1.12 3.33c-.32 1.87-.1 3.79.62 5.51C4.94 15.63 4 17.21 4 19c0 2.21 1.79 4 4 4h4z"/>
+      <path fill="url(#fogoGradInterno)" d="M12 21c2.21 0 4-1.79 4-4 0-1.5-.5-2.5-1.2-3.2s-1.8-1.3-2.8-2.3c-.3 1.2-.7 2.2-.7 3.5 0 .88.32 1.68.88 2.32-.56-.32-1.28-.32-1.76.16-.4.4-.72 1.04-.72 1.84 0 1.1.9 2 2 2z"/>
+    </svg>
+    <span class="trending-text">${tituloSemEmoji}</span>
+  `;
+  
+  containerTray.innerHTML = "";
+  containerTray.setAttribute("data-tema", data.config.tema);
+  
+  data.produtos.forEach(destaque => {
+    const produtoReal = produtos.find(p => 
+      p.loja === destaque.id_loja && 
+      p.titulo.trim().toLowerCase() === destaque.titulo.trim().toLowerCase()
+    );
+    
+    if (produtoReal) {
+        const card = document.createElement("div");
+        // Injeta dinamicamente a classe da respectiva loja (mini-card-ml, mini-card-shopee, mini-card-tiktok)
+        card.className = `mini-card mini-card-${produtoReal.loja}`;
+        
+        card.onclick = function() {
+          let idx = produtosFiltrados.findIndex(p => 
+            p.loja === produtoReal.loja && 
+            p.titulo.trim().toLowerCase() === produtoReal.titulo.trim().toLowerCase()
+          );
+          if (idx === -1) {
+            produtosFiltrados.push(produtoReal);
+            idx = produtosFiltrados.length - 1;
+          }
+          if (typeof abrirGaleria === "function") {
+            abrirGaleria(idx);
+          }
+        };
+        
+        const fotoUrl = (Array.isArray(produtoReal.imagens) && produtoReal.imagens.length > 0) 
+          ? produtoReal.imagens[0] 
+          : (produtoReal.imagem || 'images/sem-foto.png');
+          
+        // Tag de texto removida completamente daqui de dentro para limpar o visual
+        card.innerHTML = `
+          <img src="${fotoUrl}" alt="${produtoReal.titulo}" loading="lazy">
+          <div class="mini-titulo">${produtoReal.titulo}</div>
+          <div class="mini-preco">R$ ${produtoReal.preco}</div>
+        `;
+        
+        containerTray.appendChild(card);
+      }
+  });
+}
+
+function iniciarRotacaoDestaques() {
+  if (intervaloDestaques) clearInterval(intervaloDestaques);
+  intervaloDestaques = setInterval(() => {
+    if (destaquesData && destaquesData.length > 0) {
+      idxDestaqueAtual = (idxDestaqueAtual + 1) % destaquesData.length;
+      exibirPerfilDestaque(idxDestaqueAtual);
+    }
+  }, 4000); // Altera o perfil a cada 4 segundos
+}
+
+// MONITOR SÊNIOR: Aguarda os produtos globais estarem prontos na memória antes de disparar os destaques
+const monitorProdutosDestaque = setInterval(() => {
+  if (typeof produtos !== "undefined" && produtos.length > 0) {
+    carregarDestaques();
+    clearInterval(monitorProdutosDestaque); // Desliga o monitor para poupar memória do navegador
+  }
+}, 100);
+
 carregarProdutos();
 
 // Injeta com segurança as frases institucionais sem afetar a estrutura das lojas
