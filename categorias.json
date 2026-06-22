@@ -9,6 +9,11 @@
     "grupo": "BELEZA E SAÚDE"
   },
   {
+    "valor": "tecnologia",
+    "nome": "Tecnologia",
+    "grupo": "TECNOLOGIA E ELETRÔNICOS"
+  },
+  {
     "valor": "beleza",
     "nome": "Beleza e Cuidados",
     "grupo": "BELEZA E SAÚDE"
@@ -79,6 +84,11 @@
     "grupo": "CASA E DECORAÇÃO"
   },
   {
+    "nome": "Cozinha e Churrasco",
+    "valor": "Cozinha e Churrasco",
+    "grupo": "CASA E DECORAÇÃO"
+  },
+  {
     "nome": "Decoração de Paredes",
     "valor": "Decoração de Paredes",
     "grupo": "CASA E DECORAÇÃO"
@@ -127,20 +137,5 @@
     "nome": "Eletroportáteis",
     "valor": "Eletroportáteis",
     "grupo": "CASA E DECORAÇÃO"
-  },
-  {
-    "nome": "Notebooks",
-    "valor": "Notebooks",
-    "grupo": "TECNOLOGIA E ELETRÔNICOS"
-  },
-  {
-    "nome": "Talheres e Facas",
-    "valor": "Talheres e Facas",
-    "grupo": "CASA E DECORAÇÃO"
-  },
-  {
-    "nome": "Suplementos",
-    "valor": "Suplementos",
-    "grupo": "BELEZA E SAÚDE"
   }
 ]
