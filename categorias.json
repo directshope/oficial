@@ -137,5 +137,10 @@
     "nome": "Eletroportáteis",
     "valor": "Eletroportáteis",
     "grupo": "CASA E DECORAÇÃO"
+  },
+  {
+    "nome": "Acessórios para computadores",
+    "valor": "Acessórios para computadores",
+    "grupo": "TECNOLOGIA E ELETRÔNICOS"
   }
 ]
