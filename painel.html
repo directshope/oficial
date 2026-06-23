@@ -988,18 +988,23 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
       }
 
       async function saveGitHub(file, content, msg) {
-        const u = localStorage.getItem("gh_user"),
-          r = localStorage.getItem("gh_repo"),
-          t = localStorage.getItem("gh_token");
+        const u = localStorage.getItem("gh_user");
+        const r = localStorage.getItem("gh_repo");
+        const t = localStorage.getItem("gh_token");
         const url = `https://api.github.com/repos/${u}/${r}/contents/${file}`;
 
-        // Busca o SHA atual
+        // 1. Tenta buscar o SHA do arquivo (necessário para atualizar)
+        let sha = null;
         const res = await fetch(url, {
           headers: { Authorization: `token ${t}` },
         });
-        const fileData = await res.json();
 
-        // Envia com o SHA para atualizar
+        if (res.ok) {
+          const data = await res.json();
+          sha = data.sha;
+        }
+
+        // 2. Faz o PUT para o endpoint correto da API
         const save = await fetch(url, {
           method: "PUT",
           headers: {
@@ -1011,7 +1016,7 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
             content: btoa(
               unescape(encodeURIComponent(JSON.stringify(content, null, 2))),
             ),
-            sha: fileData.sha,
+            sha: sha,
           }),
         });
 
