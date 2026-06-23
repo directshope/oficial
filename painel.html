@@ -334,6 +334,36 @@
         >
           📊 Estatísticas
         </button>
+        <button
+          class="tab-btn"
+          onclick="
+            switchTab('tab-destaques');
+            carregarAdminDestaques();
+          "
+        >
+          🔥 Destaques Virais
+        </button>
+      </div>
+
+      <div id="tab-destaques" class="tab-content">
+        <div class="section-title">🔥 Gerenciador de Destaques e Virais</div>
+        <p
+          style="color: var(--text-muted); font-size: 12px; margin-bottom: 20px"
+        >
+          Edite os títulos das fileiras animadas e adicione os nomes exatos dos
+          produtos em destaque. Use o botão abaixo para publicar no site ao
+          vivo.
+        </p>
+
+        <div id="container-admin-destaques"></div>
+
+        <button
+          class="btn-main"
+          onclick="salvarDestaquesGitHub()"
+          style="margin-top: 25px"
+        >
+          💾 PUBLICAR DESTAQUES NO SITE
+        </button>
       </div>
 
       <div id="tab-estatisticas" class="tab-content">
@@ -1354,6 +1384,375 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
         } else {
           inputManual.style.display = "none";
           inputManual.value = "";
+        }
+      }
+
+      // ==========================================
+      // ENGINE ADMIN PARA DESTAQUES VIRAIS
+      // ==========================================
+      let dadosDestaques = [];
+
+      async function carregarAdminDestaques() {
+        showStatus("Lendo destaques atuais...");
+        const dados = await fetchGitHub("destaques.json");
+        if (dados && Array.isArray(dados)) {
+          dadosDestaques = dados;
+        } else {
+          dadosDestaques = [];
+        }
+        renderizarAdminDestaques();
+      }
+
+      function renderizarAdminDestaques() {
+        const container = document.getElementById("container-admin-destaques");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        dadosDestaques.forEach((perfil, indexPerfil) => {
+          const divPerfil = document.createElement("div");
+          // Estilização premium com bordas bem definidas e espaçamento confortável
+          divPerfil.style =
+            "background: #0f0f12; padding: 25px; border-radius: 16px; border: 1px solid #1f1f23; margin-bottom: 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);";
+
+          let htmlProdutos = "";
+          perfil.produtos.forEach((prod, indexProd) => {
+            // Cada produto ganha um mini-bloco dark cinza para separar visualmente do resto da tela
+            htmlProdutos += `
+              <div style="display: flex; gap: 12px; align-items: center; margin-top: 10px; background: #000000; padding: 10px 15px; border-radius: 10px; border: 1px solid #1f1f23;">
+                <span style="color: var(--text-muted); font-size: 11px; font-weight: 600; min-width: 65px;">Loja Ativa:</span>
+                <select onchange="atualizarDestaque(${indexPerfil}, ${indexProd}, 'id_loja', this.value)" style="width: 140px; padding: 8px 12px; background: #0f0f12; color: #fff; border: 1px solid #1f1f23; border-radius: 6px; cursor: pointer;">
+                  <option value="ml" ${prod.id_loja === "ml" ? "selected" : ""}>Mercado Livre</option>
+                  <option value="shopee" ${prod.id_loja === "shopee" ? "selected" : ""}>Shopee</option>
+                  <option value="tiktok" ${prod.id_loja === "tiktok" ? "selected" : ""}>TikTok</option>
+                </select>
+                
+                <span style="color: var(--text-muted); font-size: 11px; font-weight: 600; margin-left: 10px;">Título exato:</span>
+                <input type="text" value="${prod.titulo}" onchange="atualizarDestaque(${indexPerfil}, ${indexProd}, 'titulo', this.value)" placeholder="Cole o nome idêntico ao produto já cadastrado..." style="flex: 1; padding: 8px 12px; background: #0f0f12; color: #fff; border: 1px solid #1f1f23; border-radius: 6px;">
+                
+                <button class="btn-danger" style="padding: 8px 14px; font-size: 11px; margin-top: 0; background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.2);" onclick="removerProdutoDestaque(${indexPerfil}, ${indexProd})">
+                  🗑️ Remover
+                </button>
+              </div>
+            `;
+          });
+
+          divPerfil.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f23; padding-bottom: 15px; margin-bottom: 15px;">
+              <div style="flex: 1;">
+                <label style="display: block; font-size: 11px; color: var(--gold); font-weight: 900; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px;">Manchete / Frase da Fileira</label>
+                <input type="text" value="${perfil.config.titulo_secao}" onchange="atualizarTituloDestaque(${indexPerfil}, this.value)" placeholder="Ex: 🔥 OS MAIS CLICADOS DA SEMANA" style="font-weight: 600; color: #fff; font-size: 15px; padding: 10px; background: #000; border: 1px solid #1f1f23; border-radius: 8px; width: 90%;">
+              </div>
+              <button class="btn-danger" style="padding: 10px 16px; font-size: 12px; margin-top: 0;" onclick="removerPerfilDestaque(${indexPerfil})">
+                ❌ Excluir Fileira
+              </button>
+            </div>
+            
+            <div style="margin-top: 10px;">
+              <span style="font-size: 12px; font-weight: 600; color: var(--text-muted);">📦 Produtos Cadastrados nesta Manchete:</span>
+              ${perfil.produtos.length === 0 ? '<div style="color: #555; font-size: 12px; padding: 10px 0;">Nenhum produto adicionado nesta fileira ainda.</div>' : htmlProdutos}
+            </div>
+            
+            <button class="btn-main" style="padding: 10px; margin-top: 15px; font-size: 11px; width: 100%; background: rgba(241, 196, 15, 0.05); color: var(--gold); border: 1px dashed rgba(241, 196, 15, 0.3);" onclick="adicionarProdutoDestaque(${indexPerfil})">
+              + Adicionar Produto nesta Manchete
+            </button>
+          `;
+
+          container.appendChild(divPerfil);
+        });
+
+        // Botão mestre no rodapé da página, totalmente isolado
+        container.innerHTML += `
+          <button class="btn-main" style="background: transparent; border: 2px dashed #333; color: #666; margin-top: 15px; padding: 15px;" onclick="adicionarNovoPerfilDestaque()">
+            ➕ CRIAR UMA NOVA MANCHETE DO ZERO
+          </button>
+        `;
+      }
+
+      function atualizarTituloDestaque(indexPerfil, novoTitulo) {
+        dadosDestaques[indexPerfil].config.titulo_secao = novoTitulo;
+      }
+
+      function atualizarDestaque(indexPerfil, indexProd, campo, valor) {
+        dadosDestaques[indexPerfil].produtos[indexProd][campo] = valor;
+      }
+
+      function adicionarProdutoDestaque(indexPerfil) {
+        dadosDestaques[indexPerfil].produtos.push({
+          id_loja: "ml",
+          titulo: "NOME DO PRODUTO AQUI",
+        });
+        renderizarAdminDestaques();
+      }
+
+      function removerProdutoDestaque(indexPerfil, indexProd) {
+        dadosDestaques[indexPerfil].produtos.splice(indexProd, 1);
+        renderizarAdminDestaques();
+      }
+
+      // ==========================================
+      // ENGINE DE DESTAQUES PREMIUM - DROPDOWNS E SUB-ABAS
+      // ==========================================
+      let engineDestaques = {
+        ml: {
+          titulo: "⚡ DESTAQUES MERCADO LIVRE",
+          itens: ["", "", "", "", "", "", ""],
+        },
+        tiktok: {
+          titulo: "🎵 VIRAIS DO TIKTOK",
+          itens: ["", "", "", "", "", "", ""],
+        },
+        shopee: {
+          titulo: "🛍️ OFERTAS SHOPEE",
+          itens: ["", "", "", "", "", "", ""],
+        },
+      };
+      let abaDestaqueAtiva = "ml";
+
+      async function carregarAdminDestaques() {
+        showStatus("Carregando listas de produtos...");
+        const dados = await fetchGitHub("destaques.json");
+
+        // Reseta os slots para o padrão limpo antes de mapear
+        engineDestaques = {
+          ml: {
+            titulo: "⚡ DESTAQUES MERCADO LIVRE",
+            itens: ["", "", "", "", "", "", ""],
+          },
+          tiktok: {
+            titulo: "🎵 VIRAIS DO TIKTOK",
+            itens: ["", "", "", "", "", "", ""],
+          },
+          shopee: {
+            titulo: "🛍️ OFERTAS SHOPEE",
+            itens: ["", "", "", "", "", "", ""],
+          },
+        };
+
+        // Organiza os dados que já existem no seu repositório externo
+        if (dados && Array.isArray(dados)) {
+          let mlData =
+            dados.find(
+              (p) => p.produtos && p.produtos.some((pr) => pr.id_loja === "ml"),
+            ) || dados[0];
+          if (mlData) {
+            if (mlData.config?.titulo_secao)
+              engineDestaques.ml.titulo = mlData.config.titulo_secao;
+            if (mlData.produtos)
+              mlData.produtos.forEach((p, idx) => {
+                if (idx < 7) engineDestaques.ml.itens[idx] = p.titulo;
+              });
+          }
+          let ttData =
+            dados.find(
+              (p) =>
+                p.produtos && p.produtos.some((pr) => pr.id_loja === "tiktok"),
+            ) || dados[1];
+          if (ttData) {
+            if (ttData.config?.titulo_secao)
+              engineDestaques.tiktok.titulo = ttData.config.titulo_secao;
+            if (ttData.produtos)
+              ttData.produtos.forEach((p, idx) => {
+                if (idx < 7) engineDestaques.tiktok.itens[idx] = p.titulo;
+              });
+          }
+          let shData =
+            dados.find(
+              (p) =>
+                p.produtos && p.produtos.some((pr) => pr.id_loja === "shopee"),
+            ) || dados[2];
+          if (shData) {
+            if (shData.config?.titulo_secao)
+              engineDestaques.shopee.titulo = shData.config.titulo_secao;
+            if (shData.produtos)
+              shData.produtos.forEach((p, idx) => {
+                if (idx < 7) engineDestaques.shopee.itens[idx] = p.titulo;
+              });
+          }
+        }
+
+        // Puxa as suas listas de produtos cadastrados para alimentar os menus de clique
+        window.listasProdutos = {
+          ml: (await fetchGitHub("ml.json")) || [],
+          tiktok: (await fetchGitHub("tiktok.json")) || [],
+          shopee: (await fetchGitHub("shopee.json")) || [],
+        };
+
+        renderizarAdminDestaques();
+      }
+
+      function mudarSubAbaDestaque(loja) {
+        abaDestaqueAtiva = loja;
+        renderizarAdminDestaques();
+      }
+
+      function renderizarAdminDestaques() {
+        const container =
+          document.getElementById("container-admin-destaques") ||
+          document.getElementById("destaques");
+        if (!container) return;
+        container.innerHTML = "";
+
+        let dadosLoja = engineDestaques[abaDestaqueAtiva];
+        let corTema =
+          abaDestaqueAtiva === "ml"
+            ? "#ffe600"
+            : abaDestaqueAtiva === "tiktok"
+              ? "#00f2fe"
+              : "#ff5722";
+        let nomeLojaExt =
+          abaDestaqueAtiva === "ml"
+            ? "Mercado Livre"
+            : abaDestaqueAtiva === "tiktok"
+              ? "TikTok Shop"
+              : "Shopee";
+
+        // Interface limpa de alternância de lojas (Sub-Abas)
+        let htmlAbas = `
+          <div style="display: flex; gap: 10px; margin-bottom: 25px; background: #111114; padding: 8px; border-radius: 12px; border: 1px solid var(--border);">
+            <button type="button" onclick="mudarSubAbaDestaque('ml')" style="flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 12px; background: ${abaDestaqueAtiva === "ml" ? "#ffe600" : "transparent"}; color: ${abaDestaqueAtiva === "ml" ? "#000" : "#888"}; transition: 0.2s;">⚡ MERCADO LIVRE</button>
+            <button type="button" onclick="mudarSubAbaDestaque('tiktok')" style="flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 12px; background: ${abaDestaqueAtiva === "tiktok" ? "#00f2fe" : "transparent"}; color: ${abaDestaqueAtiva === "tiktok" ? "#000" : "#888"}; transition: 0.2s;">📱 TIKTOK SHOP</button>
+            <button type="button" onclick="mudarSubAbaDestaque('shopee')" style="flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 12px; background: ${abaDestaqueAtiva === "shopee" ? "#ff5722" : "transparent"}; color: ${abaDestaqueAtiva === "shopee" ? "#000" : "#888"}; transition: 0.2s;">🛍️ SHOPEE</button>
+          </div>
+        `;
+
+        // Monta os 7 seletores inteligentes sem precisar digitar texto
+        let htmlSlots = "";
+        let produtosDisponiveis = window.listasProdutos
+          ? window.listasProdutos[abaDestaqueAtiva]
+          : [];
+
+        for (let i = 0; i < 7; i++) {
+          let itemAtual = dadosLoja.itens[i] || "";
+          let opcoesSelect = `<option value="">⚠️ Vazio (Nenhum produto selecionado)</option>`;
+
+          produtosDisponiveis.forEach((p) => {
+            let selecionado = p.titulo === itemAtual ? "selected" : "";
+            opcoesSelect += `<option value="${p.titulo}" ${selecionado}>${p.titulo} (${p.preco || "S/Preço"})</option>`;
+          });
+
+          htmlSlots += `
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px; background: #000; padding: 14px; border-radius: 10px; border: 1px solid var(--border);">
+              <span style="color: ${corTema}; font-size: 11px; font-weight: 900; width: 75px; letter-spacing: 0.5px; text-transform: uppercase;">VAGA 0${i + 1}:</span>
+              <select onchange="engineDestaques['${abaDestaqueAtiva}'].itens[${i}] = this.value" style="flex: 1; padding: 12px; background: #111114; color: #fff; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; cursor: pointer; outline: none;">
+                ${opcoesSelect}
+              </select>
+            </div>
+          `;
+        }
+
+        container.innerHTML = `
+          ${htmlAbas}
+          <div style="background: #111114; padding: 25px; border-radius: 16px; border-left: 4px solid ${corTema}; font-family: 'Poppins', sans-serif; border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+            <h3 style="margin: 0 0 20px 0; color: ${corTema}; font-size: 15px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">⚙️ Vitrine: ${nomeLojaExt}</h3>
+            
+            <div style="margin-bottom: 25px;">
+              <label style="display: block; font-size: 10px; color: var(--text-muted); margin-bottom: 8px; font-weight: 900; letter-spacing: 0.5px;">MANCHETE DESTA SEÇÃO NO SITE:</label>
+              <input type="text" value="${dadosLoja.titulo}" oninput="engineDestaques['${abaDestaqueAtiva}'].titulo = this.value" style="width: 100%; padding: 14px; background: #000; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-weight: bold; box-sizing: border-box; font-family: 'Poppins', sans-serif; outline: none;">
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 10px; color: var(--text-muted); font-weight: 900; margin-bottom: 12px; letter-spacing: 0.5px;">ESCOLHA OS PRODUTOS DA LISTA:</label>
+              ${htmlSlots}
+            </div>
+          </div>
+        `;
+      }
+
+      async function salvarDestaquesGitHub() {
+        const btn =
+          event?.target ||
+          document.querySelector("button[onclick='salvarDestaquesGitHub()']");
+        if (btn) {
+          btn.innerText = "⏳ PUBLICANDO NO GITHUB...";
+          btn.style.opacity = "0.7";
+        }
+
+        let estruturaFinal = [];
+
+        // Converte o formato do gerenciador para o modelo de leitura da página inicial
+        ["ml", "tiktok", "shopee"].forEach((loja) => {
+          let dadosLoja = engineDestaques[loja];
+          let perfilJson = {
+            config: { tema: "default", titulo_secao: dadosLoja.titulo.trim() },
+            produtos: [],
+          };
+
+          dadosLoja.itens.forEach((tituloProd) => {
+            if (tituloProd && tituloProd.trim() !== "") {
+              perfilJson.produtos.push({
+                id_loja: loja,
+                titulo: tituloProd.trim(),
+              });
+            }
+          });
+
+          estruturaFinal.push(perfilJson);
+        });
+
+        const success = await saveGitHub(
+          "destaques.json",
+          estruturaFinal,
+          "Atualização inteligente de destaques via dropdown",
+        );
+
+        if (success) {
+          showStatus("Destaques Atualizados no Site!");
+          if (btn) {
+            btn.innerText = "💾 PUBLICAR DESTAQUES NO SITE";
+            btn.style.opacity = "1";
+          }
+        } else {
+          alert(
+            "Erro ao salvar. Certifique-se de que o Token do GitHub continua válido.",
+          );
+          if (btn) {
+            btn.innerText = "💾 PUBLICAR DESTAQUES NO SITE";
+            btn.style.opacity = "1";
+          }
+        }
+      }
+
+      function adicionarNovoPerfilDestaque() {
+        dadosDestaques.push({
+          config: { tema: "default", titulo_secao: "⭐ NOVO DESTAQUE" },
+          produtos: [],
+        });
+        renderizarAdminDestaques();
+      }
+
+      function removerPerfilDestaque(indexPerfil) {
+        if (
+          confirm(
+            "Tem certeza que deseja excluir esta fileira inteira com todos os produtos dela?",
+          )
+        ) {
+          dadosDestaques.splice(indexPerfil, 1);
+          renderizarAdminDestaques();
+        }
+      }
+
+      async function salvarDestaquesGitHub() {
+        const btn = event.target;
+        const textoOriginal = btn.innerText;
+        btn.innerText = "⏳ PUBLICANDO NO GITHUB...";
+        btn.style.opacity = "0.7";
+
+        // Usa a sua função nativa de salvamento direto no disco
+        const success = await saveGitHub(
+          "destaques.json",
+          JSON.stringify(dadosDestaques, null, 2),
+          "Atualização de Destaques pelo Painel",
+        );
+
+        if (success) {
+          showStatus("Destaques Atualizados no Site!");
+          btn.innerText = textoOriginal;
+          btn.style.opacity = "1";
+        } else {
+          alert("Erro ao salvar. Verifique se o GitHub Token ainda é válido.");
+          btn.innerText = textoOriginal;
+          btn.style.opacity = "1";
         }
       }
     </script>
