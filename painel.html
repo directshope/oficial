@@ -991,26 +991,32 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
         const u = localStorage.getItem("gh_user"),
           r = localStorage.getItem("gh_repo"),
           t = localStorage.getItem("gh_token");
-        const url = `https://api.github.com/repos/${u}/${r}/contents/${file}`;
+        const url = `https://github.com/${u}/${r}/contents/${file}`;
+
+        // Busca o SHA atual
         const res = await fetch(url, {
           headers: { Authorization: `token ${t}` },
         });
         const fileData = await res.json();
 
-        const body = JSON.stringify({
-          message: msg,
-          content: btoa(
-            unescape(encodeURIComponent(JSON.stringify(content, null, 2))),
-          ),
-          sha: fileData.sha,
-        });
-
+        // Envia com o SHA para atualizar
         const save = await fetch(url, {
           method: "PUT",
           headers: { Authorization: `token ${t}` },
-          body,
+          body: JSON.stringify({
+            message: msg,
+            content: btoa(
+              unescape(encodeURIComponent(JSON.stringify(content, null, 2))),
+            ),
+            sha: fileData.sha,
+          }),
         });
-        if (save.ok) showStatus("✅ SINCRONIZADO COM SUCESSO!");
+
+        if (save.ok) {
+          showStatus("✅ SINCRONIZADO COM SUCESSO!");
+          return true;
+        }
+        return false;
       }
 
       // LÓGICA DO EDITOR DE DESCRIÇÃO EXPANDIDO
