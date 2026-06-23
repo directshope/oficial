@@ -6,23 +6,23 @@
     },
     "produtos": [
       {
-        "loja": "ml",
+        "id_loja": "ml",
         "titulo": "Tênis Nike Mc Trainer 3 Masculino"
       },
       {
-        "loja": "shopee",
+        "id_loja": "ml",
         "titulo": "Caixa Amplificada JBL Party Box Club 120 Bluetooth 160w Conexão USB - Bivolt"
       },
       {
-        "loja": "ml",
+        "id_loja": "ml",
         "titulo": "Copo Térmico Inox 1,2l Com Alça, Tampa, Canudo Inox E Escova Cor Rosa Lisa"
       },
       {
-        "loja": "ml",
+        "id_loja": "ml",
         "titulo": "Copo Térmico Gigante 1,2l Inox Com Tampa E Inox"
       },
       {
-        "loja": "ml",
+        "id_loja": "ml",
         "titulo": "Carregador Compativel Com iPhone 8 X Xr 11 12 13 14 Pro Max Turbo Fonte Tipo C Boyu Cell"
       }
     ]
@@ -34,8 +34,24 @@
     },
     "produtos": [
       {
-        "loja": "tiktok",
+        "id_loja": "tiktok",
         "titulo": "Conjunto de Panelas Cerâmicas Champs Elysees Exclusive Design 18 Peças 2"
+      }
+    ]
+  },
+  {
+    "config": {
+      "tema": "default",
+      "titulo_secao": "🔥 OS MAIS CLICADOS DA SEMANA"
+    },
+    "produtos": [
+      {
+        "id_loja": "shopee",
+        "titulo": "Tênis Nike Mc Trainer 3 Masculino"
+      },
+      {
+        "id_loja": "shopee",
+        "titulo": "Caixa Amplificada JBL Party Box Club 120 Bluetooth 160w Conexão USB - Bivolt"
       }
     ]
   }
