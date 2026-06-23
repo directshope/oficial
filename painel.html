@@ -991,7 +991,7 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
         const u = localStorage.getItem("gh_user"),
           r = localStorage.getItem("gh_repo"),
           t = localStorage.getItem("gh_token");
-        const url = `https://github.com/${u}/${r}/contents/${file}`;
+        const url = `https://api.github.com/repos/${u}/${r}/contents/${file}`;
 
         // Busca o SHA atual
         const res = await fetch(url, {
@@ -1002,7 +1002,10 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
         // Envia com o SHA para atualizar
         const save = await fetch(url, {
           method: "PUT",
-          headers: { Authorization: `token ${t}` },
+          headers: {
+            Authorization: `token ${t}`,
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             message: msg,
             content: btoa(
@@ -1015,8 +1018,10 @@ DESCRIÇÃO DO PRODUTO&#10;&#10;</textarea
         if (save.ok) {
           showStatus("✅ SINCRONIZADO COM SUCESSO!");
           return true;
+        } else {
+          console.error("Erro GitHub:", await save.text());
+          return false;
         }
-        return false;
       }
 
       // LÓGICA DO EDITOR DE DESCRIÇÃO EXPANDIDO
