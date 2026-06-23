@@ -1,1 +1,58 @@
-"[\n  {\n    \"config\": {\n      \"tema\": \"default\",\n      \"titulo_secao\": \"⚡ DESTAQUES MERCADO LIVRE\"\n    },\n    \"produtos\": []\n  },\n  {\n    \"config\": {\n      \"tema\": \"default\",\n      \"titulo_secao\": \"🎵 VIRAIS DO TIKTOK\"\n    },\n    \"produtos\": [\n      {\n        \"id_loja\": \"tiktok\",\n        \"titulo\": \"BETTDOW Fone de ouvido sem fio Bluetooth 5.3 intra-auricular TWS/adequado para Android + iPhone\"\n      },\n      {\n        \"id_loja\": \"tiktok\",\n        \"titulo\": \"Escova De Limpeza Giratória 9 em 1 Elétrica Recarregável Com Cabo Ajustável Esfregão Multiuso Para Piso, Azulejo, Banheiro 360º Potente Premium\"\n      },\n      {\n        \"id_loja\": \"tiktok\",\n        \"titulo\": \"Ventilador Soprador De Ar Turbo 130000 Rpm Sem Fio Portátil\"\n      },\n      {\n        \"id_loja\": \"tiktok\",\n        \"titulo\": \"KIT 20 PLACAS DE PAINEL RIPADO AUTOADESIVO EM MDF 45x11cm\"\n      },\n      {\n        \"id_loja\": \"tiktok\",\n        \"titulo\": \"Kit Carregador iPhone Fonte E Cabo Carregamento Rápido 20W\"\n      }\n    ]\n  },\n  {\n    \"config\": {\n      \"tema\": \"default\",\n      \"titulo_secao\": \"🛍️ OFERTAS SHOPEE\"\n    },\n    \"produtos\": []\n  }\n]"
+[
+  {
+    "config": {
+      "tema": "default",
+      "titulo_secao": "🔥 OS MAIS CLICADOS DA SEMANA"
+    },
+    "produtos": [
+      {
+        "id_loja": "ml",
+        "titulo": "Tênis Nike Mc Trainer 3 Masculino"
+      },
+      {
+        "id_loja": "ml",
+        "titulo": "Caixa Amplificada JBL Party Box Club 120 Bluetooth 160w Conexão USB - Bivolt"
+      },
+      {
+        "id_loja": "ml",
+        "titulo": "Copo Térmico Inox 1,2l Com Alça, Tampa, Canudo Inox E Escova Cor Rosa Lisa"
+      },
+      {
+        "id_loja": "ml",
+        "titulo": "Copo Térmico Gigante 1,2l Inox Com Tampa E Inox"
+      },
+      {
+        "id_loja": "ml",
+        "titulo": "Carregador Compativel Com iPhone 8 X Xr 11 12 13 14 Pro Max Turbo Fonte Tipo C Boyu Cell"
+      }
+    ]
+  },
+  {
+    "config": {
+      "tema": "default",
+      "titulo_secao": "🎵 OS MAIS VIRAIS DO TIKTOK"
+    },
+    "produtos": [
+      {
+        "id_loja": "tiktok",
+        "titulo": "Conjunto de Panelas Cerâmicas Champs Elysees Exclusive Design 18 Peças 2"
+      }
+    ]
+  },
+  {
+    "config": {
+      "tema": "default",
+      "titulo_secao": "🔥 OS MAIS CLICADOS DA SEMANA"
+    },
+    "produtos": [
+      {
+        "id_loja": "shopee",
+        "titulo": "Tênis Nike Mc Trainer 3 Masculino"
+      },
+      {
+        "id_loja": "shopee",
+        "titulo": "Caixa Amplificada JBL Party Box Club 120 Bluetooth 160w Conexão USB - Bivolt"
+      }
+    ]
+  }
+]
