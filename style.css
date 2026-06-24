@@ -1278,6 +1278,33 @@ body[data-ambiente="all"] .bg-glow {
         flex-direction: column;
         padding: 15px 10px;
         gap: 15px;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* FAZ OS BOTÕES DE LOJAS DESLIZAREM DE FORMA SUAVE NO CELULAR SEM QUEBRAR A TELA */
+    #abas-lojas {
+        width: 100% !important;
+        overflow-x: auto !important; /* Ativa a rolagem horizontal caso falte espaço */
+        display: flex !important;
+        justify-content: flex-start !important; /* Alinha o início do carrossel à esquerda */
+        gap: 8px !important;
+        padding: 5px 5px 10px 5px !important;
+        scrollbar-width: none !important; /* Oculta barra no Firefox */
+        box-sizing: border-box !important;
+    }
+
+    /* OCULTA A BARRA DE ROLAGEM HORIZONTAL NO CHROME, SAFARI E EDGE PARA DESIGN LIMPO */
+    #abas-lojas::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    /* REDUZ SUTILMENTE O TAMANHO DOS BOTÕES APENAS NO MOBILE PARA SE ENCAIXAREM MELHOR */
+    #abas-lojas .tab-link {
+        width: 115px !important;
+        flex: 0 0 115px !important; /* Mantém a proporção idêntica ao rolar */
+        font-size: 11px !important;
+        padding: 8px 0 !important;
     }
 
     .header-tools {
